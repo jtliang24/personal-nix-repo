@@ -75,7 +75,7 @@ in
             servers = {
               nil = {
                 enable = true;
-                settings.nix.flake.autoArchive = true;
+                settings.nil.nix.flake.autoArchive = true;
               };
             };
           };
