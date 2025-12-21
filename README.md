@@ -17,3 +17,12 @@ or add as input to your own NixOS system flake.
   * `x86-64_linux` systems only.
 * Kando
   * version 2.0.0
+
+* neovimConfigured
+  * Neovim build configured via the `nvf` integration (see `nvf.nix`).
+  * Exposed per-system; example run for this machine:
+    - `nix run .#packages.x86_64-linux.neovimConfigured`
+
+Notes:
+- `ArtixGameLauncher` is provided only for `x86_64-linux` and relies on an unfree derivation. The flake scopes `allowUnfree` to that import so other package evaluations are not affected.
+- The `neovimConfigured` package is produced by importing `nvf.nix` and evaluating the nvf neovim configuration.
