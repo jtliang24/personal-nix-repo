@@ -27,6 +27,9 @@ in
         # You may browse available options for nvf on the online manual. Please see
         # <https://notashelf.github.io/nvf/options.html>
         config.vim = {
+          viAlias = false;
+          vimAlias = false;
+
           theme = {
             enable = true;
             name = "catppuccin";
