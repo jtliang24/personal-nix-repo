@@ -19,26 +19,33 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
-        artix = if system == "x86_64-linux" then
-          let artixPkgs = import nixpkgs {
-            system = "x86_64-linux";
-            config = { allowUnfree = true; };
-          };
-          in {
-            ArtixGameLauncher = artixPkgs.callPackage ./Artix_Game_Launcher.nix { };
-          }
-        else {};
+        linux_pkgs =
+          if system == "x86_64-linux" then
+            let
+              x86_64-linuxpkgs = import nixpkgs {
+                system = "x86_64-linux";
+                config = {
+                  allowUnfree = true;
+                };
+              };
+            in
+            {
+              ArtixGameLauncher = x86_64-linuxpkgs.callPackage ./Artix_Game_Launcher.nix { };
+              wavebox = x86_64-linuxpkgs.callPackage ./wavebox.nix { };
+            }
+          else
+            { };
       in
       {
         packages = {
           kando = pkgs.callPackage ./kando.nix { };
           hello = pkgs.callPackage ./hello.nix { };
           neovimConfigured = nvfLocal.packages.${system}.neovimConfigured;
-        } // artix;
+        }
+        // linux_pkgs;
       }
     )
     // {
       overlays.default = import ./overlay.nix;
-    }
-    ;
+    };
 }
