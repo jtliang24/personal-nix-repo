@@ -45,6 +45,7 @@
   libxkbcommon,
   pipewire,
   wayland,
+  zstd,
 
   coreutils,
 
@@ -155,16 +156,17 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "wavebox";
-  version = "10.137.11-2";
+  version = "10.143.21-2";
 
   src = fetchurl {
     url = "https://download.wavebox.app/stable/linux/deb/amd64/wavebox_${finalAttrs.version}_amd64.deb";
-    hash = "sha256-sdkpTGhpBfMgczUuyIlhYw7bB91uLW1DzMLUht54eK4=";
+    hash = "sha256-5EopvEmbZPy7Qcd+Iv//w1PxrubFt3aEZeA4G1HxvyU=";
   };
 
   nativeBuildInputs = [
     patchelf
     makeWrapper
+    zstd
   ];
   buildInputs = [
     gsettings-desktop-schemas # needed for GSETTINGS_SCHEMAS_PATH
@@ -174,7 +176,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   unpackPhase = ''
     ar x $src
-    tar xf data.tar.xz
+    tar xvf data.tar.zst
   '';
 
   rpath = lib.makeLibraryPath deps + ":" + lib.makeSearchPathOutput "lib" "lib64" deps;
@@ -194,9 +196,6 @@ stdenv.mkDerivation (finalAttrs: {
       --replace-fail 'CHROME_WRAPPER' 'WRAPPER'
     substituteInPlace $out/share/applications/wavebox.desktop \
       --replace-fail /opt/wavebox.io/wavebox/wavebox-launcher $exe
-    substituteInPlace $out/share/menu/wavebox.menu \
-      --replace-fail /opt $out/share \
-      --replace-fail $out/share/wavebox.io/wavebox/wavebox $exe
 
     for icon_file in $out/share/wavebox.io/wavebox/product_logo_[0-9]*.png; do
       num_and_suffix="''${icon_file##*logo_}"
@@ -235,9 +234,6 @@ stdenv.mkDerivation (finalAttrs: {
   };
 
   meta = {
-    knownVulnerabilities = [
-      "wavebox has been removed in NixOS unstable. It's an unmaintained security relevant package"
-    ];
     description = "Wavebox Productivity Browser";
     homepage = "https://wavebox.io";
     license = lib.licenses.unfree;
