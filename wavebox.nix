@@ -238,7 +238,7 @@ stdenv.mkDerivation (finalAttrs: {
     homepage = "https://wavebox.io";
     license = lib.licenses.unfree;
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
-    maintainers = with lib.maintainers; [ flexiondotorg ];
+    maintainers = with lib.maintainers; [ jtliang24 ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "wavebox";
   };
