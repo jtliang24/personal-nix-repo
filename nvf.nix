@@ -31,6 +31,21 @@ in
             lazygit-nvim
           ];
 
+          extraPackages = with pkgs; [
+            nodejs_25
+            tree-sitter
+          ];
+
+          assistant = {
+            copilot = {
+              cmp.enable = true;
+              enable = true;
+              setupOpts = {
+                suggestion.enable = true;
+              };
+            };
+          };
+
           viAlias = false;
           vimAlias = false;
 
