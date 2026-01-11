@@ -40,7 +40,7 @@
         packages = {
           kando = pkgs.callPackage ./kando.nix { };
           hello = pkgs.callPackage ./hello.nix { };
-          default-browser = pkgs.callPackage ./default-browser.nix { };
+          xdg-browser-exec = pkgs.callPackage ./xdg-browser-exec.nix { };
           neovimConfigured = nvfLocal.packages.${system}.neovimConfigured;
         }
         // linux_pkgs;

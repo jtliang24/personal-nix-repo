@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 pkgs.writeShellApplication {
-  name = "default-browser";
+  name = "xdg-browser-exec";
   runtimeInputs = with pkgs; [
     xdg-utils
     findutils
@@ -12,9 +12,11 @@ pkgs.writeShellApplication {
     IFS=':' read -r -a directories <<<"$XDG_DATA_DIRS"
 
     browser=$(xdg-settings get default-web-browser)
+    desktop_path=$( (find "''${directories[@]: -10}" -name "$browser" 2>/dev/null || true) | head -n1)
+    bin_path=$(dex "$desktop_path" -d)
 
-    path=$( (find "''${directories[@]: -10}" -name "$browser" 2>/dev/null || true) | head -n1)
+    trimmed_bin_path="''${bin_path:19}"
 
-    dex "$path"
+    exec "$trimmed_bin_path" "$@"
   '';
 }
