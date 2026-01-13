@@ -22,7 +22,12 @@ or add as input to your own NixOS system flake.
   * Neovim build configured via the `nvf` integration (see `nvf.nix`).
   * Exposed per-system; example run for this machine:
     - `nix run .#packages.x86_64-linux.neovimConfigured`
+* Wavebox
+  * Wavebox Productivity Browser
+  * `x86_64-linux` systems only.
+* xdg-browser-exec
+  * A script to launch the default XDG browser.
 
 Notes:
-- `ArtixGameLauncher` is provided only for `x86_64-linux` and relies on an unfree derivation. The flake scopes `allowUnfree` to that import so other package evaluations are not affected.
+- `ArtixGameLauncher` and `Wavebox` are provided only for `x86_64-linux` and rely on unfree derivations. The flake scopes `allowUnfree` to those imports so other package evaluations are not affected.
 - The `neovimConfigured` package is produced by importing `nvf.nix` and evaluating the nvf neovim configuration.
