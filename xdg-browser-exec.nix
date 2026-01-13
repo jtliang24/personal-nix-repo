@@ -27,14 +27,19 @@ pkgs.writeShellApplication {
       echo "Default browser: $browser" >&2
     fi
     
-    if [[ ''${#directories[@]} -gt 10 ]]; then
-      if [ "$verbose" = true ]; then
-        echo "Truncating to last 10 directories"
+    desktop_path=""
+    for dir in "''${directories[@]}"; do
+      if [ -d "$dir" ]; then
+        found_path=$(find "$dir" -name "$browser" -print -quit 2>/dev/null || true)
+        if [ "$verbose" = true ]; then
+          echo "Searching path: $dir" >&2
+        fi
+        if [ -n "$found_path" ]; then
+          desktop_path="$found_path"
+          break
+        fi
       fi
-      desktop_path=$( (find "''${directories[@]: -10}" -name "$browser" 2>/dev/null || true) | head -n1)
-    else
-      desktop_path=$( (find "''${directories[@]}" -name "$browser" 2>/dev/null || true) | head -n1)
-    fi
+    done
 
     if [ "$verbose" = true ]; then
       echo "Desktop file path: $desktop_path" >&2
