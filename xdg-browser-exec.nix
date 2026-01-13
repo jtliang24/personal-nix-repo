@@ -41,6 +41,11 @@ pkgs.writeShellApplication {
       fi
     done
 
+    if [ -z "$desktop_path" ]; then
+      echo "No desktop file found for $browser" >&2
+      exit 1
+    fi
+
     if [ "$verbose" = true ]; then
       echo "Desktop file path: $desktop_path" >&2
     fi
