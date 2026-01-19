@@ -12,21 +12,22 @@ or add as input to your own NixOS system flake.
 
 ### Current package list:
 
-* ArtixGameLauncher
+* **ArtixGameLauncher**: 
   * Launcher for Artix Entertainment Games
-  * `x86-64_linux` systems only.
-* Kando
+  * `x86_64-linux` systems only.
+* **Kando**:
   * version 2.0.0
-
-* neovimConfigured
+* **neovimConfigured**:
   * Neovim build configured via the `nvf` integration (see `nvf.nix`).
   * Exposed per-system; example run for this machine:
     - `nix run .#packages.x86_64-linux.neovimConfigured`
-* Wavebox
+* **Wavebox**:
   * Wavebox Productivity Browser
   * `x86_64-linux` systems only.
-* xdg-browser-exec
+* **xdg-browser-exec**:
   * A script to launch the default XDG browser.
+* **hello**:
+  * A simple hello world test package.
 
 Notes:
 - `ArtixGameLauncher` and `Wavebox` are provided only for `x86_64-linux` and rely on unfree derivations. The flake scopes `allowUnfree` to those imports so other package evaluations are not affected.
