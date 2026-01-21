@@ -52,6 +52,7 @@
         packages = {
           kando = pkgs.callPackage ./kando.nix { };
           hello = pkgs.callPackage ./hello.nix { };
+          gemini-cli = pkgs.callPackage ./gemini-cli.nix { };
           inherit (nvfLocal.packages.${system}) neovimConfigured;
         }
         // x86-linux-pkgs
