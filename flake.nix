@@ -18,7 +18,10 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
         x86-linux-pkgs =
           if system == "x86_64-linux" then
             let
@@ -53,6 +56,7 @@
           kando = pkgs.callPackage ./kando.nix { };
           hello = pkgs.callPackage ./hello.nix { };
           gemini-cli = pkgs.callPackage ./gemini-cli.nix { };
+          warp-terminal = pkgs.callPackage ./warp-terminal { };
           inherit (nvfLocal.packages.${system}) neovimConfigured;
         }
         // x86-linux-pkgs
