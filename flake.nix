@@ -19,7 +19,7 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
-        linux_pkgs =
+        x86-linux-pkgs =
           if system == "x86_64-linux" then
             let
               x86_64-linuxpkgs = import nixpkgs {
@@ -35,15 +35,27 @@
             }
           else
             { };
+        linux-pkgs =
+          if builtins.match "^.+linux$" system != null then
+            let
+              linuxpkgs = import nixpkgs {
+                inherit system;
+              };
+            in
+            {
+              xdg-browser-exec = linuxpkgs.callPackage ./xdg-browser-exec.nix { };
+            }
+          else
+            { };
       in
       {
         packages = {
           kando = pkgs.callPackage ./kando.nix { };
           hello = pkgs.callPackage ./hello.nix { };
-          xdg-browser-exec = pkgs.callPackage ./xdg-browser-exec.nix { };
-          neovimConfigured = nvfLocal.packages.${system}.neovimConfigured;
+          inherit (nvfLocal.packages.${system}) neovimConfigured;
         }
-        // linux_pkgs;
+        // x86-linux-pkgs
+        // linux-pkgs;
       }
     )
     // {
