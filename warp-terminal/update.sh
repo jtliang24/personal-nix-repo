@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i bash -p cacert curl jq nix moreutils --pure
+#!nix-shell -i bash -p cacert curl jq nix moreutils -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz
 #shellcheck shell=bash
 set -eu -o pipefail
 
