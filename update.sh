@@ -2,9 +2,11 @@
 #!nix-shell -i bash -p nix-update jq curl -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz
 #shellcheck shell=bash
 
-# Updating wavebox
-wavebox_version=$(curl "https://download.wavebox.app/stable/linux/latest.json" | jq --raw-output '.["urls"]["deb"] | match("https://download.wavebox.app/stable/linux/deb/amd64/wavebox_(.+)_amd64.deb").captures[0]["string"]')
-nix-update wavebox --flake --version "$wavebox_version"
+if [[ "$(uname -s)" == "Linux" ]]; then
+  # Updating wavebox
+  wavebox_version=$(curl -s "https://download.wavebox.app/stable/linux/latest.json" | jq --raw-output '.["urls"]["deb"] | match("https://download.wavebox.app/stable/linux/deb/amd64/wavebox_(.+)_amd64.deb").captures[0]["string"]')
+  nix-update wavebox --flake --version "$wavebox_version"
+fi
 
 # Updating Warp-terminal
 ./warp-terminal/update.sh
