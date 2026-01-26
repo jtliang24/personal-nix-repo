@@ -2,8 +2,8 @@ name: Nightly Update
 
 on:
   schedule:
-# Runs at 10:00 UTC (5:00 EST)
-    - cron: '0 10 * * *'
+# Runs at 8:13 UTC (3:13 EST)
+    - cron: '13 8 * * *'
   workflow_dispatch:
 
 permissions:
