@@ -1,0 +1,35 @@
+name: Cachix build aarch64
+
+on:
+  schedule:
+  - cron: '13 9 * * 6'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  aarch-build:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v16
+        with:
+          name: personal-packages-cache
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build packages for the cache
+        run: |
+          for pkg in gemini-cli neovimConfigured; do
+            echo "Building $pkg..."
+            nix build .#$pkg --no-link
+          done
