@@ -23,6 +23,12 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v16
+        with:
+          name: personal-packages-cache
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
       - name: Update Flake inputs
         run: nix flake update
 
@@ -32,6 +38,11 @@ jobs:
         run: |
           chmod +x update.sh
           ./update.sh
+    
+      - name: Build packages for the cache
+        run: |
+          nix build .#gemini-cli
+          nix build .#neovimConfigured
 
       - name: Create Pull Request
         id: cpr
