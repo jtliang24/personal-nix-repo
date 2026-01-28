@@ -25,7 +25,7 @@ buildNpmPackage (finalAttrs: {
 
   nodejs = nodejs_22;
 
-  npmDepsHash = "sha256-4peAAxCws5IjWaiNwkRBiaL+n1fE+zsK0qbk1owueeY=";
+  npmDepsHash = "sha256-nfmIt+wUelhz3KiW4/pp/dGE71f2jsPbxwpBRT8gtYc=";
 
   nativeBuildInputs = [
     jq
@@ -62,8 +62,8 @@ buildNpmPackage (finalAttrs: {
       #    substituteInPlace packages/cli/src/utils/handleAutoUpdate.ts \
       #--replace-fail "settings.merged.general?.disableAutoUpdate ?? false" "settings.merged.general?.disableAutoUpdate ?? true" \
       #--replace-fail "settings.merged.general?.disableAutoUpdate" "(settings.merged.general?.disableAutoUpdate ?? true)"
-    substituteInPlace packages/cli/src/ui/utils/updateCheck.ts \
-      --replace-fail "settings.merged.general?.disableUpdateNag" "(settings.merged.general?.disableUpdateNag ?? true)"
+      #substituteInPlace packages/cli/src/ui/utils/updateCheck.ts \
+      #--replace-fail "settings.merged.general?.disableUpdateNag" "(settings.merged.general?.disableUpdateNag ?? true)"
   '';
 
   # Prevent npmDeps and python from getting into the closure
