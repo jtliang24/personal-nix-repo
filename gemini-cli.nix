@@ -14,13 +14,13 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "gemini-cli";
-  version = "0.25.2";
+  version = "0.26.0";
 
   src = fetchFromGitHub {
     owner = "google-gemini";
     repo = "gemini-cli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-2Fl6bkoAgu+KvwVIkQEIAPYKQRYyEQPWMRv3vsfnNA4=";
+    hash = "sha256-wvCSYr5BUS5gggTFHfG+SRvgAyRE63nYdaDwH98wurI=";
   };
 
   nodejs = nodejs_22;
@@ -59,9 +59,9 @@ buildNpmPackage (finalAttrs: {
 
     # Disable auto-update for real because the default value in settingsSchema isn't cleanly applied
     # https://github.com/google-gemini/gemini-cli/issues/13569
-    substituteInPlace packages/cli/src/utils/handleAutoUpdate.ts \
-      --replace-fail "settings.merged.general?.disableAutoUpdate ?? false" "settings.merged.general?.disableAutoUpdate ?? true" \
-      --replace-fail "settings.merged.general?.disableAutoUpdate" "(settings.merged.general?.disableAutoUpdate ?? true)"
+      #    substituteInPlace packages/cli/src/utils/handleAutoUpdate.ts \
+      #--replace-fail "settings.merged.general?.disableAutoUpdate ?? false" "settings.merged.general?.disableAutoUpdate ?? true" \
+      #--replace-fail "settings.merged.general?.disableAutoUpdate" "(settings.merged.general?.disableAutoUpdate ?? true)"
     substituteInPlace packages/cli/src/ui/utils/updateCheck.ts \
       --replace-fail "settings.merged.general?.disableUpdateNag" "(settings.merged.general?.disableUpdateNag ?? true)"
   '';
