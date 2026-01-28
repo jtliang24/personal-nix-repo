@@ -41,8 +41,10 @@ jobs:
     
       - name: Build packages for the cache
         run: |
-          nix build .#gemini-cli
-          nix build .#neovimConfigured
+          for pkg in gemini-cli neovimConfigured; do
+            echo "Building $pkg..."
+            nix build .#$pkg --no-link
+          done
 
       - name: Create Pull Request
         id: cpr
