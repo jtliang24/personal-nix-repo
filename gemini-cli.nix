@@ -94,6 +94,12 @@ buildNpmPackage (finalAttrs: {
     find $out/share/gemini-cli/node_modules -name ".package-lock.json" -delete
     find $out/share/gemini-cli/node_modules -name "config.gypi" -delete
 
+    # Remove build artifacts that reference python
+    find $out/share/gemini-cli/node_modules -name "gyp-mac-tool" -delete
+    find $out/share/gemini-cli/node_modules -name "Makefile" -delete
+    find $out/share/gemini-cli/node_modules -name "*.mk" -delete
+    find $out/share/gemini-cli/node_modules -type d -name "obj.target" -exec rm -rf {} +
+
     runHook postInstall
   '';
 
