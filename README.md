@@ -1,34 +1,56 @@
-# Personal Nix Packages Repository.
+# Personal Nix Packages Repository
 
-This is a personal repository of packages that are not in nixpkgs, or are outdated in nixpkgs.
+This repository contains a collection of Nix packages that are either not found
+in `nixpkgs` or are maintained here with bleeding-edge nightly updates.
 
-Run with flake-enabled nix with:
+## Installation
 
+To use these packages in your own NixOS or Home Manager configuration, add this
+repository to your `flake.nix` inputs:
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    personal-nix-repo.url = "github:jtliang24/personal-nix-repo";
+  };
+
+  outputs = { self, nixpkgs, personal-nix-repo, ... }: {
+    # Access packages via personal-nix-repo.packages.${system}.<name>
+  };
+}
 ```
-nix run github:jtliang24/personal-nix-repo#{pkg_name}
+
+## Usage
+
+You can run any package directly using `nix run` without installing it:
+
+```bash
+nix run github:jtliang24/personal-nix-repo#<package_name>
 ```
 
-or add as input to your own NixOS system flake.
+For example:
 
-### Current package list:
+```bash
+nix run github:jtliang24/personal-nix-repo#gemini-cli
+```
 
-* **ArtixGameLauncher**: 
-  * Launcher for Artix Entertainment Games
-  * `x86_64-linux` systems only.
-* **Kando**:
-  * version 2.0.0
-* **neovimConfigured**:
-  * Neovim build configured via the `nvf` integration (see `nvf.nix`).
-  * Exposed per-system; example run for this machine:
-    - `nix run .#packages.x86_64-linux.neovimConfigured`
-* **Wavebox**:
-  * Wavebox Productivity Browser
-  * `x86_64-linux` systems only.
-* **xdg-browser-exec**:
-  * A script to launch the default XDG browser.
-* **hello**:
-  * A simple hello world test package.
+## Available Packages
 
-Notes:
-- `ArtixGameLauncher` and `Wavebox` are provided only for `x86_64-linux` and rely on unfree derivations. The flake scopes `allowUnfree` to those imports so other package evaluations are not affected.
-- The `neovimConfigured` package is produced by importing `nvf.nix` and evaluating the nvf neovim configuration.
+| Package               | Version         | Description                                                            | Platforms      |
+| :-------------------- | :-------------- | :--------------------------------------------------------------------- | :------------- |
+| **ArtixGameLauncher** | 2.20            | Official Artix Games Launcher (AppImage wrapper).                      | `x86_64-linux` |
+| **gemini-cli**        | 0.26.0          | AI agent bringing Gemini directly into your terminal.                  | All            |
+| **kando**             | 2.2.0           | Cross-platform pie menu for efficient workflows.                       | Linux, Darwin  |
+| **neovimConfigured**  | -               | Neovim distribution configured via `nvf` with LSP and UI enhancements. | All            |
+| **warp-terminal**     | 0.2026.01.21... | Rust-based terminal reimagined for the 21st century.                   | Linux, Darwin  |
+| **wavebox**           | 10.144.72-2     | The Wavebox productivity browser.                                      | `x86_64-linux` |
+| **xdg-browser-exec**  | -               | Script to launch the default XDG web browser with verbose logging.     | Linux          |
+| **hello**             | 2.12.1          | GNU Hello, a simple test package.                                      | All            |
+
+> [!IMPORTANT]
+> `ArtixGameLauncher`, `wavebox`, and `warp-terminal` are unfree packages.
+> Ensure `allowUnfree = true;` is set in your Nixpkgs configuration.
+
+Note that the software packaged here may be subject to their own respective
+licenses (e.g., Google's Gemini CLI, Warp Terminal, Wavebox).
