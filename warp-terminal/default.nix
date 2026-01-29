@@ -1,3 +1,4 @@
+#based on code from Github:NixOS/nixpkgs (MIT License)
 {
   lib,
   stdenvNoCC,
