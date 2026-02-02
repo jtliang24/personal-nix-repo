@@ -6,6 +6,7 @@
   makeBinaryWrapper,
   versionCheckHook,
   nix-update-script,
+  cacert,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -27,7 +28,8 @@ stdenv.mkDerivation (finalAttrs: {
 
     mkdir -p $out/bin
     makeBinaryWrapper ${nodejs}/bin/node $out/bin/copilot \
-      --add-flags "$out/lib/node_modules/@github/copilot/index.js"
+      --add-flags "$out/lib/node_modules/@github/copilot/index.js" \
+      --prefix SSL_CERT_DIR : "${cacert}/etc/ssl/certs"
 
     runHook postInstall
   '';
@@ -45,7 +47,7 @@ stdenv.mkDerivation (finalAttrs: {
     platforms = lib.platforms.all;
     license = lib.licenses.unfree;
     maintainers = with lib.maintainers; [
-      dbreyfogle
+      jtliang24
     ];
     mainProgram = "copilot";
   };
