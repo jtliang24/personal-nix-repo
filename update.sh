@@ -26,6 +26,7 @@ update_readme "warp-terminal" "$warp_version"
 simple_update_pkgs=(
   "kando"
   "gemini-cli"
+  "github-copilot-cli"
 )
 
 for pkg in "${simple_update_pkgs[@]}"; do
