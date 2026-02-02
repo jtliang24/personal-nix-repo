@@ -29,6 +29,7 @@ stdenv.mkDerivation (finalAttrs: {
     mkdir -p $out/bin
     makeBinaryWrapper ${nodejs}/bin/node $out/bin/copilot \
       --add-flags "$out/lib/node_modules/@github/copilot/index.js" \
+      --add-flag "--no-auto-update" \
       --prefix SSL_CERT_DIR : "${cacert}/etc/ssl/certs"
 
     runHook postInstall
