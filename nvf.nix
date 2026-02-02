@@ -151,6 +151,9 @@ in
             bash.enable = true;
             lua.enable = true;
             python.enable = true;
+            html.enable = true;
+            css.enable = true;
+            json.enable = true;
           };
 
           visuals = {
