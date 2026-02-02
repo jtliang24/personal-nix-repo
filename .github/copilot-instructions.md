@@ -24,6 +24,8 @@ if system == "x86_64-linux" then { ... } else { }
 if builtins.match "^.+linux$" system != null then { ... } else { }
 ```
 
+`flake.nix` also imports a dedicated `x86_64-linux` nixpkgs to expose x86_64-only packages from non-x86_64 hosts, while `overlay.nix` mirrors the same package set using `optionalAttrs` for platform gating.
+
 ## Package Conventions
 
 ### Standard Package Structure
@@ -76,6 +78,14 @@ The `update.sh` script:
 3. Updates version numbers in README.md table automatically
 4. For warp-terminal, calls `./warp-terminal/update.sh` separately
 
+### Single-package workflow
+
+```bash
+# Update a single package (also updates README version)
+nix-update <package-name> --flake
+nix eval --raw .#<package-name>.version
+```
+
 ### Automated Updates
 
 GitHub Actions runs nightly at 8:13 UTC (`update.yml`):
@@ -84,16 +94,16 @@ GitHub Actions runs nightly at 8:13 UTC (`update.yml`):
 3. Builds select packages for Cachix cache
 4. Creates and auto-merges a PR with updates
 
-## Building and Testing
+## Build and test commands
 
 ```bash
-# Build a specific package
+# Build a specific package (focused check)
 nix build .#<package-name>
 
 # Run a package without installing
 nix run .#<package-name>
 
-# Build all packages (where platform-appropriate)
+# Build all packages and checks (where platform-appropriate)
 nix flake check
 
 # Test the overlay
