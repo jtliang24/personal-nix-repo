@@ -6,6 +6,7 @@ in
   kando = prev.callPackage ./kando.nix { };
   hello = prev.callPackage ./hello.nix { };
   gemini-cli = prev.callPackage ./gemini-cli.nix { };
+  github-copilot-cli = prev.callpackage ./github-copilot-cli.nix { };
   warp-terminal = prev.callPackage ./warp-terminal { };
 }
 // prev.lib.optionalAttrs (system == "x86_64-linux") {
@@ -15,3 +16,4 @@ in
 // prev.lib.optionalAttrs (prev.stdenv.isLinux) {
   xdg-browser-exec = prev.callPackage ./xdg-browser-exec.nix { };
 }
+
