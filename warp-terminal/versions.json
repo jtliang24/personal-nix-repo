@@ -4,11 +4,11 @@
     "version": "0.2026.01.28.08.14.stable_04"
   },
   "linux_x86_64": {
-    "hash": "sha256-77yBe+T14bODwGNLkzIUwtyQrSgGcAPTIyev3yDg7rs=",
-    "version": "0.2026.01.28.08.14.stable_04"
+    "hash": "sha256-L3QJ6JJczfxzqRqcP5bcma5s6+lHtjfpsob5E6+WF3c=",
+    "version": "0.2026.01.28.08.14.stable_05"
   },
   "linux_aarch64": {
-    "hash": "sha256-cnNj5Z5LW1OMishu2PitIfKGghxgPP7t3J7720hfEFk=",
-    "version": "0.2026.01.28.08.14.stable_04"
+    "hash": "sha256-4re/MUg81tYldKeS48xJ+UkeYnynLuVBZ18OKRH57Gg=",
+    "version": "0.2026.01.28.08.14.stable_05"
   }
 }
