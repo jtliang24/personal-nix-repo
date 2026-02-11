@@ -40,11 +40,11 @@ nix run github:jtliang24/personal-nix-repo#gemini-cli
 | Package                | Version                      | Description                                                            | Platforms      |
 | :--------------------- | :--------------------------- | :--------------------------------------------------------------------- | :------------- |
 | **ArtixGameLauncher**  | 2.20                         | Official Artix Games Launcher (AppImage wrapper).                      | `x86_64-linux` |
-| **gemini-cli**         | 0.27.3                       | AI agent bringing Gemini directly into your terminal.                  | All            |
+| **gemini-cli**         | 0.28.0                       | AI agent bringing Gemini directly into your terminal.                  | All            |
 | **github-copilot-cli** | 0.0.406                      | Github Copilot coding agent directly in your terminal.                 | All            |
 | **kando**              | 2.2.0                        | Cross-platform pie menu for efficient workflows.                       | Linux, Darwin  |
 | **neovimConfigured**   | -                            | Neovim distribution configured via `nvf` with LSP and UI enhancements. | All            |
-| **warp-terminal**      | 0.2026.02.10.11.37.stable_00 | Rust-based terminal reimagined for the 21st century.                   | Linux, Darwin  |
+| **warp-terminal**      | 0.2026.02.10.11.37.stable_01 | Rust-based terminal reimagined for the 21st century.                   | Linux, Darwin  |
 | **wavebox**            | 10.144.72-2                  | The Wavebox productivity browser.                                      | `x86_64-linux` |
 | **xdg-browser-exec**   | -                            | Script to launch the default XDG web browser with verbose logging.     | Linux          |
 | **hello**              | 2.12.1                       | GNU Hello, a simple test package.                                      | All            |
