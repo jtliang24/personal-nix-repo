@@ -26,11 +26,12 @@ update_readme "warp-terminal" "$warp_version"
 simple_update_pkgs=(
   "kando"
   "gemini-cli"
+  "gemini-cli-bin"
   "github-copilot-cli"
 )
 
 for pkg in "${simple_update_pkgs[@]}"; do
   nix-update "$pkg" --flake
-  new_ver=$(nix eval --raw .#${pkg}.version)
+  new_ver=$(nix eval --raw .#"${pkg}".version)
   update_readme "$pkg" "$new_ver"
 done
