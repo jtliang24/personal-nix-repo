@@ -21,6 +21,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   strictDeps = true;
 
+  nativeBuildInputs = [
+    nodejs
+  ];
+
   buildInputs = [
     nodejs
     ripgrep
@@ -29,7 +33,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    install -D "$src" "$out/bin/gemini"
+    install -m755 -D "$src" "$out/bin/gemini"
 
     # disable auto-update
     sed -i '/enableAutoUpdate: {/,/}/ s/default: true/default: false/' "$out/bin/gemini"
@@ -38,7 +42,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     # this workaround can be removed once the following upstream issue is resolved:
     # https://github.com/google-gemini/gemini-cli/issues/11438
     substituteInPlace $out/bin/gemini \
-      --replace-fail 'const existingPath = await resolveExistingRgPath();' 'const existingPath = "${lib.getExe ripgrep}";'
+      --replace-fail 'const existingPath = await resolveExistingRgPath();' 'const existingPath = "${lib.getExe ripgrep}";' \
+      --replace-fail "#!/usr/bin/env node" "#!${lib.getExe nodejs} --no-deprecation"
 
     runHook postInstall
   '';
