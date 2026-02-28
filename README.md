@@ -40,7 +40,7 @@ nix run github:jtliang24/personal-nix-repo#gemini-cli
 | Package                | Version                      | Description                                                            | Platforms      |
 | :--------------------- | :--------------------------- | :--------------------------------------------------------------------- | :------------- |
 | **ArtixGameLauncher**  | 2.20                         | Official Artix Games Launcher (AppImage wrapper).                      | `x86_64-linux` |
-| **gemini-cli**         | 0.30.0                       | AI agent bringing Gemini directly into your terminal.                  | All            |
+| **gemini-cli**         | 0.31.0                       | AI agent bringing Gemini directly into your terminal.                  | All            |
 | **gemini-cli-bin**     | 0.31.0                       | Binary version of Gemini CLI (faster installation).                    | Linux, Darwin  |
 | **github-copilot-cli** | 0.0.420                      | Github Copilot coding agent directly in your terminal.                 | All            |
 | **kando**              | 2.2.0                        | Cross-platform pie menu for efficient workflows.                       | Linux, Darwin  |
