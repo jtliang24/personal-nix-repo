@@ -43,7 +43,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     # https://github.com/google-gemini/gemini-cli/issues/11438
     substituteInPlace $out/bin/gemini \
       --replace-fail 'const existingPath = await resolveExistingRgPath();' 'const existingPath = "${lib.getExe ripgrep}";' \
-      --replace-fail "#!/usr/bin/env node" "#!${lib.getExe nodejs} --no-deprecation"
+      --replace-fail "#!/usr/bin/env -S node --no-warnings=DEP0040" "#!${lib.getExe nodejs} --no-warnings=DEP0040"
 
     runHook postInstall
   '';
@@ -52,7 +52,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   nativeInstallCheckInputs = [
     writableTmpDirAsHomeHook
   ]
-  ++ lib.optionals (with stdenvNoCC.hostPlatform; isDarwin && isx86_64) [
+  ++ lib.optionals stdenvNoCC.hostPlatform.isDarwin [
     sysctl
   ];
   # versionCheckHook cannot be used because the reported version might be incorrect (e.g., 0.6.1 returns 0.6.0).

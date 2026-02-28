@@ -95,6 +95,9 @@ buildNpmPackage (finalAttrs: {
 
     rm -f $out/share/gemini-cli/node_modules/@google/gemini-cli-core/dist/docs/CONTRIBUTING.md
 
+    substituteInPlace $out/share/gemini-cli/node_modules/@google/gemini-cli/dist/index.js \
+      --replace-fail "#!/usr/bin/env -S node --no-warnings=DEP0040" "#!${lib.getExe nodejs_22} --no-warnings=DEP0040"
+
     ln -s $out/share/gemini-cli/node_modules/@google/gemini-cli/dist/index.js $out/bin/gemini
     chmod +x "$out/bin/gemini"
 
