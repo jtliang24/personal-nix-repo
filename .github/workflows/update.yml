@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   update-and-merge:
@@ -40,10 +41,12 @@ jobs:
           ./update.sh
     
       - name: Build packages for the cache
+        id: build
+        continue-on-error: true
         run: |
           for pkg in gemini-cli neovimConfigured; do
             echo "Building $pkg..."
-            nix build .#$pkg --no-link
+            nix build .#$pkg --no-link 2>&1 | tee -a /tmp/build.log
           done
 
       - name: Create Pull Request
@@ -58,8 +61,38 @@ jobs:
           delete-branch: true
 
       - name: Merge Pull Request
-        if: steps.cpr.outputs.pull-request-operation == 'created'
+        if: steps.cpr.outputs.pull-request-operation == 'created' && steps.build.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --merge --delete-branch
+
+      - name: Invoke Copilot to fix build failure
+        if: steps.build.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          existing=$(gh issue list --search "nix build failure in nightly update" --state open --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            echo "Existing issue #$existing found, skipping creation"
+            exit 0
+          fi
+          build_log=$(tail -c 3000 /tmp/build.log)
+          {
+            echo "The nightly update workflow encountered a nix build failure."
+            echo ""
+            echo "<details>"
+            echo "<summary>Build log</summary>"
+            echo ""
+            echo '```'
+            echo "$build_log"
+            echo '```'
+            echo ""
+            echo "</details>"
+            echo ""
+            echo "Please investigate and fix the build error. Do not auto-merge the fix."
+          } > /tmp/issue-body.md
+          gh issue create \
+            --title "fix: nix build failure in nightly update" \
+            --body-file /tmp/issue-body.md \
+            --assignee "copilot"
