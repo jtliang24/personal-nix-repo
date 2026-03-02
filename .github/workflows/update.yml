@@ -72,15 +72,40 @@ jobs:
         if: steps.build.outcome == 'failure'
         env:
           # GITHUB_TOKEN lacks permission to assign the Copilot bot.
-          # Create a PAT with repo scope and store it as COPILOT_ASSIGN_PAT.
-          GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_PAT || secrets.GITHUB_TOKEN }}
+          # Use a PAT with repo scope stored as COPILOT_ASSIGN_PAT.
+          GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_PAT }}
         run: |
+          set -euo pipefail
           existing=$(gh issue list --search "nix build failure in nightly update" --state open --json number --jq '.[0].number')
           if [ -n "$existing" ]; then
             echo "Existing issue #$existing found, skipping creation"
             exit 0
           fi
+
+          OWNER="${GITHUB_REPOSITORY%%/*}"
+          REPO="${GITHUB_REPOSITORY##*/}"
+
+          # Get Copilot bot ID via GraphQL suggestedActors
+          BOT_ID=$(gh api graphql \
+            -f owner="$OWNER" -f name="$REPO" \
+            -f query='
+              query($owner:String!, $name:String!){
+                repository(owner:$owner, name:$name){
+                  suggestedActors(capabilities:[CAN_BE_ASSIGNED], first:100){
+                    nodes{ login __typename ... on Bot { id } ... on User { id } }
+                  }
+                }
+              }' \
+            --jq '.data.repository.suggestedActors.nodes[]
+                  | select(.login=="copilot-swe-agent") | .id')
+
+          REPO_ID=$(gh api graphql \
+            -f owner="$OWNER" -f name="$REPO" \
+            -f query='query($owner:String!, $name:String!){ repository(owner:$owner, name:$name){ id } }' \
+            --jq '.data.repository.id')
+
           build_log=$(tail -c 3000 /tmp/build.log)
+          TITLE="fix: nix build failure in nightly update"
           {
             echo "The nightly update workflow encountered a nix build failure."
             echo ""
@@ -95,8 +120,20 @@ jobs:
             echo ""
             echo "Please investigate and fix the build error. Do not auto-merge the fix."
           } > /tmp/issue-body.md
-          issue_url=$(gh issue create \
-            --title "fix: nix build failure in nightly update" \
-            --body-file /tmp/issue-body.md)
-          echo "Created issue: $issue_url"
-          gh issue edit "$issue_url" --add-assignee "copilot" || echo "Could not assign Copilot (feature may not be enabled); issue created without assignee"
+          BODY="$(cat /tmp/issue-body.md)"
+
+          # Create issue with Copilot assigned via GraphQL mutation
+          gh api graphql \
+            -f repo="$REPO_ID" -f title="$TITLE" -f body="$BODY" -f assignee="$BOT_ID" \
+            -f query='
+              mutation($repo:ID!, $title:String!, $body:String!, $assignee:ID!){
+                createIssue(input:{
+                  repositoryId:$repo,
+                  title:$title,
+                  body:$body,
+                  assigneeIds:[$assignee]
+                }){
+                  issue{ number url }
+                }
+              }' \
+            --jq '.data.createIssue.issue | "Created " + .url'
