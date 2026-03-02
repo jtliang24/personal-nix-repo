@@ -46,7 +46,7 @@ buildNpmPackage (finalAttrs: {
 
   # Build devtools before workspaces since cli dynamically imports it but doesn't declare the dependency
   preBuild = ''
-    npm run build --workspace=@google/gemini-cli-devtools
+    npm run build --workspace=@google/gemini-cli-devtool
   '';
 
   postPatch = ''
