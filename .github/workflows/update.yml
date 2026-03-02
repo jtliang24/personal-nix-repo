@@ -93,7 +93,8 @@ jobs:
             echo ""
             echo "Please investigate and fix the build error. Do not auto-merge the fix."
           } > /tmp/issue-body.md
-          gh issue create \
+          issue_url=$(gh issue create \
             --title "fix: nix build failure in nightly update" \
-            --body-file /tmp/issue-body.md \
-            --assignee "copilot"
+            --body-file /tmp/issue-body.md)
+          echo "Created issue: $issue_url"
+          gh issue edit "$issue_url" --add-assignee "copilot" || echo "Could not assign Copilot (feature may not be enabled); issue created without assignee"
