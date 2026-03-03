@@ -4,7 +4,6 @@ let
 in
 {
   kando = prev.callPackage ./kando.nix { };
-  hello = prev.callPackage ./hello.nix { };
   gemini-cli = prev.callPackage ./gemini-cli.nix { };
   github-copilot-cli = prev.callpackage ./github-copilot-cli.nix { };
   warp-terminal = prev.callPackage ./warp-terminal { };

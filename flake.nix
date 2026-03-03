@@ -54,7 +54,6 @@
       {
         packages = {
           kando = pkgs.callPackage ./kando.nix { };
-          hello = pkgs.callPackage ./hello.nix { };
           gemini-cli = pkgs.callPackage ./gemini-cli.nix { };
           gemini-cli-bin = pkgs.callPackage ./gemini-cli-bin.nix { };
           github-copilot-cli = pkgs.callPackage ./github-copilot-cli.nix { };
