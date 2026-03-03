@@ -47,7 +47,6 @@ nix run github:jtliang24/personal-nix-repo#gemini-cli
 | **neovimConfigured**   | -                            | Neovim distribution configured via `nvf` with LSP and UI enhancements. | All            |
 | **warp-terminal**      | 0.2026.02.25.08.24.stable_01 | Rust-based terminal reimagined for the 21st century.                   | Linux, Darwin  |
 | **wavebox**            | 10.145.41-2                  | The Wavebox productivity browser.                                      | `x86_64-linux` |
-| **xdg-browser-exec**   | -                            | Script to launch the default XDG web browser with verbose logging.     | Linux          |
 | **hello**              | 2.12.1                       | GNU Hello, a simple test package.                                      | All            |
 
 > [!IMPORTANT]

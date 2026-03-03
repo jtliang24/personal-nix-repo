@@ -46,7 +46,7 @@
               };
             in
             {
-              xdg-browser-exec = linuxpkgs.callPackage ./xdg-browser-exec.nix { };
+              #xdg-browser-exec = linuxpkgs.callPackage ./xdg-browser-exec.nix { };
             }
           else
             { };

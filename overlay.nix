@@ -14,6 +14,4 @@ in
   wavebox = prev.callPackage ./wavebox.nix { };
 }
 // prev.lib.optionalAttrs (prev.stdenv.isLinux) {
-  xdg-browser-exec = prev.callPackage ./xdg-browser-exec.nix { };
 }
-
