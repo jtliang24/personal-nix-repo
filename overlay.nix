@@ -5,7 +5,8 @@ in
 {
   kando = prev.callPackage ./kando.nix { };
   gemini-cli = prev.callPackage ./gemini-cli.nix { };
-  github-copilot-cli = prev.callpackage ./github-copilot-cli.nix { };
+  gemini-cli-bin = prev.callPackage ./gemini-cli-bin.nix { };
+  github-copilot-cli = prev.callPackage ./github-copilot-cli.nix { };
   warp-terminal = prev.callPackage ./warp-terminal { };
 }
 // prev.lib.optionalAttrs (system == "x86_64-linux") {
