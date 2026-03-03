@@ -21,7 +21,34 @@ repository to your `flake.nix` inputs:
 }
 ```
 
-## Usage
+## Using the Overlay
+
+You can also use the overlay to integrate these packages directly into your
+`pkgs` set. This is particularly useful for NixOS or Home Manager
+configurations.
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    personal-nix-repo.url = "github:jtliang24/personal-nix-repo";
+  };
+
+  outputs = { self, nixpkgs, personal-nix-repo, ... }: {
+    nixosConfigurations.my-machine = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ({ config, pkgs, ... }: {
+          nixpkgs.overlays = [ personal-nix-repo.overlays.default ];
+          environment.systemPackages = [ pkgs.gemini-cli ];
+        })
+      ];
+    };
+  };
+}
+```
+
+## Direct Usage
 
 You can run any package directly using `nix run` without installing it:
 
@@ -32,7 +59,7 @@ nix run github:jtliang24/personal-nix-repo#<package_name>
 For example:
 
 ```bash
-nix run github:jtliang24/personal-nix-repo#gemini-cli
+nix run github:jtliang24/personal-nix-repo#wgemini-cli
 ```
 
 ## Available Packages
