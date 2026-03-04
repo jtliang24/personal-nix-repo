@@ -7,6 +7,7 @@
   writableTmpDirAsHomeHook,
   nix-update-script,
   ripgrep,
+  makeWrapper,
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "gemini-cli-bin";
@@ -22,7 +23,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   strictDeps = true;
 
   nativeBuildInputs = [
-    nodejs
+    makeWrapper
   ];
 
   buildInputs = [
@@ -33,17 +34,21 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
-    install -m755 -D "$src" "$out/bin/gemini"
+    local dest="$out/lib/gemini/gemini.js"
+    install -Dm644 "$src" "$dest"
 
     # disable auto-update
-    sed -i '/enableAutoUpdate: {/,/}/ s/default: true/default: false/' "$out/bin/gemini"
+    sed -i '/enableAutoUpdate: {/,/}/ s/default: true/default: false/' "$dest"
 
     # use `ripgrep` from `nixpkgs`, more dependencies but prevent downloading incompatible binary on NixOS
     # this workaround can be removed once the following upstream issue is resolved:
     # https://github.com/google-gemini/gemini-cli/issues/11438
-    substituteInPlace $out/bin/gemini \
-      --replace-fail 'const existingPath = await resolveExistingRgPath();' 'const existingPath = "${lib.getExe ripgrep}";' \
-      --replace-fail "#!/usr/bin/env -S node --no-warnings=DEP0040" "#!${lib.getExe nodejs} --no-warnings=DEP0040"
+    substituteInPlace "$dest" \
+      --replace-fail 'const existingPath = await resolveExistingRgPath();' 'const existingPath = "${lib.getExe ripgrep}";'
+
+    makeWrapper "${lib.getExe nodejs}" "$out/bin/gemini" \
+      --add-flags "--no-warnings=DEP0040" \
+      --add-flags "$dest"
 
     runHook postInstall
   '';
@@ -52,7 +57,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   nativeInstallCheckInputs = [
     writableTmpDirAsHomeHook
   ]
-  ++ lib.optionals stdenvNoCC.hostPlatform.isDarwin [
+  ++ lib.optionals (with stdenvNoCC.hostPlatform; isDarwin && isx86_64) [
     sysctl
   ];
   # versionCheckHook cannot be used because the reported version might be incorrect (e.g., 0.6.1 returns 0.6.0).
