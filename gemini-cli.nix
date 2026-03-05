@@ -59,6 +59,8 @@ buildNpmPackage (finalAttrs: {
     substituteInPlace packages/core/src/tools/ripGrep.ts \
       --replace-fail "await ensureRgPath();" "'${lib.getExe ripgrep}';"
 
+    exit 1
+
     # Disable auto-update by changing default values in settings schema
     sed -i '/enableAutoUpdate:/,/default: true/ s/default: true/default: false/' packages/cli/src/config/settingsSchema.ts
     sed -i '/enableAutoUpdateNotification:/,/default: true/ s/default: true/default: false/' packages/cli/src/config/settingsSchema.ts
