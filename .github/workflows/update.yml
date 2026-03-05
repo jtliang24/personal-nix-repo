@@ -45,7 +45,7 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          for pkg in gemini-cli neovimConfigured; do
+          for pkg in gemini-cli neovimConfigured gh-aw; do
             echo "Building $pkg..."
             nix build .#$pkg --no-link 2>&1 | tee -a /tmp/build.log
           done
