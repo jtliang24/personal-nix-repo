@@ -58,6 +58,7 @@
           gemini-cli-bin = pkgs.callPackage ./gemini-cli-bin.nix { };
           github-copilot-cli = pkgs.callPackage ./github-copilot-cli.nix { };
           warp-terminal = pkgs.callPackage ./warp-terminal { };
+          gh-aw = pkgs.callPackage ./gh-aw.nix { };
           inherit (nvfLocal.packages.${system}) neovimConfigured;
         }
         // x86-linux-pkgs
