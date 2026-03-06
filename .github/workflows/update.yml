@@ -9,7 +9,6 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: write
 
 jobs:
   update-and-merge:
@@ -40,16 +39,6 @@ jobs:
           chmod +x update.sh
           ./update.sh
     
-      - name: Build packages for the cache
-        id: build
-        continue-on-error: true
-        run: |
-          set -o pipefail
-          for pkg in gemini-cli neovimConfigured; do
-            echo "Building $pkg..."
-            nix build .#$pkg --no-link 2>&1 | tee -a /tmp/build.log
-          done
-
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v6
@@ -61,79 +50,18 @@ jobs:
           branch: "nightly-updates"
           delete-branch: true
 
+      - name: Build packages for the cache
+        id: build
+        run: |
+          set -o pipefail
+          for pkg in gemini-cli neovimConfigured gh-aw; do
+            echo "Building $pkg..."
+            nix build .#$pkg --no-link
+          done
+
       - name: Merge Pull Request
-        if: steps.cpr.outputs.pull-request-operation == 'created' && steps.build.outcome == 'success'
+        if: always() && steps.cpr.outputs.pull-request-operation == 'created' && steps.build.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --merge --delete-branch
-
-      - name: Invoke Copilot to fix build failure
-        if: steps.build.outcome == 'failure'
-        env:
-          # GITHUB_TOKEN lacks permission to assign the Copilot bot.
-          # Use a PAT with repo scope stored as COPILOT_ASSIGN_PAT.
-          GH_TOKEN: ${{ secrets.COPILOT_ASSIGN_PAT }}
-        run: |
-          set -euo pipefail
-          existing=$(gh issue list --search "nix build failure in nightly update" --state open --json number --jq '.[0].number')
-          if [ -n "$existing" ]; then
-            echo "Existing issue #$existing found, skipping creation"
-            exit 0
-          fi
-
-          OWNER="${GITHUB_REPOSITORY%%/*}"
-          REPO="${GITHUB_REPOSITORY##*/}"
-
-          # Get Copilot bot ID via GraphQL suggestedActors
-          BOT_ID=$(gh api graphql \
-            -f owner="$OWNER" -f name="$REPO" \
-            -f query='
-              query($owner:String!, $name:String!){
-                repository(owner:$owner, name:$name){
-                  suggestedActors(capabilities:[CAN_BE_ASSIGNED], first:100){
-                    nodes{ login __typename ... on Bot { id } ... on User { id } }
-                  }
-                }
-              }' \
-            --jq '.data.repository.suggestedActors.nodes[]
-                  | select(.login=="copilot-swe-agent") | .id')
-
-          REPO_ID=$(gh api graphql \
-            -f owner="$OWNER" -f name="$REPO" \
-            -f query='query($owner:String!, $name:String!){ repository(owner:$owner, name:$name){ id } }' \
-            --jq '.data.repository.id')
-
-          build_log=$(tail -c 3000 /tmp/build.log)
-          TITLE="fix: nix build failure in nightly update"
-          {
-            echo "The nightly update workflow encountered a nix build failure."
-            echo ""
-            echo "<details>"
-            echo "<summary>Build log</summary>"
-            echo ""
-            echo '```'
-            echo "$build_log"
-            echo '```'
-            echo ""
-            echo "</details>"
-            echo ""
-            echo "Please investigate and fix the build error. Do not auto-merge the fix."
-          } > /tmp/issue-body.md
-          BODY="$(cat /tmp/issue-body.md)"
-
-          # Create issue with Copilot assigned via GraphQL mutation
-          gh api graphql \
-            -f repo="$REPO_ID" -f title="$TITLE" -f body="$BODY" -f assignee="$BOT_ID" \
-            -f query='
-              mutation($repo:ID!, $title:String!, $body:String!, $assignee:ID!){
-                createIssue(input:{
-                  repositoryId:$repo,
-                  title:$title,
-                  body:$body,
-                  assigneeIds:[$assignee]
-                }){
-                  issue{ number url }
-                }
-              }' \
-            --jq '.data.createIssue.issue | "Created " + .url'
