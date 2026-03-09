@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
   update-and-merge:
@@ -66,3 +67,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --merge --delete-branch
+
+      - name: Trigger fix-build-failure workflow
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run fix-build-failure.lock.yml -f run_id=${{ github.run_id }}

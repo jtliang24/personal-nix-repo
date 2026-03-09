@@ -22,19 +22,16 @@
 # For more information: https://github.github.com/gh-aw/introduction/overview/
 #
 #
-# gh-aw-metadata: {"schema_version":"v1","frontmatter_hash":"ed0d030449ce828fb3aa7c99f2e86661b798bf6164dc2b123f11a7ea5c902e2d"}
+# gh-aw-metadata: {"schema_version":"v1","frontmatter_hash":"8a0522ff3f1cb7c7dc20477a7faf0cd3f4077483298546f0a6213a2aeaef6d2f"}
 
 name: "Fix Build Failure"
 "on":
   # skip-if-match: is:issue is:open "nix build failure in nightly update" in:title # Skip-if-match processed as search check in pre-activation job
-  workflow_run:
-    # zizmor: ignore[dangerous-triggers] - workflow_run trigger is secured with role and fork validation
-    branches:
-    - main
-    types:
-    - completed
-    workflows:
-    - Nightly Update
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: The workflow run ID that failed
+        required: true
 
 permissions: {}
 
@@ -46,10 +43,7 @@ run-name: "Fix Build Failure"
 jobs:
   activation:
     needs: pre_activation
-    # zizmor: ignore[dangerous-triggers] - workflow_run trigger is secured with role and fork validation
-    if: >
-      (needs.pre_activation.outputs.activated == 'true') && ((github.event_name != 'workflow_run') || ((github.event.workflow_run.repository.id == github.repository_id) &&
-      (!(github.event.workflow_run.repository.fork))))
+    if: needs.pre_activation.outputs.activated == 'true'
     runs-on: ubuntu-slim
     permissions:
       contents: read
@@ -116,6 +110,7 @@ jobs:
           GH_AW_GITHUB_ACTOR: ${{ github.actor }}
           GH_AW_GITHUB_EVENT_COMMENT_ID: ${{ github.event.comment.id }}
           GH_AW_GITHUB_EVENT_DISCUSSION_NUMBER: ${{ github.event.discussion.number }}
+          GH_AW_GITHUB_EVENT_INPUTS_RUN_ID: ${{ github.event.inputs.run_id }}
           GH_AW_GITHUB_EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
           GH_AW_GITHUB_EVENT_PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
           GH_AW_GITHUB_REPOSITORY: ${{ github.repository }}
@@ -175,6 +170,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           GH_AW_PROMPT: /tmp/gh-aw/aw-prompts/prompt.txt
+          GH_AW_GITHUB_EVENT_INPUTS_RUN_ID: ${{ github.event.inputs.run_id }}
         with:
           script: |
             const { setupGlobals } = require('/opt/gh-aw/actions/setup_globals.cjs');
@@ -188,6 +184,7 @@ jobs:
           GH_AW_GITHUB_ACTOR: ${{ github.actor }}
           GH_AW_GITHUB_EVENT_COMMENT_ID: ${{ github.event.comment.id }}
           GH_AW_GITHUB_EVENT_DISCUSSION_NUMBER: ${{ github.event.discussion.number }}
+          GH_AW_GITHUB_EVENT_INPUTS_RUN_ID: ${{ github.event.inputs.run_id }}
           GH_AW_GITHUB_EVENT_ISSUE_NUMBER: ${{ github.event.issue.number }}
           GH_AW_GITHUB_EVENT_PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
           GH_AW_GITHUB_REPOSITORY: ${{ github.repository }}
@@ -208,6 +205,7 @@ jobs:
                 GH_AW_GITHUB_ACTOR: process.env.GH_AW_GITHUB_ACTOR,
                 GH_AW_GITHUB_EVENT_COMMENT_ID: process.env.GH_AW_GITHUB_EVENT_COMMENT_ID,
                 GH_AW_GITHUB_EVENT_DISCUSSION_NUMBER: process.env.GH_AW_GITHUB_EVENT_DISCUSSION_NUMBER,
+                GH_AW_GITHUB_EVENT_INPUTS_RUN_ID: process.env.GH_AW_GITHUB_EVENT_INPUTS_RUN_ID,
                 GH_AW_GITHUB_EVENT_ISSUE_NUMBER: process.env.GH_AW_GITHUB_EVENT_ISSUE_NUMBER,
                 GH_AW_GITHUB_EVENT_PULL_REQUEST_NUMBER: process.env.GH_AW_GITHUB_EVENT_PULL_REQUEST_NUMBER,
                 GH_AW_GITHUB_REPOSITORY: process.env.GH_AW_GITHUB_REPOSITORY,
@@ -240,8 +238,6 @@ jobs:
     permissions:
       actions: read
       contents: read
-    concurrency:
-      group: "gh-aw-copilot-${{ github.workflow }}"
     env:
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
       GH_AW_ASSETS_ALLOWED_EXTS: ""
@@ -272,15 +268,6 @@ jobs:
           persist-credentials: false
       - name: Create gh-aw temp directory
         run: bash /opt/gh-aw/actions/create_gh_aw_tmp_dir.sh
-      - env:
-          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
-        id: check-conclusion
-        run: |-
-          if [ "$CONCLUSION" != "failure" ]; then
-            echo "Workflow did not fail. Skipping."
-            exit 1
-          fi
-
       - name: Configure Git credentials
         env:
           REPO_NAME: ${{ github.repository }}

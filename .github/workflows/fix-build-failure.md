@@ -1,25 +1,15 @@
 ---
 on:
-  workflow_run:
-    workflows: ["Nightly Update"]
-    types: [completed]
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "The workflow run ID that failed"
+        required: true
   skip-if-match: 'is:issue is:open "nix build failure in nightly update" in:title'
 
 permissions:
   contents: read
   actions: read
-
-steps:
-  - id: check-conclusion
-    env:
-      CONCLUSION: ${{ github.event.workflow_run.conclusion }}
-    run: |
-      if [ "$CONCLUSION" != "failure" ]; then
-        echo "Workflow did not fail. Skipping."
-        exit 1
-      fi
 
 safe-outputs:
   create-issue:
@@ -30,12 +20,11 @@ safe-outputs:
 
 ## Fix Nix Build Failure
 
-Check the "Nightly Update" workflow run that triggered this workflow.
+Investigate the failed "Nightly Update" workflow run (run ID: `${{ github.event.inputs.run_id }}`).
 
-1. Get the workflow run details and check if it completed with a failure conclusion
-2. If the run succeeded, do nothing (no issue needed)
-3. If the run failed, download the build step logs
-4. Create a GitHub issue titled "fix: nix build failure in nightly update" with:
+1. Download the logs for workflow run ID `${{ github.event.inputs.run_id }}`
+2. Identify the build step that failed and extract the relevant error output
+3. Create a GitHub issue titled "fix: nix build failure in nightly update" with:
    - A description stating that the nightly update workflow encountered a build failure
    - The relevant build log output in a collapsible `<details>` section
    - A note to investigate and fix the build error, and not to auto-merge the fix
