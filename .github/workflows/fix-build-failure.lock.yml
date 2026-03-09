@@ -22,7 +22,7 @@
 # For more information: https://github.github.com/gh-aw/introduction/overview/
 #
 #
-# gh-aw-metadata: {"schema_version":"v1","frontmatter_hash":"7abd9e4a9b12b2c919975cfc14527aa53e113650de26dd3a2c95ff86937aac55"}
+# gh-aw-metadata: {"schema_version":"v1","frontmatter_hash":"ed0d030449ce828fb3aa7c99f2e86661b798bf6164dc2b123f11a7ea5c902e2d"}
 
 name: "Fix Build Failure"
 "on":
@@ -272,6 +272,15 @@ jobs:
           persist-credentials: false
       - name: Create gh-aw temp directory
         run: bash /opt/gh-aw/actions/create_gh_aw_tmp_dir.sh
+      - env:
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+        id: check-conclusion
+        run: |-
+          if [ "$CONCLUSION" != "failure" ]; then
+            echo "Workflow did not fail. Skipping."
+            exit 1
+          fi
+
       - name: Configure Git credentials
         env:
           REPO_NAME: ${{ github.repository }}

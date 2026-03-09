@@ -11,6 +11,16 @@ permissions:
   contents: read
   actions: read
 
+steps:
+  - id: check-conclusion
+    env:
+      CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+    run: |
+      if [ "$CONCLUSION" != "failure" ]; then
+        echo "Workflow did not fail. Skipping."
+        exit 1
+      fi
+
 safe-outputs:
   create-issue:
     assignees: [copilot]
