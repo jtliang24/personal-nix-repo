@@ -28,6 +28,7 @@ jobs:
         with:
           name: personal-packages-cache
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          pushFilter: "(github-copilot-cli|warp-terminal|wavebox|ArtixGameLauncher)"
 
       - name: Update Flake inputs
         run: nix flake update
@@ -50,29 +51,17 @@ jobs:
           branch: "nightly-updates"
           delete-branch: true
 
-      - name: Build packages for the cache
+      - name: Build packages
         id: build
         run: |
           set -o pipefail
-          for pkg in gemini-cli gemini-cli-bin neovimConfigured kando gh-aw; do
-            echo "Building $pkg..."
-            nix build .#$pkg --no-link
-          done
-
-      - name: Stop Cachix daemon before building unfree packages
-        run: cachix daemon stop
-
-      - name: Build unfree packages (not pushed to cache)
-        id: build-unfree
-        run: |
-          set -o pipefail
-          for pkg in github-copilot-cli warp-terminal wavebox ArtixGameLauncher; do
+          for pkg in gemini-cli gemini-cli-bin neovimConfigured kando gh-aw github-copilot-cli warp-terminal wavebox ArtixGameLauncher; do
             echo "Building $pkg..."
             nix build .#$pkg --no-link
           done
 
       - name: Merge Pull Request
-        if: always() && steps.cpr.outputs.pull-request-operation == 'created' && steps.build.outcome == 'success' && steps.build-unfree.outcome == 'success'
+        if: always() && steps.cpr.outputs.pull-request-operation == 'created' && steps.build.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
