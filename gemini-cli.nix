@@ -49,9 +49,6 @@ buildNpmPackage (finalAttrs: {
   '';
 
   postPatch = ''
-    # Intentional bug to test fix-build-failure workflow
-    exit 1
-
     # Remove node-pty dependency from package.json
     ${jq}/bin/jq 'del(.optionalDependencies."node-pty")' package.json > package.json.tmp && mv package.json.tmp package.json
 
