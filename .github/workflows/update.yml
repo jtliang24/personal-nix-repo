@@ -52,6 +52,10 @@ jobs:
           branch: "nightly-updates"
           delete-branch: true
 
+      - name: Checkout PR branch
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        run: git checkout nightly-updates
+
       - name: Build packages
         id: build
         run: |
