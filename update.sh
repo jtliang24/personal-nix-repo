@@ -26,7 +26,7 @@ update_readme "warp-terminal" "$warp_version"
 simple_update_pkgs=(
   "kando"
   "gemini-cli"
-  "gemini-cli-bin"
+  # gemini-cli-bin is pinned to v0.34.x due to upstream issues with esbuild code-splitting
   "github-copilot-cli"
   "gh-aw"
 )
