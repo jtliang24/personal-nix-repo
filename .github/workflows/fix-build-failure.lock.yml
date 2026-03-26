@@ -56,13 +56,17 @@ jobs:
       - name: Checkout actions folder
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          repository: github/gh-aw
           sparse-checkout: |
             actions
+          path: /tmp/gh-aw/actions-source
+          fetch-depth: 1
           persist-credentials: false
       - name: Setup Scripts
-        uses: ./actions/setup
-        with:
-          destination: /opt/gh-aw/actions
+        run: |
+          bash /tmp/gh-aw/actions-source/actions/setup/setup.sh
+        env:
+          INPUT_DESTINATION: /opt/gh-aw/actions
       - name: Generate agentic run info
         id: generate_aw_info
         env:
@@ -267,13 +271,17 @@ jobs:
       - name: Checkout actions folder
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          repository: github/gh-aw
           sparse-checkout: |
             actions
+          path: /tmp/gh-aw/actions-source
+          fetch-depth: 1
           persist-credentials: false
       - name: Setup Scripts
-        uses: ./actions/setup
-        with:
-          destination: /opt/gh-aw/actions
+        run: |
+          bash /tmp/gh-aw/actions-source/actions/setup/setup.sh
+        env:
+          INPUT_DESTINATION: /opt/gh-aw/actions
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
@@ -976,13 +984,17 @@ jobs:
       - name: Checkout actions folder
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          repository: github/gh-aw
           sparse-checkout: |
             actions
+          path: /tmp/gh-aw/actions-source
+          fetch-depth: 1
           persist-credentials: false
       - name: Setup Scripts
-        uses: ./actions/setup
-        with:
-          destination: /opt/gh-aw/actions
+        run: |
+          bash /tmp/gh-aw/actions-source/actions/setup/setup.sh
+        env:
+          INPUT_DESTINATION: /opt/gh-aw/actions
       - name: Download agent output artifact
         id: download-agent-output
         continue-on-error: true
@@ -1073,13 +1085,17 @@ jobs:
       - name: Checkout actions folder
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          repository: github/gh-aw
           sparse-checkout: |
             actions
+          path: /tmp/gh-aw/actions-source
+          fetch-depth: 1
           persist-credentials: false
       - name: Setup Scripts
-        uses: ./actions/setup
-        with:
-          destination: /opt/gh-aw/actions
+        run: |
+          bash /tmp/gh-aw/actions-source/actions/setup/setup.sh
+        env:
+          INPUT_DESTINATION: /opt/gh-aw/actions
       - name: Check team membership for workflow
         id: check_membership
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
@@ -1132,14 +1148,18 @@ jobs:
       - name: Checkout actions folder
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          repository: github/gh-aw
           sparse-checkout: |
             actions
+          path: /tmp/gh-aw/actions-source
+          fetch-depth: 1
           persist-credentials: false
       - name: Setup Scripts
-        uses: ./actions/setup
-        with:
-          destination: /opt/gh-aw/actions
-          safe-output-custom-tokens: 'true'
+        run: |
+          bash /tmp/gh-aw/actions-source/actions/setup/setup.sh
+        env:
+          INPUT_DESTINATION: /opt/gh-aw/actions
+          INPUT_SAFE_OUTPUT_CUSTOM_TOKENS: 'true'
       - name: Download agent output artifact
         id: download-agent-output
         continue-on-error: true
