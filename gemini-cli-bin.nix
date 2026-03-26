@@ -18,11 +18,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   # v0.35.x because the relevant code moved into those chunk files.
   # This is tracked upstream at: https://github.com/google-gemini/gemini-cli/issues/23770
   # Upgrade once that issue is resolved and a self-contained release asset is restored.
-  version = "0.35.1";
+  version = "0.34.0";
 
   src = fetchurl {
     url = "https://github.com/google-gemini/gemini-cli/releases/download/v${finalAttrs.version}/gemini.js";
-    hash = "sha256-mn5AFaZfXDm0C6qBEtekFGurFGz2pOoIN8VPmi7TDxA=";
+    hash = "sha256-Qfol6zATjVK6d4gfA6ql3aVwjqRE7NAYqg5YTyEVDHk=";
   };
 
   dontUnpack = true;
