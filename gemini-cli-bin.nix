@@ -11,11 +11,18 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "gemini-cli-bin";
-  version = "0.35.0";
+  # NOTE: pinned to v0.34.x because starting with v0.35.0 the GitHub release
+  # asset `gemini.js` is no longer self-contained — it requires sibling chunk
+  # files (produced by esbuild code-splitting) that are not uploaded to the
+  # release.  The substituteInPlace ripgrep workaround is also broken in
+  # v0.35.x because the relevant code moved into those chunk files.
+  # This is tracked upstream at: https://github.com/google-gemini/gemini-cli/issues/23770
+  # Upgrade once that issue is resolved and a self-contained release asset is restored.
+  version = "0.34.0";
 
   src = fetchurl {
     url = "https://github.com/google-gemini/gemini-cli/releases/download/v${finalAttrs.version}/gemini.js";
-    hash = "sha256-SzWPTgz65pxHcRr6v8/K4KLN/dSiu3NJe3u3Nv3TMw4=";
+    hash = "sha256-Qfol6zATjVK6d4gfA6ql3aVwjqRE7NAYqg5YTyEVDHk=";
   };
 
   dontUnpack = true;
@@ -70,8 +77,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   passthru.updateScript = nix-update-script {
-    # Ignore `preview` and `nightly` tags
-    extraArgs = [ "--version-regex=^v([0-9.]+)$" ];
+    # Ignore `preview` and `nightly` tags; cap at v0.34.x until the upstream
+    # release format (esbuild code-splitting chunks) is resolved.
+    extraArgs = [ "--version-regex=^v(0\\.34\\.[0-9]+)$" ];
   };
 
   meta = {
