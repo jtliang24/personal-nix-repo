@@ -3,6 +3,7 @@
   stdenvNoCC,
   fetchurl,
   nodejs,
+  unzip,
   sysctl,
   writableTmpDirAsHomeHook,
   nix-update-script,
@@ -11,18 +12,11 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "gemini-cli-bin";
-  # NOTE: pinned to v0.34.x because starting with v0.35.0 the GitHub release
-  # asset `gemini.js` is no longer self-contained — it requires sibling chunk
-  # files (produced by esbuild code-splitting) that are not uploaded to the
-  # release.  The substituteInPlace ripgrep workaround is also broken in
-  # v0.35.x because the relevant code moved into those chunk files.
-  # This is tracked upstream at: https://github.com/google-gemini/gemini-cli/issues/23770
-  # Upgrade once that issue is resolved and a self-contained release asset is restored.
-  version = "0.34.0";
+  version = "0.36.0";
 
   src = fetchurl {
-    url = "https://github.com/google-gemini/gemini-cli/releases/download/v${finalAttrs.version}/gemini.js";
-    hash = "sha256-Qfol6zATjVK6d4gfA6ql3aVwjqRE7NAYqg5YTyEVDHk=";
+    url = "https://github.com/google-gemini/gemini-cli/releases/download/v${finalAttrs.version}/gemini-cli-bundle.zip";
+    hash = "sha256:15ee37f5ea1535c6f9e4d659e626e3dc8f088f8a6699da4ca0b34d52bb525fc3";
   };
 
   dontUnpack = true;
@@ -31,6 +25,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [
     makeWrapper
+    unzip
   ];
 
   buildInputs = [
@@ -41,17 +36,18 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   installPhase = ''
     runHook preInstall
 
+    mkdir -p "$out/lib/gemini"
+    unzip "$src" -d "$out/lib/gemini"
     local dest="$out/lib/gemini/gemini.js"
-    install -Dm644 "$src" "$dest"
-
-    # disable auto-update
-    sed -i '/enableAutoUpdate: {/,/}/ s/default: true/default: false/' "$dest"
 
     # use `ripgrep` from `nixpkgs`, more dependencies but prevent downloading incompatible binary on NixOS
     # this workaround can be removed once the following upstream issue is resolved:
     # https://github.com/google-gemini/gemini-cli/issues/11438
-    substituteInPlace "$dest" \
-      --replace-fail 'const existingPath = await resolveExistingRgPath();' 'const existingPath = "${lib.getExe ripgrep}";'
+    for file in "$out/lib/gemini"/*.js; do
+      substituteInPlace "$file" \
+        --replace 'const existingPath = await resolveExistingRgPath();' 'const existingPath = "${lib.getExe ripgrep}";'
+      sed -i '/enableAutoUpdate: {/,/}/ s/default: true/default: false/' "$file"
+    done
 
     makeWrapper "${lib.getExe nodejs}" "$out/bin/gemini" \
       --add-flags "--no-warnings=DEP0040" \
@@ -77,9 +73,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   '';
 
   passthru.updateScript = nix-update-script {
-    # Ignore `preview` and `nightly` tags; cap at v0.34.x until the upstream
-    # release format (esbuild code-splitting chunks) is resolved.
-    extraArgs = [ "--version-regex=^v(0\\.34\\.[0-9]+)$" ];
   };
 
   meta = {
