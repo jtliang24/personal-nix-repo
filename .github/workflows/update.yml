@@ -60,7 +60,7 @@ jobs:
         id: build
         run: |
           set -o pipefail
-          for pkg in gemini-cli gemini-cli-bin neovimConfigured kando gh-aw github-copilot-cli warp-terminal wavebox ArtixGameLauncher; do
+          for pkg in gemini-cli gemini-cli-bin neovimConfigured gh-aw github-copilot-cli warp-terminal wavebox ArtixGameLauncher; do
             echo "Building $pkg..."
             nix build .#$pkg --no-link
           done

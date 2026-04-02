@@ -14,7 +14,7 @@ This repository maintains Nix packages for software not in nixpkgs or with bleed
 
 Packages are conditionally exposed based on platform:
 
-- **All platforms**: `kando`, `hello`, `gemini-cli`, `github-copilot-cli`, `warp-terminal`, `neovimConfigured`
+- **All platforms**: `hello`, `gemini-cli`, `github-copilot-cli`, `warp-terminal`, `neovimConfigured`
 - **x86_64-linux only**: `ArtixGameLauncher`, `wavebox` (defined in `x86-linux-pkgs`)
 - **Linux only**: `xdg-browser-exec` (defined in `linux-pkgs`)
 
