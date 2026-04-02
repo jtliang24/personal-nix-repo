@@ -1,8 +1,7 @@
 {
-  lib,
+  appimageTools,
   fetchurl,
-  makeWrapper,
-  stdenvNoCC,
+  lib,
   ...
 }:
 let
@@ -12,36 +11,22 @@ let
     url = "https://launch.artix.com/latest/Artix_Games_Launcher-x86_64.AppImage";
     sha256 = "sha256-8eVXOm5g92wErWa6lbTXrCL04MWYlObjonHJk+oUI3E=";
   };
+  appimageContents = appimageTools.extract {
+    inherit pname version src;
+  };
 in
-stdenvNoCC.mkDerivation {
+appimageTools.wrapType2 {
   inherit pname version src;
 
-  nativeBuildInputs = [ makeWrapper ];
+  extraPkgs = pkgs: with pkgs; [
+    libGL
+    mesa
+  ];
 
-  dontUnpack = true;
-
-  installPhase = ''
-    runHook preInstall
-
-    install -Dm755 $src $out/libexec/ArtixGameLauncher.AppImage
-
-    # The AppImage bundles its own runtime and must use the host's glibc/ld-linux,
-    # so we run it directly rather than through an FHS sandbox.
-    makeWrapper $out/libexec/ArtixGameLauncher.AppImage $out/bin/${pname} \
-      --append-flags "--no-sandbox"
-
+  extraInstallCommands = ''
     mkdir -p $out/share/applications $out/share/icons
-    cat > $out/share/applications/ArtixGamesLauncher.desktop << EOF
-    [Desktop Entry]
-    Name=Artix Game Launcher
-    Exec=${pname} %u
-    Icon=ArtixLogo
-    Type=Application
-    Categories=Game;
-    MimeType=x-scheme-handler/artix;
-    EOF
-
-    runHook postInstall
+    install -m 444 -D ${appimageContents}/ArtixGamesLauncher.desktop $out/share/applications/ArtixGamesLauncher.desktop
+    install -m 444 -D ${appimageContents}/ArtixLogo.png $out/share/icons/ArtixLogo.png
   '';
 
   meta = with lib; {
