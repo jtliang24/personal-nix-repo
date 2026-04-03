@@ -64,16 +64,16 @@ nix run github:jtliang24/personal-nix-repo#wgemini-cli
 
 ## Available Packages
 
-| Package                | Version                      | Description                                                             | Platforms      |
-| :--------------------- | :--------------------------- | :---------------------------------------------------------------------- | :------------- |
-| **ArtixGameLauncher**  | 2.20                         | Official Artix Games Launcher (AppImage wrapper).                       | `x86_64-linux` |
-| **gemini-cli**         | 0.36.0                       | AI agent bringing Gemini directly into your terminal.                   | All            |
-| **gemini-cli-bin**     | 0.36.0                       | Binary version of Gemini CLI (faster installation).                     | Linux, Darwin  |
-| **gh-aw**              | 0.65.7                       | GitHub CLI extension for Actions Workflow management.                   | All            |
-| **github-copilot-cli** | 1.0.17                      | Github Copilot coding agent directly in your terminal.                  | All            |
-| **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements. | All            |
-| **warp-terminal**      | 0.2026.03.25.08.24.stable_09 | Rust-based terminal reimagined for the 21st century.                    | Linux, Darwin  |
-| **wavebox**            | 10.146.26-2                  | The Wavebox productivity browser.                                       | `x86_64-linux` |
+| Package                | Version                      | Description                                                               | Platforms      |
+| :--------------------- | :--------------------------- | :------------------------------------------------------------------------ | :------------- |
+| **ArtixGameLauncher**  | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems. | `x86_64-linux` |
+| **gemini-cli**         | 0.36.0                       | AI agent bringing Gemini directly into your terminal.                     | All            |
+| **gemini-cli-bin**     | 0.36.0                       | Binary version of Gemini CLI (faster installation).                       | Linux, Darwin  |
+| **gh-aw**              | 0.65.7                       | GitHub CLI extension for Actions Workflow management.                     | All            |
+| **github-copilot-cli** | 1.0.17                       | Github Copilot coding agent directly in your terminal.                    | All            |
+| **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
+| **warp-terminal**      | 0.2026.03.25.08.24.stable_09 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
+| **wavebox**            | 10.146.26-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
 
 > [!IMPORTANT]
 > `ArtixGameLauncher`, `wavebox`, `github-copilot-cli`, and `warp-terminal` are
