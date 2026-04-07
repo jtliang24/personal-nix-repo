@@ -2,36 +2,35 @@
 
 This repository maintains Nix packages for software not in nixpkgs or with bleeding-edge updates. Packages are available as a flake overlay.
 
-## Repository Structure (Dendritic Pattern)
+## Repository Structure
 
-This repository follows the [dendritic pattern](https://github.com/mightyiam/dendritic): every non-entry-point `.nix` file under `modules/` is a [flake-parts](https://flake.parts) module, auto-imported via [import-tree](https://github.com/vic/import-tree).
-
-- **`flake.nix`**: Entry point — uses `flake-parts` + `import-tree` to auto-import all modules
-- **`modules/`**: Flake-parts modules (auto-imported). Each file implements a single feature (one package, the overlay, etc.)
-- **`pkgs/`**: `callPackage`-compatible package derivations referenced by modules
+- **Root-level `.nix` files**: Individual package definitions (e.g., `gemini-cli.nix`, `wavebox.nix`)
+- **`warp-terminal/` directory**: Complex package with separate `default.nix`, `update.sh`, and `versions.json`
+- **`flake.nix`**: Main entry point defining package set with platform-specific conditionals
+- **`overlay.nix`**: Nixpkgs overlay for integrating packages into other configurations
 - **`update.sh`**: Automated update script for package versions
-
-### Key directories
-
-| Directory | Purpose | Auto-imported? |
-|-----------|---------|---------------|
-| `modules/` | Flake-parts modules (one feature per file) | Yes (via `import-tree`) |
-| `pkgs/` | Package derivation files (`callPackage`-compatible) | No |
 
 ## Platform Architecture
 
-Packages are conditionally exposed based on platform using `lib.optionalAttrs` in each module's `perSystem`:
+Packages are conditionally exposed based on platform:
 
-- **All platforms**: `gemini-cli`, `gemini-cli-bin`, `github-copilot-cli`, `gh-aw`, `warp-terminal`, `neovimConfigured`
-- **x86_64-linux only**: `ArtixGameLauncher`, `wavebox`
+- **All platforms**: `hello`, `gemini-cli`, `github-copilot-cli`, `warp-terminal`, `neovimConfigured`
+- **x86_64-linux only**: `ArtixGameLauncher`, `wavebox` (defined in `x86-linux-pkgs`)
+- **Linux only**: `xdg-browser-exec` (defined in `linux-pkgs`)
 
-The overlay (`modules/overlay.nix`) mirrors the same platform gating with `optionalAttrs`.
+The flake uses `flake-utils.lib.eachDefaultSystem` with conditionals like:
+```nix
+if system == "x86_64-linux" then { ... } else { }
+if builtins.match "^.+linux$" system != null then { ... } else { }
+```
+
+`flake.nix` also imports a dedicated `x86_64-linux` nixpkgs to expose x86_64-only packages from non-x86_64 hosts, while `overlay.nix` mirrors the same package set using `optionalAttrs` for platform gating.
 
 ## Package Conventions
 
 ### Standard Package Structure
 
-Most packages follow this pattern (see `pkgs/gemini-cli.nix`):
+Most packages follow this pattern (see `gemini-cli.nix`):
 
 1. **Inputs at top**: List all required dependencies from nixpkgs
 2. **Version management**: Explicit `version` attribute in derivation
@@ -42,7 +41,7 @@ Most packages follow this pattern (see `pkgs/gemini-cli.nix`):
 
 ### AppImage Packages
 
-For AppImage-based packages (e.g., `pkgs/Artix_Game_Launcher.nix`):
+For AppImage-based packages (e.g., `Artix_Game_Launcher.nix`):
 
 - Use `appimageTools.extract` to unpack contents
 - Use `appimageTools.wrapType2` for the final derivation
@@ -51,7 +50,7 @@ For AppImage-based packages (e.g., `pkgs/Artix_Game_Launcher.nix`):
 
 ### Complex Packages
 
-Packages with multiple files (like `pkgs/warp-terminal/`) use:
+Packages with multiple files (like `warp-terminal/`) use:
 
 - `versions.json`: Stores version and hash info for multiple platforms
 - `update.sh`: Custom script to fetch latest versions and update `versions.json`
@@ -77,7 +76,7 @@ The `update.sh` script:
 1. Fetches latest versions from upstream sources
 2. Runs `nix-update` for simple packages
 3. Updates version numbers in README.md table automatically
-4. For warp-terminal, calls `./pkgs/warp-terminal/update.sh` separately
+4. For warp-terminal, calls `./warp-terminal/update.sh` separately
 
 ### Single-package workflow
 
@@ -117,18 +116,17 @@ Many packages are **unfree** (github-copilot-cli, warp-terminal, wavebox, ArtixG
 
 ## When Adding New Packages
 
-1. Create a `callPackage`-compatible `.nix` file in `pkgs/` (or subdirectory for complex packages)
-2. Create a flake-parts module in `modules/` that exposes the package via `perSystem.packages`
-3. Add to `modules/overlay.nix` if the package should be available as an overlay
-4. For platform-specific packages, use `lib.optionalAttrs` in the module's `perSystem`
-5. Include `passthru.updateScript` if the package can be auto-updated
-6. Add entry to README.md table with version, description, and platforms
-7. Consider adding to `simple_update_pkgs` array in `update.sh` if using `nix-update`
-8. For unfree packages, set `license = licenses.unfree` and document in README
+1. Create a `.nix` file at repository root (or subdirectory for complex packages)
+2. Add to `flake.nix` under the appropriate platform section in `packages = { ... }`
+3. Add to `overlay.nix` if the package should be available as an overlay
+4. Include `passthru.updateScript` if the package can be auto-updated
+5. Add entry to README.md table with version, description, and platforms
+6. Consider adding to `simple_update_pkgs` array in `update.sh` if using `nix-update`
+7. For unfree packages, set `license = licenses.unfree` and document in README
 
 ## nvf Integration
 
-The `neovimConfigured` package uses the `nvf` flake input (notashelf/nvf) for building a configured Neovim distribution. This is defined in `modules/neovim.nix` as a flake-parts module that accesses `inputs.nvf` directly.
+The `neovimConfigured` package uses the `nvf` flake input (notashelf/nvf) for building a configured Neovim distribution. This is defined in `nvf.nix` and integrated via `nvfLocal.packages.${system}.neovimConfigured` in flake.nix.
 
 ## gh aw Workflow Maintenance
 
