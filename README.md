@@ -3,6 +3,10 @@
 This repository contains a collection of Nix packages that are either not found
 in `nixpkgs` or are maintained here with bleeding-edge nightly updates.
 
+It follows the [dendritic pattern](https://github.com/mightyiam/dendritic):
+every `.nix` file under `modules/` is a [flake-parts](https://flake.parts) module,
+auto-imported via [import-tree](https://github.com/vic/import-tree).
+
 ## Installation
 
 To use these packages in your own NixOS or Home Manager configuration, add this

@@ -18,7 +18,7 @@ if [[ "$(uname -s)" == "Linux" ]]; then
 fi
 
 # Updating Warp-terminal
-./warp-terminal/update.sh
+./pkgs/warp-terminal/update.sh
 warp_version=$(nix eval --raw .#warp-terminal.version)
 update_readme "warp-terminal" "$warp_version"
 

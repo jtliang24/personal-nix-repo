@@ -1,70 +1,29 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+
+    import-tree.url = "github:vic/import-tree";
+
     nvf.url = "github:notashelf/nvf";
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-      nvf,
-    }@inputs:
-    let
-      nvfLocal = import ./nvf.nix { inherit self nixpkgs nvf; };
-    in
-    flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ (inputs.import-tree ./modules) ];
+
+      perSystem =
+        { system, ... }:
+        {
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
         };
-        x86-linux-pkgs =
-          if system == "x86_64-linux" then
-            let
-              x86_64-linuxpkgs = import nixpkgs {
-                system = "x86_64-linux";
-                config = {
-                  allowUnfree = true;
-                };
-              };
-            in
-            {
-              ArtixGameLauncher = x86_64-linuxpkgs.callPackage ./Artix_Game_Launcher.nix { };
-              wavebox = x86_64-linuxpkgs.callPackage ./wavebox.nix { };
-            }
-          else
-            { };
-        linux-pkgs =
-          if builtins.match "^.+linux$" system != null then
-            let
-              linuxpkgs = import nixpkgs {
-                inherit system;
-              };
-            in
-            {
-              #xdg-browser-exec = linuxpkgs.callPackage ./xdg-browser-exec.nix { };
-            }
-          else
-            { };
-      in
-      {
-        packages = {
-          gemini-cli = pkgs.callPackage ./gemini-cli.nix { };
-          gemini-cli-bin = pkgs.callPackage ./gemini-cli-bin.nix { };
-          github-copilot-cli = pkgs.callPackage ./github-copilot-cli.nix { };
-          warp-terminal = pkgs.callPackage ./warp-terminal { };
-          gh-aw = pkgs.callPackage ./gh-aw.nix { };
-          inherit (nvfLocal.packages.${system}) neovimConfigured;
-        }
-        // x86-linux-pkgs
-        // linux-pkgs;
-      }
-    )
-    // {
-      overlays.default = import ./overlay.nix;
     };
 }
