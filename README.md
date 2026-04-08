@@ -73,7 +73,7 @@ nix run github:jtliang24/personal-nix-repo#wgemini-cli
 | **github-copilot-cli** | 1.0.21                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
 | **warp-terminal**      | 0.2026.03.25.08.24.stable_09 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
-| **wavebox**            | 10.146.26-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
+| **wavebox**            | 10.147.43-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
 
 > [!IMPORTANT]
 > `ArtixGameLauncher`, `wavebox`, `github-copilot-cli`, and `warp-terminal` are
