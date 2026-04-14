@@ -151,7 +151,11 @@ in
             };
             bash.enable = true;
             lua.enable = true;
-            python.enable = true;
+            python = {
+              enable = true;
+              format.type = [ "ruff" ];
+              lsp.servers = [ "ruff" ];
+            };
             html.enable = true;
             css.enable = true;
             json.enable = true;
