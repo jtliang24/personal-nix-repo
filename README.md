@@ -74,6 +74,7 @@ nix run github:jtliang24/personal-nix-repo#wgemini-cli
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
 | **warp-terminal**      | 0.2026.04.15.08.45.stable_02 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
 | **wavebox**            | 10.147.47-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
+| **wayle**              | 0.2.1                        | Wayland Elements - A compositor agnostic shell with extensive customization | Linux          |
 
 > [!IMPORTANT]
 > `ArtixGameLauncher`, `wavebox`, `github-copilot-cli`, and `warp-terminal` are

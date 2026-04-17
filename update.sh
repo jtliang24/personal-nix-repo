@@ -28,6 +28,7 @@ simple_update_pkgs=(
   "gemini-cli-bin"
   "github-copilot-cli"
   "gh-aw"
+  "wayle"
 )
 
 for pkg in "${simple_update_pkgs[@]}"; do

@@ -14,4 +14,5 @@ in
   wavebox = prev.callPackage ./wavebox.nix { };
 }
 // prev.lib.optionalAttrs (prev.stdenv.isLinux) {
+  wayle = prev.callPackage ./wayle.nix { };
 }

@@ -16,4 +16,5 @@ in
   wavebox = pkgs.callPackage ./wavebox.nix { };
 }
 // pkgs.lib.optionalAttrs (pkgs.stdenv.isLinux) {
+  wayle = pkgs.callPackage ./wayle.nix { };
 }

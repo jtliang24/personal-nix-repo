@@ -40,13 +40,9 @@
             { };
         linux-pkgs =
           if builtins.match "^.+linux$" system != null then
-            let
-              linuxpkgs = import nixpkgs {
-                inherit system;
-              };
-            in
             {
-              #xdg-browser-exec = linuxpkgs.callPackage ./xdg-browser-exec.nix { };
+              wayle = pkgs.callPackage ./wayle.nix { };
+              #xdg-browser-exec = pkgs.callPackage ./xdg-browser-exec.nix { };
             }
           else
             { };
