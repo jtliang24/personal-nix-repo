@@ -69,10 +69,10 @@ nix run github:jtliang24/personal-nix-repo#wgemini-cli
 | **ArtixGameLauncher**  | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems. | `x86_64-linux` |
 | **gemini-cli**         | 0.38.1                       | AI agent bringing Gemini directly into your terminal.                     | All            |
 | **gemini-cli-bin**     | 0.38.1                       | Binary version of Gemini CLI (faster installation).                       | Linux, Darwin  |
-| **gh-aw**              | 0.68.4                       | GitHub CLI extension for Actions Workflow management.                     | All            |
-| **github-copilot-cli** | 1.0.28                       | Github Copilot coding agent directly in your terminal.                    | All            |
+| **gh-aw**              | 0.68.7                       | GitHub CLI extension for Actions Workflow management.                     | All            |
+| **github-copilot-cli** | 1.0.31                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
-| **warp-terminal**      | 0.2026.04.08.08.36.stable_05 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
+| **warp-terminal**      | 0.2026.04.15.08.45.stable_02 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
 | **wavebox**            | 10.147.47-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
 
 > [!IMPORTANT]
