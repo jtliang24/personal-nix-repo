@@ -67,8 +67,8 @@ nix run github:jtliang24/personal-nix-repo#wgemini-cli
 | Package                | Version                      | Description                                                               | Platforms      |
 | :--------------------- | :--------------------------- | :------------------------------------------------------------------------ | :------------- |
 | **ArtixGameLauncher**  | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems. | `x86_64-linux` |
-| **gemini-cli**         | 0.38.2                       | AI agent bringing Gemini directly into your terminal.                     | All            |
-| **gemini-cli-bin**     | 0.38.2                       | Binary version of Gemini CLI (faster installation).                       | Linux, Darwin  |
+| **gemini-cli**         | 0.39.0                       | AI agent bringing Gemini directly into your terminal.                     | All            |
+| **gemini-cli-bin**     | 0.39.0                       | Binary version of Gemini CLI (faster installation).                       | Linux, Darwin  |
 | **gh-aw**              | 0.69.3                       | GitHub CLI extension for Actions Workflow management.                     | All            |
 | **github-copilot-cli** | 1.0.34                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
