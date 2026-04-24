@@ -6,12 +6,12 @@
 }:
 buildGoModule (finalAttrs: {
   pname = "gh-aw";
-  version = "0.69.3";
+  version = "0.71.0";
   src = fetchFromGitHub {
     owner = "github";
     repo = "gh-aw";
     tag = "v${finalAttrs.version}";
-    sha256 = "sha256-WqlJvqpr1KhC4V/Sh4GEJDXdS0njL3oPVkzWahXWq94=";
+    sha256 = "sha256-Tc8/LjsOSEtAgzkKD1xGNQ0t6f3ubOYaMLtMCoqkcp8=";
   };
 
   vendorHash = "sha256-ArVAAdRLQzlC6qN83ujEPEisLvR7TAx3l+gHpBzC2Aw=";
