@@ -11,11 +11,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "github-copilot-cli";
-  version = "1.0.35";
+  version = "1.0.36";
 
   src = fetchzip {
     url = "https://registry.npmjs.org/@github/copilot/-/copilot-${finalAttrs.version}.tgz";
-    hash = "sha256-zo0/YYriRaNM4xrJjifGMGlqqTKDREZ1/fSrAoBXJAo=";
+    hash = "sha256-UgQgSjLXQ1PPv4iErOAMrUuV0L0STrzZpJ15oiM6Mmw=";
   };
 
   nativeBuildInputs = [ makeBinaryWrapper ];
