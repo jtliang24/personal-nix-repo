@@ -2,8 +2,8 @@ name: Nightly Update
 
 on:
   schedule:
-# Runs at 8:13 UTC (3:13 EST)
-    - cron: '13 8 * * *'
+    # Runs at 8:13 UTC (3:13 EST)
+    - cron: "13 8 * * *"
   workflow_dispatch:
 
 permissions:
@@ -41,7 +41,7 @@ jobs:
         run: |
           chmod +x update.sh
           ./update.sh
-    
+
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v8.1.0
@@ -78,4 +78,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh workflow run fix-build-failure.lock.yml -f run_id=${{ github.run_id }}
+          gh workflow run fix-build-failure-gemini.lock.yml -f run_id=${{ github.run_id }}
