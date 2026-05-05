@@ -8,6 +8,12 @@ on:
   skip-if-match: 'is:issue is:open "nix build failure in nightly update" in:title'
 
 engine: gemini
+network:
+  allowed:
+    - defaults
+    - local
+    - threat-detection
+    - "172.30.0.30"
 secrets:
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
@@ -16,7 +22,6 @@ permissions:
   actions: read
 
 safe-outputs:
-  allowed-domains: [ "generativelanguage.googleapis.com", "localhost", "host.docker.internal" ]
   create-issue:
     assignees: [jtliang24]
     close-older-issues: true
