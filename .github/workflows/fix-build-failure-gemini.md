@@ -16,6 +16,7 @@ permissions:
   actions: read
 
 safe-outputs:
+  allowed-domains: [ "generativelanguage.googleapis.com", "localhost", "host.docker.internal" ]
   create-issue:
     assignees: [jtliang24]
     close-older-issues: true
