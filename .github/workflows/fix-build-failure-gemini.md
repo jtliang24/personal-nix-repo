@@ -7,7 +7,11 @@ on:
         required: true
   skip-if-match: 'is:issue is:open "nix build failure in nightly update" in:title'
 
+strict: true
 engine: gemini
+sandbox:
+  mcp:
+    port: 10003
 network:
   allowed:
     - defaults
