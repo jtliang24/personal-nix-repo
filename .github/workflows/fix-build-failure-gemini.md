@@ -7,17 +7,7 @@ on:
         required: true
   skip-if-match: 'is:issue is:open "nix build failure in nightly update" in:title'
 
-strict: true
 engine: gemini
-sandbox:
-  mcp:
-    port: 10003
-network:
-  allowed:
-    - defaults
-    - local
-    - threat-detection
-    - "172.30.0.30"
 secrets:
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
@@ -36,7 +26,7 @@ safe-outputs:
 
 Investigate the failed "Nightly Update" workflow run (run ID: `${{ github.event.inputs.run_id }}`).
 
-1. Download the logs for workflow run ID `${{ github.event.inputs.run_id }}` using the `gh` CLI.
+1. Read the workflow run logs for run ID `${{ github.event.inputs.run_id }}` using the GitHub MCP tools.
 2. Identify the build step that failed and extract the relevant error output.
 3. Create a GitHub issue titled "fix: nix build failure in nightly update (gemini)" with:
    - A description stating that the nightly update workflow encountered a build failure.
