@@ -25,7 +25,6 @@ update_readme "warp-terminal" "$warp_version"
 # Packages that can be updated with nix-update directly
 simple_update_pkgs=(
   "gemini-cli"
-  "gemini-cli-bin"
   "github-copilot-cli"
   "gh-aw"
 )

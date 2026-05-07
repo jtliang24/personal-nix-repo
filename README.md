@@ -67,10 +67,10 @@ nix run github:jtliang24/personal-nix-repo#wgemini-cli
 | Package                | Version                      | Description                                                               | Platforms      |
 | :--------------------- | :--------------------------- | :------------------------------------------------------------------------ | :------------- |
 | **ArtixGameLauncher**  | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems. | `x86_64-linux` |
-| **gemini-cli**         | 0.41.1                       | AI agent bringing Gemini directly into your terminal.                     | All            |
+| **gemini-cli**         | 0.41.2                       | AI agent bringing Gemini directly into your terminal.                     | All            |
 | **gemini-cli-bin**     | 0.41.1                       | Binary version of Gemini CLI (faster installation).                       | Linux, Darwin  |
-| **gh-aw**              | 0.71.6                       | GitHub CLI extension for Actions Workflow management.                     | All            |
-| **github-copilot-cli** | 1.0.41                       | Github Copilot coding agent directly in your terminal.                    | All            |
+| **gh-aw**              | 0.72.0                       | GitHub CLI extension for Actions Workflow management.                     | All            |
+| **github-copilot-cli** | 1.0.43                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
 | **warp-terminal**      | 0.2026.04.29.08.57.stable_01 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
 | **wavebox**            | 148.2.4-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
