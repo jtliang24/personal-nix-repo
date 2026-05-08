@@ -30,7 +30,12 @@ simple_update_pkgs=(
 )
 
 for pkg in "${simple_update_pkgs[@]}"; do
-  nix-update "$pkg" --flake
+  extra_args=()
+  if [[ "$pkg" == "gh-aw" || "$pkg" == "gemini-cli" ]]; then
+    extra_args+=("--use-github-releases" "--version" "stable")
+  fi
+
+  nix-update "$pkg" --flake "${extra_args[@]}"
   new_ver=$(nix eval --raw .#"${pkg}".version)
   update_readme "$pkg" "$new_ver"
 done
