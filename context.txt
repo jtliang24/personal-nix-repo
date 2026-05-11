@@ -1,0 +1,125 @@
+--- flake.nix ---
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    nvf.url = "github:notashelf/nvf";
+  };
+
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      nvf,
+    }@inputs:
+    let
+      nvfLocal = import ./nvf.nix { inherit self nixpkgs nvf; };
+    in
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        x86-linux-pkgs =
+          if system == "x86_64-linux" then
+            let
+              x86_64-linuxpkgs = import nixpkgs {
+                system = "x86_64-linux";
+                config = {
+                  allowUnfree = true;
+                };
+              };
+            in
+            {
+              ArtixGameLauncher = x86_64-linuxpkgs.callPackage ./Artix_Game_Launcher.nix { };
+              wavebox = x86_64-linuxpkgs.callPackage ./wavebox.nix { };
+            }
+          else
+            { };
+        linux-pkgs =
+          if builtins.match "^.+linux$" system != null then
+            let
+              linuxpkgs = import nixpkgs {
+                inherit system;
+              };
+            in
+            {
+              #xdg-browser-exec = linuxpkgs.callPackage ./xdg-browser-exec.nix { };
+            }
+          else
+            { };
+      in
+      {
+        packages = {
+          gemini-cli = pkgs.callPackage ./gemini-cli.nix { };
+          gemini-cli-bin = pkgs.callPackage ./gemini-cli-bin.nix { };
+          github-copilot-cli = pkgs.callPackage ./github-copilot-cli.nix { };
+          warp-terminal = pkgs.callPackage ./warp-terminal { };
+          gh-aw = pkgs.callPackage ./gh-aw.nix { };
+          inherit (nvfLocal.packages.${system}) neovimConfigured;
+        }
+        // x86-linux-pkgs
+        // linux-pkgs;
+      }
+    )
+    // {
+      overlays.default = import ./overlay.nix;
+    };
+}
+--- update.sh ---
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p nix-update jq curl gnused -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz
+#shellcheck shell=bash
+
+update_readme() {
+  local pkg="$1"
+  local version="$2"
+  # Update the version in README.md table
+  # Matches: | **pkg** | <old_version> |
+  sed -E -i "s/(\| \*\*${pkg}\*\* +\| +)[^ ]+( +\|)/\1${version}\2/" README.md
+}
+
+if [[ "$(uname -s)" == "Linux" ]]; then
+  # Updating wavebox
+  wavebox_version=$(curl -s "https://download.wavebox.app/stable/linux/latest.json" | jq --raw-output '.["urls"]["deb"] | match("https://download.wavebox.app/stable/linux/deb/amd64/wavebox_(.+)_amd64.deb").captures[0]["string"]')
+  nix-update wavebox --flake --version "$wavebox_version"
+  update_readme "wavebox" "$wavebox_version"
+fi
+
+# Updating Warp-terminal
+./warp-terminal/update.sh
+warp_version=$(nix eval --raw .#warp-terminal.version)
+update_readme "warp-terminal" "$warp_version"
+
+# Packages that can be updated with nix-update directly
+simple_update_pkgs=(
+  "gemini-cli"
+  "github-copilot-cli"
+  "gh-aw"
+)
+
+for pkg in "${simple_update_pkgs[@]}"; do
+  extra_args=()
+  if [[ "$pkg" == "gh-aw" || "$pkg" == "gemini-cli" ]]; then
+    extra_args+=("--use-github-releases" "--version" "stable")
+  fi
+
+  nix-update "$pkg" --flake "${extra_args[@]}"
+  new_ver=$(nix eval --raw .#"${pkg}".version)
+  update_readme "$pkg" "$new_ver"
+done
+--- File Structure ---
+./gh-aw.nix
+./gemini-cli.nix
+./flake.nix
+./nvf.nix
+./warp-terminal/default.nix
+./github-copilot-cli.nix
+./default.nix
+./wavebox.nix
+./gemini-cli-bin.nix
+./Artix_Game_Launcher.nix
+./overlay.nix
