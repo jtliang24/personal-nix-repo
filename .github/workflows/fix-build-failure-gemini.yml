@@ -1,0 +1,142 @@
+name: Fix Build Failure (Gemini)
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "The workflow run ID that failed"
+        required: true
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  investigate-and-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Check for existing issues
+        id: check-issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING_ISSUE=$(gh issue list --search 'is:issue is:open "nix build failure in nightly update" in:title' --json number --jq '.[0].number')
+          if [ -n "$EXISTING_ISSUE" ]; then
+            echo "An open issue already exists: #$EXISTING_ISSUE"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Get workflow logs
+        if: steps.check-issue.outputs.skip == 'false'
+        id: logs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Fetching logs for run ${{ github.event.inputs.run_id }}..."
+          gh run view ${{ github.event.inputs.run_id }} --log > run_logs.txt
+          tail -n 2000 run_logs.txt > truncated_logs.txt
+
+      - name: Setup Gemini CLI
+        if: steps.check-issue.outputs.skip == 'false'
+        run: npm install -g @google/gemini-cli
+
+      - name: Analyze and Suggest Fix
+        if: steps.check-issue.outputs.skip == 'false'
+        id: analyze
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          # Create a context file with relevant Nix files
+          echo "--- flake.nix ---" > context.txt
+          cat flake.nix >> context.txt
+          echo "--- update.sh ---" >> context.txt
+          cat update.sh >> context.txt
+          
+          cat << 'EOF' > prompt.txt
+          You are a Nix expert. Analyze the following GitHub Actions logs and suggest a fix.
+          The failure occurred during a nightly update.
+          
+          Context (Nix files):
+          EOF
+          cat context.txt >> prompt.txt
+          echo -e "\nLogs:" >> prompt.txt
+          cat truncated_logs.txt >> prompt.txt
+          cat << 'EOF' >> prompt.txt
+
+          Task:
+          1. Identify the package that failed to build.
+          2. Explain why it failed (e.g., hash mismatch, broken source URL, dependency issue).
+          3. Provide a shell script named `apply_fix.sh` that applies the fix to the repository.
+          4. Provide a description of the fix for a Pull Request.
+          
+          Output your response in JSON format:
+          {
+            "explanation": "string",
+            "fix_script": "string",
+            "pr_description": "string"
+          }
+          EOF
+          
+          cat prompt.txt | gemini --skip-trust --yolo -o json > result.json
+          jq -r .explanation > explanation.md
+          jq -r .fix_script > apply_fix.sh
+          jq -r .pr_description > pr_description.md
+
+      - name: Apply Fix and Verify
+        if: steps.check-issue.outputs.skip == 'false'
+        id: verify
+        run: |
+          chmod +x apply_fix.sh
+          ./apply_fix.sh
+          
+          echo "Verifying fix by building..."
+          # Identify package from logs or script (simplified for now)
+          # In a real scenario, we'd parse this better.
+          if nix build . --no-link; then
+            echo "build_success=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "build_success=false" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+      - name: Create Pull Request
+        if: steps.verify.outputs.build_success == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "fix: nix build failure identified by Gemini"
+          title: "fix: nix build failure in nightly update"
+          body-file: pr_description.md
+          branch: "fix/build-failure-${{ github.event.inputs.run_id }}"
+
+      - name: Create Issue on Failure
+        if: always() && steps.check-issue.outputs.skip == 'false' && (steps.verify.outputs.build_success != 'true' || failure())
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f explanation.md ]; then
+            gh issue create \
+              --title "fix: nix build failure in nightly update (gemini investigation)" \
+              --body-file explanation.md \
+              --assignee jtliang24
+          else
+            gh issue create \
+              --title "fix: nix build failure in nightly update (investigation failed)" \
+              --body "Gemini failed to analyze the logs or provide a fix suggestion." \
+              --assignee jtliang24
+          fi
