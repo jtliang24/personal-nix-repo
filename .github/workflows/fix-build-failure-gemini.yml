@@ -66,12 +66,14 @@ jobs:
           cat flake.nix >> context.txt
           echo "--- update.sh ---" >> context.txt
           cat update.sh >> context.txt
+          echo "--- File Structure ---" >> context.txt
+          find . -maxdepth 2 -name "*.nix" >> context.txt
           
           cat << 'EOF' > prompt.txt
           You are a Nix expert. Analyze the following GitHub Actions logs and suggest a fix.
           The failure occurred during a nightly update.
           
-          Context (Nix files):
+          Context (Nix files and structure):
           EOF
           cat context.txt >> prompt.txt
           echo -e "\nLogs:" >> prompt.txt
@@ -79,13 +81,14 @@ jobs:
           cat << 'EOF' >> prompt.txt
 
           Task:
-          1. Identify the package that failed to build.
+          1. Identify the specific Nix package that failed to build (e.g., "wavebox", "gemini-cli").
           2. Explain why it failed (e.g., hash mismatch, broken source URL, dependency issue).
-          3. Provide a shell script named `apply_fix.sh` that applies the fix to the repository.
+          3. Provide a shell script named `apply_fix.sh` that applies the fix to the repository. Use tools like `sed` or `nix-update` if appropriate.
           4. Provide a description of the fix for a Pull Request.
           
           Output your response in JSON format:
           {
+            "package_name": "string",
             "explanation": "string",
             "fix_script": "string",
             "pr_description": "string"
@@ -96,22 +99,39 @@ jobs:
           jq -r .explanation > explanation.md
           jq -r .fix_script > apply_fix.sh
           jq -r .pr_description > pr_description.md
+          jq -r .package_name > package_name.txt
 
       - name: Apply Fix and Verify
         if: steps.check-issue.outputs.skip == 'false'
         id: verify
         run: |
+          echo "--- Generated Fix Script ---"
+          cat apply_fix.sh
+          echo "----------------------------"
+          
           chmod +x apply_fix.sh
           ./apply_fix.sh
           
-          echo "Verifying fix by building..."
-          # Identify package from logs or script (simplified for now)
-          # In a real scenario, we'd parse this better.
-          if nix build . --no-link; then
-            echo "build_success=true" >> "$GITHUB_OUTPUT"
+          PKG_NAME=$(cat package_name.txt)
+          echo "Verifying fix by building $PKG_NAME..."
+          
+          # If package name is provided and not "null", build specifically
+          if [ -n "$PKG_NAME" ] && [ "$PKG_NAME" != "null" ]; then
+            if nix build .#$PKG_NAME --no-link; then
+              echo "build_success=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "build_success=false" >> "$GITHUB_OUTPUT"
+              exit 1
+            fi
           else
-            echo "build_success=false" >> "$GITHUB_OUTPUT"
-            exit 1
+            # Fallback to checking all if package name is unknown
+            echo "Package name unknown, checking flake..."
+            if nix flake check; then
+              echo "build_success=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "build_success=false" >> "$GITHUB_OUTPUT"
+              exit 1
+            fi
           fi
 
       - name: Create Pull Request
