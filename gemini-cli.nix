@@ -55,9 +55,11 @@ buildNpmPackage (finalAttrs: {
     # Remove node-pty dependency from packages/core/package.json
     ${jq}/bin/jq 'del(.optionalDependencies."node-pty")' packages/core/package.json > packages/core/package.json.tmp && mv packages/core/package.json.tmp packages/core/package.json
 
-    # Fix ripgrep path for SearchText; ensureRgPath() on its own may return the path to a dynamically-linked ripgrep binary without required libraries
+    # Fix ripgrep path for SearchText; ensureRgPath() and canUseRipgrep() depend on getRipgrepPath()
+    # We patch getRipgrepPath() to return the path to the ripgrep binary from nixpkgs.
     substituteInPlace packages/core/src/tools/ripGrep.ts \
-      --replace-fail "await ensureRgPath();" "'${lib.getExe ripgrep}';"
+      --replace-fail "export async function getRipgrepPath(): Promise<string | null> {" \
+        "export async function getRipgrepPath(): Promise<string | null> { return '${lib.getExe ripgrep}';"
 
     # Disable auto-update by changing default values in settings schema
     sed -i '/enableAutoUpdate:/,/default: true/ s/default: true/default: false/' packages/cli/src/config/settingsSchema.ts

@@ -44,9 +44,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       # use `ripgrep` from `nixpkgs`, more dependencies but prevent downloading incompatible binary on NixOS
       # this workaround can be removed once the following upstream issue is resolved:
       # https://github.com/google-gemini/gemini-cli/issues/11438
-      if grep -q 'await resolveExistingRgPath();' "$chunk"; then
+      if grep -q 'async function getRipgrepPath()' "$chunk"; then
         substituteInPlace "$chunk" \
-          --replace-fail 'const existingPath = await resolveExistingRgPath();' 'const existingPath = "${lib.getExe ripgrep}";'
+          --replace-fail 'async function getRipgrepPath() {' 'async function getRipgrepPath() { return "${lib.getExe ripgrep}";'
       fi
 
     done
