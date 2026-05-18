@@ -28,12 +28,6 @@ safe-outputs:
     github-token: ${{ secrets.COPILOT_ASSIGN_PAT || secrets.GITHUB_TOKEN }}
   create-pull-request:
     github-token: ${{ secrets.COPILOT_ASSIGN_PAT || secrets.GITHUB_TOKEN }}
-  threat-detection:
-    prompt: |
-      Be extremely concise.
-      Prioritize the THREAT_DETECTION_RESULT line.
-      Output the THREAT_DETECTION_RESULT as the VERY FIRST line of your response if possible, or at least ensure it is not truncated.
-      Do not provide long explanations unless a threat is actually detected.
 ---
 
 ## Fix Nix Build Failure (Gemini)
