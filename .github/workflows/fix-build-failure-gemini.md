@@ -1,5 +1,7 @@
 ---
 on:
+  bots:
+    - "github-actions[bot]"
   workflow_dispatch:
     inputs:
       run_id:
@@ -38,14 +40,19 @@ Investigate the failed "Nightly Update" workflow run (run ID:
 1. Read the workflow run logs for run ID `${{ github.event.inputs.run_id }}`
    using the GitHub MCP tools.
 2. Identify the build step that failed and extract the relevant error output.
-3. If a clear and safe fix is identified (e.g., removing a temporary debugging assertion):
+3. If a clear and safe fix is identified (e.g., removing a temporary debugging
+   assertion):
    - Propose a fix by creating a Pull Request with the changes.
    - Title the PR "fix: nix build failure in nightly update (gemini)".
    - Include a description of the fix and the relevant build log snippet.
    - Do NOT auto-merge the PR.
-4. If no clear fix is identified, or to report the failure if a PR isn't appropriate:
-   - Create a GitHub issue titled "fix: nix build failure in nightly update (gemini)".
+4. If no clear fix is identified, or to report the failure if a PR isn't
+   appropriate:
+   - Create a GitHub issue titled "fix: nix build failure in nightly update
+     (gemini)".
    - Include the relevant build log output in a collapsible `<details>` section.
    - A note to investigate and fix the build error.
 
-**CRITICAL**: Minimize redundant tool calls. Provide a single, comprehensive and high-quality response. Do not emit multiple versions of the same safe-output tool call.
+**CRITICAL**: Minimize redundant tool calls. Provide a single, comprehensive and
+high-quality response. Do not emit multiple versions of the same safe-output
+tool call.
