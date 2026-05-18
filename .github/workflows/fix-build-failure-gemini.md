@@ -10,6 +10,7 @@ on:
       pr_id:
         description: "the pull request ID, if it exists"
         required: false
+        default: none
   skip-if-match: 'is:issue is:open "nix build failure in nightly update" in:title'
 
 engine: gemini
@@ -47,23 +48,21 @@ safe-outputs:
 Investigate the failed "Nightly Update" workflow run (run ID:
 `${{ github.event.inputs.run_id }}`).
 
-1. Read the workflow run logs for run ID `${{ github.event.inputs.run_id }}`.
-2. Identify the build step that failed and extract the relevant error output.
-3. Check if the failed workflow run is associated with an open Pull Request (or
-   if a `pr_id` was provided).
-4. If an associated Pull Request exists, check out its branch.
-5. Review the code relating to the error.
-6. If a clear and safe fix is identified:
-   - If an open Pull Request exists for the failed run, update that Pull Request
-     by applying the fix to its branch.
-   - If no open Pull Request exists, propose a fix by creating a new Pull
-     Request. Title the new PR "fix: nix build failure in nightly update
-     (gemini)".
+1. Read the workflow run logs for run ID `${{ github.event.inputs.run_id }}` and
+   Pull Request `${{ github.event.inputs.pr_id }}`
+2. If the associated Pull Request exists, check out its branch.
+3. Identify the build step that failed and extract the relevant error output.
+4. Review the code relating to the error.
+5. If a clear and safe fix is identified:
+   - If an open Pull Request is given, update that Pull Request by applying the
+     fix to its branch.
+   - If no open Pull Request is given, propose a fix by creating a new Pull
+     Request. Title the new PR "fix: nix build failure in nightly update".
    - Do NOT create a new Pull Request if there is already an open Pull Request
-     for the failed workflow run.
+     given.
    - Include a description of the fix and the relevant build log snippet.
    - Do NOT auto-merge the PR.
-7. If no clear fix is identified, or to report the failure if a PR isn't
+6. If no clear fix is identified, or to report the failure if a PR isn't
    appropriate:
    - Create a GitHub issue titled "fix: nix build failure in nightly update
      (gemini)".
