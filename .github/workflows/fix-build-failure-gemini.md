@@ -26,6 +26,14 @@ safe-outputs:
     assignees: [jtliang24]
     close-older-issues: true
     github-token: ${{ secrets.COPILOT_ASSIGN_PAT || secrets.GITHUB_TOKEN }}
+  create-pull-request:
+    github-token: ${{ secrets.COPILOT_ASSIGN_PAT || secrets.GITHUB_TOKEN }}
+  threat-detection:
+    prompt: |
+      Be extremely concise.
+      Prioritize the THREAT_DETECTION_RESULT line.
+      Output the THREAT_DETECTION_RESULT as the VERY FIRST line of your response if possible, or at least ensure it is not truncated.
+      Do not provide long explanations unless a threat is actually detected.
 ---
 
 ## Fix Nix Build Failure (Gemini)
@@ -36,10 +44,14 @@ Investigate the failed "Nightly Update" workflow run (run ID:
 1. Read the workflow run logs for run ID `${{ github.event.inputs.run_id }}`
    using the GitHub MCP tools.
 2. Identify the build step that failed and extract the relevant error output.
-3. Create a GitHub issue titled "fix: nix build failure in nightly update
-   (gemini)" with:
-   - A description stating that the nightly update workflow encountered a build
-     failure.
-   - The relevant build log output in a collapsible `<details>` section.
-   - A note to investigate and fix the build error, and not to auto-merge the
-     fix.
+3. If a clear and safe fix is identified (e.g., removing a temporary debugging assertion):
+   - Propose a fix by creating a Pull Request with the changes.
+   - Title the PR "fix: nix build failure in nightly update (gemini)".
+   - Include a description of the fix and the relevant build log snippet.
+   - Do NOT auto-merge the PR.
+4. If no clear fix is identified, or to report the failure if a PR isn't appropriate:
+   - Create a GitHub issue titled "fix: nix build failure in nightly update (gemini)".
+   - Include the relevant build log output in a collapsible `<details>` section.
+   - A note to investigate and fix the build error.
+
+**CRITICAL**: Minimize redundant tool calls. Provide a single, comprehensive and high-quality response. Do not emit multiple versions of the same safe-output tool call.
