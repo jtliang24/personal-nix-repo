@@ -50,10 +50,11 @@ Investigate the failed "Nightly Update" workflow run (run ID:
 1. Read the workflow run logs and metadata for run ID
    `${{ github.event.inputs.run_id }}` using the GitHub MCP tools.
 2. Identify the build step that failed and extract the relevant error output.
-3. Check if the failed workflow run is associated with an open Pull Request (or if a `pr_id` was provided).
+3. Check if the failed workflow run is associated with an open Pull Request (or
+   if a `pr_id` was provided).
 4. If an associated Pull Request exists, check out its branch.
-5. If a clear and safe fix is identified (e.g., removing a temporary debugging
-   assertion):
+5. Review the code relating to the error.
+6. If a clear and safe fix is identified:
    - If an open Pull Request exists for the failed run, update that Pull Request
      by applying the fix to its branch.
    - If no open Pull Request exists, propose a fix by creating a new Pull
@@ -61,7 +62,7 @@ Investigate the failed "Nightly Update" workflow run (run ID:
    - Title any new PR "fix: nix build failure in nightly update (gemini)".
    - Include a description of the fix and the relevant build log snippet.
    - Do NOT auto-merge the PR.
-6. If no clear fix is identified, or to report the failure if a PR isn't
+7. If no clear fix is identified, or to report the failure if a PR isn't
    appropriate:
    - Create a GitHub issue titled "fix: nix build failure in nightly update
      (gemini)".
