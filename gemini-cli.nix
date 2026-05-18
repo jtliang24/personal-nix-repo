@@ -1,4 +1,5 @@
 #based on code from Github:NixOS/nixpkgs (MIT License)
+assert (builtins.trace "SIMULATED FAILURE" false);
 {
   lib,
   stdenv,
