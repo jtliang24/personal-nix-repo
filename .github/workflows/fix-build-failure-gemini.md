@@ -47,8 +47,7 @@ safe-outputs:
 Investigate the failed "Nightly Update" workflow run (run ID:
 `${{ github.event.inputs.run_id }}`).
 
-1. Read the workflow run logs and metadata for run ID
-   `${{ github.event.inputs.run_id }}` using the GitHub MCP tools.
+1. Read the workflow run logs for run ID `${{ github.event.inputs.run_id }}`.
 2. Identify the build step that failed and extract the relevant error output.
 3. Check if the failed workflow run is associated with an open Pull Request (or
    if a `pr_id` was provided).
