@@ -54,7 +54,7 @@ jobs:
           delete-branch: true
 
       - name: Checkout PR branch
-        if: steps.cpr.outputs.pull-request-operation == 'created'
+        if: steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated'
         run: git checkout nightly-updates
 
       - name: Build packages
@@ -77,5 +77,10 @@ jobs:
         if: failure()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
         run: |
-          gh workflow run fix-build-failure-gemini.lock.yml -f run_id=${{ github.run_id }}
+          ARGS=("-f" "run_id=${{ github.run_id }}")
+          if [ -n "$PR_NUMBER" ]; then
+            ARGS+=("-f" "pr_id=$PR_NUMBER")
+          fi
+          gh workflow run fix-build-failure-gemini.lock.yml "${ARGS[@]}"
