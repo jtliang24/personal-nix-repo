@@ -57,8 +57,10 @@ Investigate the failed "Nightly Update" workflow run (run ID:
    - If an open Pull Request exists for the failed run, update that Pull Request
      by applying the fix to its branch.
    - If no open Pull Request exists, propose a fix by creating a new Pull
-     Request.
-   - Title any new PR "fix: nix build failure in nightly update (gemini)".
+     Request. Title the new PR "fix: nix build failure in nightly update
+     (gemini)".
+   - Do NOT create a new Pull Request if there is already an open Pull Request
+     for the failed workflow run.
    - Include a description of the fix and the relevant build log snippet.
    - Do NOT auto-merge the PR.
 7. If no clear fix is identified, or to report the failure if a PR isn't
