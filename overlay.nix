@@ -3,6 +3,7 @@ let
   system = prev.stdenv.hostPlatform.system;
 in
 {
+  antigravity-cli = prev.callPackage ./antigravity-cli { };
   gemini-cli = prev.callPackage ./gemini-cli.nix { };
   gemini-cli-bin = prev.callPackage ./gemini-cli-bin.nix { };
   github-copilot-cli = prev.callPackage ./github-copilot-cli.nix { };

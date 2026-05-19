@@ -53,6 +53,7 @@
       in
       {
         packages = {
+          antigravity-cli = pkgs.callPackage ./antigravity-cli { };
           gemini-cli = pkgs.callPackage ./gemini-cli.nix { };
           gemini-cli-bin = pkgs.callPackage ./gemini-cli-bin.nix { };
           github-copilot-cli = pkgs.callPackage ./github-copilot-cli.nix { };
