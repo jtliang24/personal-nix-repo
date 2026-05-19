@@ -22,12 +22,12 @@ buildNpmPackage (finalAttrs: {
     owner = "google-gemini";
     repo = "gemini-cli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-QYSzJdyjJ5SvPkI/uf/wu8MdM76W+djai6zD38IJpos=";
+    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
   };
 
   nodejs = nodejs_22;
 
-  npmDepsHash = "sha256-hKNEJ/MAseYs8WLr36h40pYv+5nef8EPhZIfmPKYJPY=";
+  npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
 
   dontPatchElf = stdenv.isDarwin;
 
@@ -49,8 +49,6 @@ buildNpmPackage (finalAttrs: {
   '';
 
   postPatch = ''
-    #simulated failure
-    exit 1 
     # Remove node-pty dependency from package.json
     ${jq}/bin/jq 'del(.optionalDependencies."node-pty")' package.json > package.json.tmp && mv package.json.tmp package.json
 
