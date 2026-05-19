@@ -77,10 +77,12 @@ jobs:
         if: failure()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+          PR_ID: ${{ steps.cpr.outputs.pull-request-number }}
+          PR_BRANCH: ${{ steps.cpr.outputs.pull-request-branch }}
         run: |
           ARGS=("-f" "run_id=${{ github.run_id }}")
-          if [ -n "$PR_NUMBER" ]; then
-            ARGS+=("-f" "pr_id=$PR_NUMBER")
+          if [ -n "$PR_ID" ]; then
+            ARGS+=("-f" "pr_id=$PR_ID")
+            ARGS+=("-f" "pr_branch=$PR_BRANCH")
           fi
           gh workflow run fix-build-failure-gemini.lock.yml "${ARGS[@]}"
