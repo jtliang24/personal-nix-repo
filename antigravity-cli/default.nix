@@ -3,6 +3,7 @@
   stdenv,
   fetchurl,
   autoPatchelfHook,
+  zlib,
 }:
 
 let
@@ -33,10 +34,16 @@ stdenv.mkDerivation {
   # If running on macOS, we don't need any patching, but on Linux we need autoPatchelfHook.
   nativeBuildInputs = lib.optionals stdenv.isLinux [ autoPatchelfHook ];
 
+  buildInputs = lib.optionals stdenv.isLinux [
+    zlib
+    stdenv.cc.cc.lib
+  ];
+
   installPhase = ''
     runHook preInstall
     mkdir -p $out/bin
     cp antigravity $out/bin/agy
+    ln -s agy $out/bin/antigravity-cli
     runHook postInstall
   '';
 

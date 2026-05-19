@@ -66,7 +66,7 @@ nix run github:jtliang24/personal-nix-repo#wgemini-cli
 
 | Package                | Version                      | Description                                                               | Platforms      |
 | :--------------------- | :--------------------------- | :------------------------------------------------------------------------ | :------------- |
-| **antigravity-cli**    | 1.0.0                        | Official CLI for Antigravity.                                             | Linux          |
+| **antigravity-cli**    | 1.0.0                        | Official CLI for Antigravity.                                             | Linux, Darwin  |
 | **ArtixGameLauncher**  | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems. | `x86_64-linux` |
 | **gemini-cli**         | 0.42.0                       | AI agent bringing Gemini directly into your terminal.                     | All            |
 | **gemini-cli-bin**     | 0.42.0                       | Binary version of Gemini CLI (faster installation).                       | Linux, Darwin  |
