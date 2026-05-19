@@ -70,7 +70,7 @@ nix run github:jtliang24/personal-nix-repo#wgemini-cli
 | **gemini-cli**         | 0.42.0                       | AI agent bringing Gemini directly into your terminal.                     | All            |
 | **gemini-cli-bin**     | 0.42.0                       | Binary version of Gemini CLI (faster installation).                       | Linux, Darwin  |
 | **gh-aw**              | 0.74.4                       | GitHub CLI extension for Actions Workflow management.                     | All            |
-| **github-copilot-cli** | 1.0.48                       | Github Copilot coding agent directly in your terminal.                    | All            |
+| **github-copilot-cli** | 1.0.49                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
 | **warp-terminal**      | 0.2026.05.13.09.15.stable_03 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
 | **wavebox**            | 148.2.4-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
