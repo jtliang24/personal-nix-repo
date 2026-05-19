@@ -22,6 +22,10 @@ fi
 warp_version=$(nix eval --raw .#warp-terminal.version)
 update_readme "warp-terminal" "$warp_version"
 
+./antigravity-cli/update.sh
+agy_version=$(nix eval --raw .#antigravity-cli.version)
+update_readme "antigravity-cli" "$agy_version"
+
 # Packages that can be updated with nix-update directly
 simple_update_pkgs=(
   "gemini-cli"
