@@ -16,7 +16,7 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "gemini-cli";
-  version = "0.41.0";
+  version = "0.42.0";
 
   src = fetchFromGitHub {
     owner = "google-gemini";
@@ -49,8 +49,6 @@ buildNpmPackage (finalAttrs: {
   '';
 
   postPatch = ''
-    #simulated failure
-    exit 1 
     # Remove node-pty dependency from package.json
     ${jq}/bin/jq 'del(.optionalDependencies."node-pty")' package.json > package.json.tmp && mv package.json.tmp package.json
 
