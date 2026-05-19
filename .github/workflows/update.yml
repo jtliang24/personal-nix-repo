@@ -67,7 +67,7 @@ jobs:
           done
 
       - name: Merge Pull Request
-        if: always() && steps.cpr.outputs.pull-request-operation == 'created' && steps.build.outcome == 'success'
+        if: always() && (steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated') && steps.build.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -81,13 +81,12 @@ jobs:
           PR_BRANCH: ${{ steps.cpr.outputs.pull-request-branch }}
         run: |
           ARGS=("-f" "run_id=${{ github.run_id }}")
-          # Default to current ref (main) if no PR branch is available
-          REF="${PR_BRANCH:-${{ github.ref_name }}}"
           
           if [ -n "$PR_ID" ]; then
+            ARGS+=("--ref" "$PR_BRANCH")
             ARGS+=("-f" "pr_id=$PR_ID")
             ARGS+=("-f" "pr_branch=$PR_BRANCH")
           fi
           
-          echo "Triggering workflow on ref: $REF"
-          gh workflow run fix-build-failure-gemini.lock.yml --ref "$REF" "${ARGS[@]}"
+          echo "Running workflow with arguments: ${ARGS[*]}"
+          gh workflow run fix-build-failure-gemini.lock.yml "${ARGS[@]}"
