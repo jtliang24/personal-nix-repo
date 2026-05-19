@@ -14,7 +14,6 @@ on:
       pr_branch:
         description: "the pull request branch, if it exists"
         required: false
-        default: main
   skip-if-match: 'is:issue is:open "nix build failure in nightly update" in:title'
 
 engine: gemini
@@ -25,7 +24,7 @@ secrets:
   GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 checkout:
-  ref: ${{ github.event.inputs.pr_branch }}
+  ref: ${{ github.event.inputs.pr_branch || github.ref }}
 
 permissions:
   contents: read
