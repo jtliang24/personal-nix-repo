@@ -4,8 +4,8 @@ let
 in
 {
   antigravity-cli = prev.callPackage ./antigravity-cli { };
-  gemini-cli = prev.callPackage ./gemini-cli.nix { };
-  gemini-cli-bin = prev.callPackage ./gemini-cli-bin.nix { };
+  gemini-cli = prev.lib.warn "gemini-cli is deprecated. Use alternative tools instead." (prev.callPackage ./gemini-cli.nix { });
+  gemini-cli-bin = prev.lib.warn "gemini-cli-bin is deprecated. Use alternative tools instead." (prev.callPackage ./gemini-cli-bin.nix { });
   github-copilot-cli = prev.callPackage ./github-copilot-cli.nix { };
   warp-terminal = prev.callPackage ./warp-terminal { };
   gh-aw = prev.callPackage ./gh-aw.nix { };

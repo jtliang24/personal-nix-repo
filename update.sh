@@ -28,15 +28,13 @@ update_readme "antigravity-cli" "$agy_version"
 
 # Packages that can be updated with nix-update directly
 simple_update_pkgs=(
-  "gemini-cli"
-  "gemini-cli-bin"
   "github-copilot-cli"
   "gh-aw"
 )
 
 for pkg in "${simple_update_pkgs[@]}"; do
   extra_args=()
-  if [[ "$pkg" == "gh-aw" || "$pkg" == "gemini-cli" ]]; then
+  if [[ "$pkg" == "gh-aw" ]]; then
     extra_args+=("--use-github-releases" "--version" "stable")
   fi
 
