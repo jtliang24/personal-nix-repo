@@ -1,5 +1,7 @@
-#!/usr/bin/env bash
-#
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p curl jq -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz
+#shellcheck shell=bash
+
 # Antigravity CLI Nix Update Script
 # Automatically fetches the latest manifests, extracts versions/hashes, and writes to sources.json.
 # Can be run via: nix-shell -p curl jq --run ./update.sh
@@ -13,8 +15,8 @@ DOWNLOAD_BASE_URL="https://antigravity-cli-auto-updater-974169037036.us-central1
 
 # Helper to fetch and parse JSON
 fetch_manifest() {
-    local platform="$1"
-    curl -fsSL "$DOWNLOAD_BASE_URL/manifests/$platform.json"
+  local platform="$1"
+  curl -fsSL "$DOWNLOAD_BASE_URL/manifests/$platform.json"
 }
 
 echo "Fetching latest manifests from release repository..."
@@ -41,7 +43,7 @@ linux_arm64_url=$(echo "$linux_arm64" | jq -r '.url')
 linux_arm64_hash=$(echo "$linux_arm64" | jq -r '.sha512')
 
 # Construct the new sources.json
-cat <<EOF > "$SOURCES_JSON"
+cat <<EOF >"$SOURCES_JSON"
 {
   "version": "$version",
   "sources": {
