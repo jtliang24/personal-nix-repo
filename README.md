@@ -40,7 +40,7 @@ configurations.
       modules = [
         ({ config, pkgs, ... }: {
           nixpkgs.overlays = [ personal-nix-repo.overlays.default ];
-          environment.systemPackages = [ pkgs.gemini-cli ];
+          environment.systemPackages = [ pkgs.antigravity-cli ];
         })
       ];
     };
@@ -59,7 +59,7 @@ nix run github:jtliang24/personal-nix-repo#<package_name>
 For example:
 
 ```bash
-nix run github:jtliang24/personal-nix-repo#wgemini-cli
+nix run github:jtliang24/personal-nix-repo#antigravity-cli
 ```
 
 ## Available Packages
