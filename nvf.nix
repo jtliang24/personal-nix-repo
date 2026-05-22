@@ -144,7 +144,7 @@ in
               treesitter.enable = true;
             };
             markdown = {
-              enable = true;
+              enable = system == "x86_64-linux";
               extensions = {
                 markview-nvim.enable = true;
               };
