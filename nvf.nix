@@ -32,7 +32,7 @@ in
           ];
 
           extraPackages = with pkgs; [
-            nodejs_25
+            nodejs_22
             tree-sitter
           ];
 
