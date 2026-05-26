@@ -27,6 +27,7 @@ buildNpmPackage (finalAttrs: {
 
   postPatch = ''
     cp ${./package-lock.json} package-lock.json
+    chmod +w package-lock.json
     sed -i '/"postinstall":/d' package.json
   '';
 
@@ -37,6 +38,7 @@ buildNpmPackage (finalAttrs: {
 
   npmPackFlags = [ "--omit=optional" "--ignore-scripts" ];
   npmInstallFlags = [ "--omit=optional" "--ignore-scripts" ];
+  npmPruneFlags = [ "--omit=dev" ];
 
   npmBuildScript = "build";
 
@@ -44,6 +46,9 @@ buildNpmPackage (finalAttrs: {
 
   installPhase = ''
     runHook preInstall
+
+    # Prune devDependencies to reduce closure size and security footprint
+    npm prune --omit=dev --ignore-scripts
 
     mkdir -p $out/lib/node_modules/min
     cp -r * $out/lib/node_modules/min/
@@ -74,10 +79,13 @@ buildNpmPackage (finalAttrs: {
     cp $out/lib/node_modules/min/icons/icon256.png $out/share/icons/hicolor/256x256/apps/min.png
   '';
 
+  passthru.updateScript = ./update.sh;
+
   meta = {
     description = "Fast, minimal browser that protects your privacy";
     homepage = "https://minbrowser.org";
     license = lib.licenses.asl20;
+    sourceProvenance = with lib.sourceTypes; [ fromSource ];
     platforms = lib.platforms.unix;
     mainProgram = "min";
     maintainers = with lib.maintainers; [ jtliang24 ];
