@@ -176,7 +176,7 @@ in
 
           autopairs.nvim-autopairs.enable = true;
 
-          autocomplete.nvim-cmp.enable = true;
+          #autocomplete.nvim-cmp.enable = true;
 
           notify.nvim-notify.enable = true;
 
