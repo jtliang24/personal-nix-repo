@@ -54,10 +54,15 @@
       {
         packages = {
           antigravity-cli = pkgs.callPackage ./antigravity-cli { };
-          gemini-cli = pkgs.lib.warn "gemini-cli is deprecated. Use alternative tools instead." (pkgs.callPackage ./gemini-cli.nix { });
-          gemini-cli-bin = pkgs.lib.warn "gemini-cli-bin is deprecated. Use alternative tools instead." (pkgs.callPackage ./gemini-cli-bin.nix { });
+          gemini-cli = pkgs.lib.warn "gemini-cli is deprecated. Use alternative tools instead." (
+            pkgs.callPackage ./gemini-cli.nix { }
+          );
+          gemini-cli-bin = pkgs.lib.warn "gemini-cli-bin is deprecated. Use alternative tools instead." (
+            pkgs.callPackage ./gemini-cli-bin.nix { }
+          );
           github-copilot-cli = pkgs.callPackage ./github-copilot-cli.nix { };
           warp-terminal = pkgs.callPackage ./warp-terminal { };
+          min-browser = pkgs.callPackage ./min-browser { };
           gh-aw = pkgs.callPackage ./gh-aw.nix { };
           inherit (nvfLocal.packages.${system}) neovimConfigured;
         }
