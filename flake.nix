@@ -62,7 +62,6 @@
           );
           github-copilot-cli = pkgs.callPackage ./github-copilot-cli.nix { };
           warp-terminal = pkgs.callPackage ./warp-terminal { };
-          min-browser = pkgs.callPackage ./min-browser { };
           gh-aw = pkgs.callPackage ./gh-aw.nix { };
           inherit (nvfLocal.packages.${system}) neovimConfigured;
         }
