@@ -36,15 +36,15 @@ in
             tree-sitter
           ];
 
-          assistant = {
-            copilot = {
-              cmp.enable = true;
-              enable = true;
-              setupOpts = {
-                suggestion.enable = true;
-              };
-            };
-          };
+          # assistant = {
+          #   copilot = {
+          #     cmp.enable = true;
+          #     enable = true;
+          #     setupOpts = {
+          #       suggestion.enable = true;
+          #     };
+          #   };
+          # };
 
           viAlias = false;
           vimAlias = false;
@@ -176,7 +176,7 @@ in
 
           autopairs.nvim-autopairs.enable = true;
 
-          #autocomplete.nvim-cmp.enable = true;
+          # autocomplete.nvim-cmp.enable = true;
 
           notify.nvim-notify.enable = true;
 
