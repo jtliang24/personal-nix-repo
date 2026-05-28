@@ -45,6 +45,7 @@ in
           #     };
           #   };
           # };
+          # autocomplete.nvim-cmp.enable = true;
 
           viAlias = false;
           vimAlias = false;
@@ -175,8 +176,6 @@ in
           };
 
           autopairs.nvim-autopairs.enable = true;
-
-          # autocomplete.nvim-cmp.enable = true;
 
           notify.nvim-notify.enable = true;
 
