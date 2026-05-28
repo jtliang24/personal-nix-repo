@@ -71,10 +71,10 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **gemini-cli**         | 0.42.0                       | [DEPRECATED] AI agent bringing Gemini directly into your terminal.        | All            |
 | **gemini-cli-bin**     | 0.42.0                       | [DEPRECATED] Binary version of Gemini CLI (faster installation).          | Linux, Darwin  |
 | **gh-aw**              | 0.76.1                       | GitHub CLI extension for Actions Workflow management.                     | All            |
-| **github-copilot-cli** | 1.0.54                       | Github Copilot coding agent directly in your terminal.                    | All            |
+| **github-copilot-cli** | 1.0.55                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
 | **warp-terminal**      | 0.2026.05.20.09.21.stable_03 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
-| **wavebox**            | 148.2.43-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
+| **wavebox**            | 148.2.44-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
 
 > [!IMPORTANT]
 > `antigravity-cli`, `ArtixGameLauncher`, `wavebox`, `github-copilot-cli`, and `warp-terminal` are
