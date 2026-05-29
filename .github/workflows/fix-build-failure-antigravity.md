@@ -21,7 +21,7 @@ tools:
   github:
     toolsets: [default, actions]
 secrets:
-  ANTIGRAVITY_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  ANTIGRAVITY_API_KEY: ${{ secrets.ANTIGRAVITY_API_KEY }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 checkout:
   ref: ${{ github.event.inputs.pr_branch || github.ref }}
