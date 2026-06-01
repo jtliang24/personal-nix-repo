@@ -89,4 +89,4 @@ jobs:
           fi
           
           echo "Running workflow with arguments: ${ARGS[*]}"
-          gh workflow run fix-build-failure-gemini.lock.yml "${ARGS[@]}"
+          gh workflow run fix-build-failure-claude.lock.yml "${ARGS[@]}"
