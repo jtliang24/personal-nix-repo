@@ -21,7 +21,7 @@ tools:
   github:
     toolsets: [default, actions]
 secrets:
-  ANTHROPIC_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 checkout:
   ref: ${{ github.event.inputs.pr_branch || github.ref }}
