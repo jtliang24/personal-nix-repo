@@ -70,8 +70,8 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **ArtixGameLauncher**  | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems. | `x86_64-linux` |
 | **gemini-cli**         | 0.42.0                       | [DEPRECATED] AI agent bringing Gemini directly into your terminal.        | All            |
 | **gemini-cli-bin**     | 0.42.0                       | [DEPRECATED] Binary version of Gemini CLI (faster installation).          | Linux, Darwin  |
-| **gh-aw**              | 0.76.1                       | GitHub CLI extension for Actions Workflow management.                     | All            |
-| **github-copilot-cli** | 1.0.56                       | Github Copilot coding agent directly in your terminal.                    | All            |
+| **gh-aw**              | 0.77.5                       | GitHub CLI extension for Actions Workflow management.                     | All            |
+| **github-copilot-cli** | 1.0.57                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
 | **warp-terminal**      | 0.2026.05.27.15.44.stable_01 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
 | **wavebox**            | 148.2.44-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
