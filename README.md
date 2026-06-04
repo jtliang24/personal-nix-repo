@@ -66,7 +66,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 
 | Package                | Version                      | Description                                                               | Platforms      |
 | :--------------------- | :--------------------------- | :------------------------------------------------------------------------ | :------------- |
-| **antigravity-cli**    | 1.0.4                        | Official CLI for Antigravity.                                             | Linux, Darwin  |
+| **antigravity-cli**    | 1.0.5                        | Official CLI for Antigravity.                                             | Linux, Darwin  |
 | **ArtixGameLauncher**  | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems. | `x86_64-linux` |
 | **gemini-cli**         | 0.42.0                       | [DEPRECATED] AI agent bringing Gemini directly into your terminal.        | All            |
 | **gemini-cli-bin**     | 0.42.0                       | [DEPRECATED] Binary version of Gemini CLI (faster installation).          | Linux, Darwin  |
@@ -74,7 +74,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **github-copilot-cli** | 1.0.59                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
 | **warp-terminal**      | 0.2026.05.27.15.44.stable_01 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
-| **wavebox**            | 149.2.58-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
+| **wavebox**            | 149.2.63-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
 
 > [!IMPORTANT]
 > `antigravity-cli`, `ArtixGameLauncher`, `wavebox`, `github-copilot-cli`, and `warp-terminal` are
