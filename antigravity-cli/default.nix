@@ -7,23 +7,41 @@
 }:
 
 let
-  sources = lib.importJSON ./sources.json;
+  system_dict = {
+    x86_64-linux = {
+      name = "linux_x64";
+      hash = "sha256:2101c31fbc33189999f44c08abd2df4937d002e78fce5a92e71f0d0a248fdccc";
+    };
+    aarch64-linux = {
+      name = "linux_arm64";
+      hash = "sha256:b7a371a126b8de02c3728fe736fbebc87272a5144c7647476572b507c3264eca";
+    };
+    x86_64-darwin = {
+      name = "mac_x64";
+      hash = "sha256:7214eabe5407005320e27826fa40f6f1b03a581dfc3157302480bc6247da7152";
+    };
+    aarch64-darwin = {
+      name = "mac_arm64";
+      hash = "sha256:47f70951b117d404ade49c3d5b09cad91455999d6e59fc2ee2e987aa92bc1285";
+    };
+  };
+  inherit (stdenv.hostPlatform) system;
 in
-stdenv.mkDerivation {
+stdenv.mkDerivation (finalAttrs: {
   pname = "antigravity-cli";
-  inherit (sources) version;
+  version = "1.0.5";
 
   strictDeps = true;
   __structuredAttrs = true;
 
   src = fetchurl {
     inherit
-      (sources.sources.${stdenv.hostPlatform.system}
+      (system_dict.${stdenv.hostPlatform.system}
         or (throw "Unsupported system: ${stdenv.hostPlatform.system}")
       )
-      url
-      sha512
+      hash
       ;
+    url = "https://github.com/google-antigravity/antigravity-cli/releases/download/${finalAttrs.version}/agy_cli_${system_dict.${system}.name}.tar.gz";
   };
 
   sourceRoot = ".";
@@ -62,6 +80,7 @@ stdenv.mkDerivation {
     mainProgram = "agy";
     maintainers = with maintainers; [
       deftdawg
+      jtliang24
     ];
   };
-}
+})
