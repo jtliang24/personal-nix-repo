@@ -5,7 +5,6 @@
   patchelf,
   makeWrapper,
   fetchurl,
-  writeScript,
 
   # Libraries
   glib,
@@ -87,6 +86,7 @@
 
   # For Vulkan support (--enable-features=Vulkan)
   addDriverRunpath,
+  nix-update-script,
 }:
 
 let
@@ -224,15 +224,7 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
-  passthru = {
-    updateScript = writeScript "update-wavebox.sh" ''
-      #!/usr/bin/env nix-shell
-      #!nix-shell -i bash -p nix-update curl jq
-
-      version=$(curl "https://download.wavebox.app/stable/linux/latest.json" | jq --raw-output '.["urls"]["deb"] | match("https://download.wavebox.app/stable/linux/deb/amd64/wavebox_(.+)_amd64.deb").captures[0]["string"]')
-      nix-update wavebox --version "$version"
-    '';
-  };
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Wavebox Productivity Browser";
