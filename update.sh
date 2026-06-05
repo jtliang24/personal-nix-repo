@@ -17,19 +17,21 @@ if [[ "$(uname -s)" == "Linux" ]]; then
   update_readme "wavebox" "$wavebox_version"
 fi
 
-# Updating Warp-terminal
-./warp-terminal/update.sh
-warp_version=$(nix eval --raw .#warp-terminal.version)
-update_readme "warp-terminal" "$warp_version"
-
-./antigravity-cli/update.sh
-agy_version=$(nix eval --raw .#antigravity-cli.version)
-update_readme "antigravity-cli" "$agy_version"
+# # Updating Warp-terminal
+# ./warp-terminal/update.sh
+# warp_version=$(nix eval --raw .#warp-terminal.version)
+# update_readme "warp-terminal" "$warp_version"
+#
+# ./antigravity-cli/update.sh
+# agy_version=$(nix eval --raw .#antigravity-cli.version)
+# update_readme "antigravity-cli" "$agy_version"
 
 # Packages that can be updated with nix-update directly
 simple_update_pkgs=(
   "github-copilot-cli"
   "gh-aw"
+  "warp-terminal"
+  "antigravity-cli"
 )
 
 for pkg in "${simple_update_pkgs[@]}"; do
@@ -38,7 +40,7 @@ for pkg in "${simple_update_pkgs[@]}"; do
     extra_args+=("--use-github-releases" "--version" "stable")
   fi
 
-  nix-update "$pkg" --flake "${extra_args[@]}"
+  nix-update "$pkg" --flake "${extra_args[@]}" -u
   new_ver=$(nix eval --raw .#"${pkg}".version)
   update_readme "$pkg" "$new_ver"
 done
