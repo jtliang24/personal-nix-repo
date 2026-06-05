@@ -4,7 +4,12 @@
 set -eu -o pipefail
 
 # Navigate to the directory containing this script
-cd "$(dirname "$0")"
+if [[ "$(dirname "$0")" != /nix/store/* ]]; then
+  cd "$(dirname "$0")"
+else
+  cd antigravity-cli
+fi
+
 
 # Fetch latest release JSON from GitHub API
 echo "Fetching latest release from GitHub API..."

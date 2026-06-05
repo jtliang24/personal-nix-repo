@@ -3,7 +3,12 @@
 #shellcheck shell=bash
 set -eu -o pipefail
 
-cd "$(dirname "$0")"
+if [[ "$(dirname "$0")" != /nix/store/* ]]; then
+  cd "$(dirname "$0")"
+else
+  cd warp-terminal
+fi
+
 
 err() {
   echo "$*" >&2
