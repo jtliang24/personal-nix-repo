@@ -13,5 +13,5 @@ pkgs.mkShell {
     shellcheck # Bash script linter for update.sh
   ];
 
-  shellHook = "Activated nix development shell";
+  shellHook = "echo 'Activated nix development shell'";
 }
