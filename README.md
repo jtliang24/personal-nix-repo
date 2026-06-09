@@ -74,7 +74,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **github-copilot-cli** | 1.0.60                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` with LSP and UI enhancements.   | All            |
 | **warp-terminal**      | 0.2026.06.03.09.49.stable_01 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
-| **wavebox**            | 149.2.63-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
+| **wavebox**            | 149.2.69-2                  | The Wavebox productivity browser.                                         | `x86_64-linux` |
 
 > [!IMPORTANT]
 > `antigravity-cli`, `ArtixGameLauncher`, `wavebox`, `github-copilot-cli`, and `warp-terminal` are
