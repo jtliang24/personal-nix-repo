@@ -157,11 +157,11 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "wavebox";
-  version = "149.2.63-2";
+  version = "149.2.69-2";
 
   src = fetchurl {
     url = "https://download.wavebox.app/stable/linux/deb/amd64/wavebox_${finalAttrs.version}_amd64.deb";
-    hash = "sha256-j45H8+EwfFnI7b+J4uRzrnv4mmm6LGB6ajV97WPJbE0=";
+    hash = "sha256-eEOnU90plY4zRFNzGpXmC+ZJH5BkF8Crv5WbLDpV2+I=";
   };
 
   nativeBuildInputs = [
