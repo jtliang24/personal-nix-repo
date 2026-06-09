@@ -16,18 +16,18 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "gemini-cli";
-  version = "0.42.0";
+  version = "0.45.2";
 
   src = fetchFromGitHub {
     owner = "google-gemini";
     repo = "gemini-cli";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-QYSzJdyjJ5SvPkI/uf/wu8MdM76W+djai6zD38IJpos=";
+    hash = "sha256-Dexn501qF47PbQuxSFYjRFseZZifmq3/zSNYkeruZNA=";
   };
 
   nodejs = nodejs_22;
 
-  npmDepsHash = "sha256-hKNEJ/MAseYs8WLr36h40pYv+5nef8EPhZIfmPKYJPY=";
+  npmDepsHash = "sha256-I/zh0ins1X4mbepzIcC/MTyKuazcAVmhdgsLk4EOXcA=";
 
   dontPatchElf = stdenv.isDarwin;
 
@@ -55,11 +55,11 @@ buildNpmPackage (finalAttrs: {
     # Remove node-pty dependency from packages/core/package.json
     ${jq}/bin/jq 'del(.optionalDependencies."node-pty")' packages/core/package.json > packages/core/package.json.tmp && mv packages/core/package.json.tmp packages/core/package.json
 
-    # Fix ripgrep path for SearchText; ensureRgPath() and canUseRipgrep() depend on getRipgrepPath()
-    # We patch getRipgrepPath() to return the path to the ripgrep binary from nixpkgs.
+    # Fix ripgrep path; depend on resolveRipgrepPath()
+    # We patch resolveRipgrepPath() to return the path to the ripgrep binary from nixpkgs.
     substituteInPlace packages/core/src/tools/ripGrep.ts \
-      --replace-fail "export async function getRipgrepPath(): Promise<string | null> {" \
-        "export async function getRipgrepPath(): Promise<string | null> { return '${lib.getExe ripgrep}';"
+      --replace-fail "export async function resolveRipgrepPath(): Promise<string | null> {" \
+        "export async function resolveRipgrepPath(): Promise<string | null> { return '${lib.getExe ripgrep}';"
 
     # Disable auto-update by changing default values in settings schema
     sed -i '/enableAutoUpdate:/,/default: true/ s/default: true/default: false/' packages/cli/src/config/settingsSchema.ts
