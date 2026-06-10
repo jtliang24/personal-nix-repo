@@ -3,6 +3,7 @@
   fetchFromGitHub,
   buildGoModule,
   versionCheckHook,
+  nix-update-script,
 }:
 buildGoModule (finalAttrs: {
   pname = "gh-aw";
@@ -27,6 +28,10 @@ buildGoModule (finalAttrs: {
     "-X"
     "main.version=${finalAttrs.version}"
   ];
+
+  passthru.updateScript = nix-update-script {
+    extraArgs = [ "--use-github-releases" "--version" "stable" ];
+  };
 
   meta = {
     homepage = "https://github.com/github/gh-aw";
