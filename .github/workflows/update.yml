@@ -38,6 +38,7 @@ jobs:
       - name: Run update script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NIX_PATH: nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz
         run: |
           chmod +x update.sh
           ./update.sh
