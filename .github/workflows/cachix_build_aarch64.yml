@@ -31,7 +31,7 @@ jobs:
 
       - name: Build packages for the cache
         run: |
-          for pkg in antigravity-cli neovimConfigured; do
+          for pkg in antigravity-cli neovimConfigured neovimConfigured-full; do
             echo "Building $pkg..."
             nix build .#$pkg --no-link
           done
