@@ -1,6 +1,7 @@
 {
   self,
   nixpkgs,
+  full ? false,
   ...
 }@inputs:
 let
@@ -47,6 +48,13 @@ in
           # };
           # autocomplete.nvim-cmp.enable = true;
 
+          assistant = {
+            codecompanion-nvim = {
+              enable = full;
+              setupOpts = { };
+            };
+          };
+
           viAlias = false;
           vimAlias = false;
 
@@ -81,7 +89,7 @@ in
           lsp = {
             # Enable LSP functionality globally. This is required for modules found
             # in `vim.languages` to enable relevant LSPs.
-            enable = true;
+            enable = full;
 
             formatOnSave = true;
             lightbulb = {
@@ -145,9 +153,9 @@ in
               treesitter.enable = true;
             };
             markdown = {
-              enable = system == "x86_64-linux";
+              enable = full;
               extensions = {
-                markview-nvim.enable = true;
+                markview-nvim.enable = full;
               };
             };
             bash.enable = true;

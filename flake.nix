@@ -13,7 +13,11 @@
       nvf,
     }@inputs:
     let
-      nvfLocal = import ./nvf.nix { inherit self nixpkgs nvf; };
+      nvf_light = import ./nvf.nix { inherit self nixpkgs nvf; };
+      nvf_full = import ./nvf.nix {
+        inherit self nixpkgs nvf;
+        full = true;
+      };
     in
     flake-utils.lib.eachDefaultSystem (
       system:
@@ -63,7 +67,8 @@
           github-copilot-cli = pkgs.callPackage ./github-copilot-cli.nix { };
           warp-terminal = pkgs.callPackage ./warp-terminal { };
           gh-aw = pkgs.callPackage ./gh-aw.nix { };
-          inherit (nvfLocal.packages.${system}) neovimConfigured;
+          neovimConfigured = nvf_light.packages.${system}.neovimConfigured;
+          neovimConfigured_full = nvf_full.packages.${system}.neovimConfigured;
         }
         // x86-linux-pkgs
         // linux-pkgs;
