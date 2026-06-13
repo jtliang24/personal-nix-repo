@@ -134,11 +134,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1781263294,
-        "narHash": "sha256-gtmY1TOuBCsyyGLg1JkJMlDIJuWj/V0CvKpNhtYNMbc=",
+        "lastModified": 1781312467,
+        "narHash": "sha256-tTAbFLvDhpeCluFXvuNmYgOACXlj+URh/0bgX3mFpO4=",
         "owner": "notashelf",
         "repo": "nvf",
-        "rev": "7783ca61b7ffcab1474fb25af1ca75142924e2a2",
+        "rev": "5ee7fb19860bd110668bbec108f909514a8dc006",
         "type": "github"
       },
       "original": {
