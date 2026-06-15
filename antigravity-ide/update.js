@@ -20,14 +20,14 @@ let version = "";
 let vscodeVersion = "";
 async function getLatestInformation(/** @type {"linux-x64" | "linux-arm64" | "darwin-arm64" | "darwin"} */ targetSystem) {
   /** @type {UpdateInfo} */
-  const latestInfo = await (await fetch(`https://antigravity-auto-updater-974169037036.us-central1.run.app/api/update/${targetSystem}/stable/latest`)).json();
-  const newVersion = /\/antigravity\/stable\/([\d.]+)-[\d]+/.exec(latestInfo.url)?.[1] ?? ""; // Current API lack version field now, we need to parse it from the URL temporarily.
+  const latestInfo = await (await fetch(`https://antigravity-ide-auto-updater-974169037036.us-central1.run.app/api/update/${targetSystem}/stable/latest`)).json();
+  const newVersion = /\/antigravity(?:-hub|\/stable)\/([\d.]+)-[\d]+/.exec(latestInfo.url)?.[1] ?? ""; // Current API lack version field now, we need to parse it from the URL temporarily.
   assert(version === '' || version === newVersion, `Version mismatch: ${version}(linux-x64) != ${newVersion}(${targetSystem})`);
   version = newVersion;
   assert(vscodeVersion === '' || vscodeVersion === latestInfo.productVersion, `VSCode version mismatch: ${vscodeVersion}(linux-x64) != ${latestInfo.productVersion}(${targetSystem})`);
   vscodeVersion = latestInfo.productVersion;
   return {
-    url: latestInfo.url,
+    url: latestInfo.url.replace(/ /g, "%20"),
     sha256: latestInfo.sha256hash,
   };
 }

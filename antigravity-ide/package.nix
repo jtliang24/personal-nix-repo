@@ -19,17 +19,17 @@ in
 buildVscode {
   inherit commandLineArgs useVSCodeRipgrep;
   inherit (information) version vscodeVersion;
-  pname = "antigravity";
+  pname = "antigravity-ide";
 
-  executableName = "antigravity";
-  longName = "Antigravity";
-  shortName = "Antigravity";
-  libraryName = "antigravity";
-  iconName = "antigravity";
+  executableName = "antigravity-ide";
+  longName = "Antigravity IDE";
+  shortName = "Antigravity IDE";
+  libraryName = "antigravity-ide";
+  iconName = "antigravity-ide";
 
   src = fetchurl { inherit (source) url sha256; };
 
-  sourceRoot = if hostPlatform.isDarwin then "Antigravity.app" else "Antigravity";
+  sourceRoot = if hostPlatform.isDarwin then "Antigravity IDE.app" else "Antigravity IDE";
 
   tests = { };
   updateScript = ./update.js;
@@ -56,7 +56,7 @@ buildVscode {
     };
 
   meta = {
-    mainProgram = "antigravity";
+    mainProgram = "antigravity-ide";
     description = "Agentic development platform, evolving the IDE into the agent-first era";
     homepage = "https://antigravity.google";
     downloadPage = "https://antigravity.google/download";
