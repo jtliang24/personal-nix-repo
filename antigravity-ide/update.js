@@ -1,6 +1,6 @@
-#!/usr/bin/env nix
+#!/usr/bin/env nix-shell
 /*
-#!nix shell --ignore-environment .#cacert .#nodejs --command node
+#!nix-shell -i node -p nodejs cacert -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz
 */
 // @ts-check
 import assert from "node:assert/strict";
