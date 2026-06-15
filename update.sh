@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i bash -p nix-update jq curl gnused -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz
+#!nix-shell -i bash -p nix-update jq curl gnused nodejs -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz
 #shellcheck shell=bash
 
 update_readme() {
@@ -44,3 +44,10 @@ for pkg in "${simple_update_pkgs[@]}"; do
   new_ver=$(nix eval --raw .#"${pkg}".version)
   update_readme "$pkg" "$new_ver"
 done
+
+# Updating Antigravity IDE
+echo "Updating Antigravity IDE..."
+node ./antigravity-ide/update.js
+antigravity_version=$(nix eval --raw .#antigravity-ide.version)
+update_readme "antigravity-ide" "$antigravity_version"
+

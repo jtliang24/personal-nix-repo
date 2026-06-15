@@ -67,6 +67,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | Package                | Version                      | Description                                                               | Platforms      |
 | :--------------------- | :--------------------------- | :------------------------------------------------------------------------ | :------------- |
 | **antigravity-cli**    | 1.0.8                        | Official CLI for Antigravity.                                             | Linux, Darwin  |
+| **antigravity-ide**    | 2.0.4                        | Agentic development platform, evolving the IDE into the agent-first era.  | Linux, Darwin  |
 | **ArtixGameLauncher**  | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems. | `x86_64-linux` |
 | **gemini-cli**         | 0.45.2                       | [DEPRECATED] AI agent bringing Gemini directly into your terminal.        | All            |
 | **gemini-cli-bin**     | 0.45.2                       | [DEPRECATED] Binary version of Gemini CLI (faster installation).          | Linux, Darwin  |
@@ -78,7 +79,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **wavebox**            | 149.2.92-2                   | The Wavebox productivity browser.                                         | `x86_64-linux` |
 
 > [!IMPORTANT]
-> `antigravity-cli`, `ArtixGameLauncher`, `wavebox`, `github-copilot-cli`, and
+> `antigravity-cli`, `antigravity-ide`, `ArtixGameLauncher`, `wavebox`, `github-copilot-cli`, and
 > `warp-terminal` are unfree packages. Ensure `allowUnfree = true;` is set in
 > your Nixpkgs configuration.
 
