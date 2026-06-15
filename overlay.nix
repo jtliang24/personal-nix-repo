@@ -9,6 +9,7 @@ in
   github-copilot-cli = prev.callPackage ./github-copilot-cli.nix { };
   warp-terminal = prev.callPackage ./warp-terminal { };
   gh-aw = prev.callPackage ./gh-aw.nix { };
+  antigravity-ide = prev.callPackage ./antigravity-ide/package.nix { };
 }
 // prev.lib.optionalAttrs (system == "x86_64-linux") {
   ArtixGameLauncher = prev.callPackage ./Artix_Game_Launcher.nix { };

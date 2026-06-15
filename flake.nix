@@ -69,7 +69,7 @@
           gh-aw = pkgs.callPackage ./gh-aw.nix { };
           neovimConfigured = nvf_light.packages.${system}.neovimConfigured;
           neovimConfigured-full = nvf_full.packages.${system}.neovimConfigured;
-          antigravity = pkgs.callPackage ./antigravity/package.nix { };
+          antigravity-ide = pkgs.callPackage ./antigravity-ide/package.nix { };
         }
         // x86-linux-pkgs
         // linux-pkgs;
