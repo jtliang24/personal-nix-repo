@@ -47,7 +47,6 @@ done
 
 # Updating Antigravity IDE
 echo "Updating Antigravity IDE..."
-node ./antigravity-ide/update.js
+./antigravity-ide/update.js
 antigravity_version=$(nix eval --raw .#antigravity-ide.version)
 update_readme "antigravity-ide" "$antigravity_version"
-
