@@ -76,7 +76,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` (lightweight version).          | All            |
 | **neovimConfigured-full** | -                         | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
 | **warp-terminal**      | 0.2026.06.10.09.27.stable_01 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
-| **wavebox**            | 149.2.92-2                   | The Wavebox productivity browser.                                         | `x86_64-linux` |
+| **wavebox**            | 149.2.96-2                   | The Wavebox productivity browser.                                         | `x86_64-linux` |
 
 > [!IMPORTANT]
 > `antigravity-cli`, `antigravity-ide`, `ArtixGameLauncher`, `wavebox`, `github-copilot-cli`, and
