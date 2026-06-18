@@ -41,18 +41,21 @@ in
             if full then
               ''
                 local socket = "/tmp/nvim"
-                local function start_server()
+                local function start_server(force)
                   local ok, err = pcall(vim.fn.serverstart, socket)
                   if not ok then
                     local conn_ok, chan = pcall(vim.fn.sockconnect, "pipe", socket, { winsize = false })
-                    if conn_ok then
+                    if conn_ok and not force then
                       vim.fn.chanclose(chan)
-                      return false, "MCP Server taken"
+                      return false, "MCP Server already in use"
                     else
+                      if conn_ok then
+                        vim.fn.chanclose(chan)
+                      end
                       os.remove(socket)
                       ok, err = pcall(vim.fn.serverstart, socket)
                       if ok then
-                        return true, "MCP server assigned to this instance"
+                        return true, "MCP server " .. (force and "taken over by" or "assigned to") .. " this instance"
                       else
                         return false, "Failed to start MCP server: " .. tostring(err)
                       end
@@ -84,7 +87,7 @@ in
               key = "<leader>ts";
               mode = "n";
               lua = true;
-              desc = "Stop a MCP listening server if running. Take it over if not.";
+              desc = "Toggle the MCP listening server (start/stop) on the current instance.";
               action = ''
                 function()
                   local socket = "/tmp/nvim"
@@ -94,7 +97,37 @@ in
                   else
                     local ok, msg
                     if _G.mcp_start_server then
-                      ok, msg = _G.mcp_start_server()
+                      ok, msg = _G.mcp_start_server(false)
+                    else
+                      local conn_ok, chan = pcall(vim.fn.sockconnect, "pipe", socket, { winsize = false })
+                      if conn_ok then
+                        vim.fn.chanclose(chan)
+                        ok, msg = false, "MCP Server taken"
+                      else
+                        os.remove(socket)
+                        ok, msg = pcall(vim.fn.serverstart, socket)
+                        msg = ok and "MCP server assigned to this instance" or "Failed to start: " .. tostring(msg)
+                      end
+                    end
+                    vim.notify(msg, ok and vim.log.levels.INFO or vim.log.levels.WARN)
+                  end
+                end
+              '';
+            }
+            {
+              key = "<leader>tf";
+              mode = "n";
+              lua = true;
+              desc = "Force assign the MCP listening server to the current instance.";
+              action = ''
+                function()
+                  local socket = "/tmp/nvim"
+                  if vim.tbl_contains(vim.fn.serverlist(), socket) then
+                    vim.notify("MCP server is already assigned to this instance", vim.log.levels.INFO)
+                  else
+                    local ok, msg
+                    if _G.mcp_start_server then
+                      ok, msg = _G.mcp_start_server(true)
                     else
                       os.remove(socket)
                       ok, msg = pcall(vim.fn.serverstart, socket)
