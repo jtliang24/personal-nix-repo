@@ -37,6 +37,19 @@ in
             tree-sitter
           ];
 
+          luaConfigRC.listener = ''
+            local name = "/tmp/nvim"
+            if not pcall(vim.fn.serverstart, name) then
+              local i = 0
+              while i < 100 do
+                if pcall(vim.fn.serverstart, name .. i) then
+                  break
+                end
+                i = i + 1
+              end
+            end
+          '';
+
           # assistant = {
           #   copilot = {
           #     cmp.enable = true;
