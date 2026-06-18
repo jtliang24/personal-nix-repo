@@ -37,18 +37,75 @@ in
             tree-sitter
           ];
 
-          luaConfigRC.listener = ''
-            local name = "/tmp/nvim"
-            if not pcall(vim.fn.serverstart, name) then
-              local i = 0
-              while i < 100 do
-                if pcall(vim.fn.serverstart, name .. i) then
-                  break
+          luaConfigRC.listener =
+            if full then
+              ''
+                local socket = "/tmp/nvim"
+                local function start_server()
+                  local ok, err = pcall(vim.fn.serverstart, socket)
+                  if not ok then
+                    local conn_ok, chan = pcall(vim.fn.sockconnect, "pipe", socket, { winsize = false })
+                    if conn_ok then
+                      vim.fn.chanclose(chan)
+                      return false, "MCP Server taken"
+                    else
+                      os.remove(socket)
+                      ok, err = pcall(vim.fn.serverstart, socket)
+                      if ok then
+                        return true, "MCP server assigned to this instance"
+                      else
+                        return false, "Failed to start MCP server: " .. tostring(err)
+                      end
+                    end
+                  end
+                  return true, "MCP server assigned to this instance"
                 end
-                i = i + 1
-              end
-            end
-          '';
+
+                local ok, msg = start_server()
+                if not ok then
+                  vim.notify(msg, vim.log.levels.WARN)
+                end
+
+                vim.api.nvim_create_autocmd("VimLeavePre", {
+                  callback = function()
+                    if vim.tbl_contains(vim.fn.serverlist(), socket) then
+                      pcall(vim.fn.serverstop, socket)
+                    end
+                  end
+                })
+
+                _G.mcp_start_server = start_server
+              ''
+            else
+              "";
+
+          keymaps = [
+            {
+              key = "<leader>ts";
+              mode = "n";
+              lua = true;
+              desc = "Stop a MCP listening server if running. Take it over if not.";
+              action = ''
+                function()
+                  local socket = "/tmp/nvim"
+                  if vim.tbl_contains(vim.fn.serverlist(), socket) then
+                    vim.fn.serverstop(socket)
+                    vim.notify("MCP server released")
+                  else
+                    local ok, msg
+                    if _G.mcp_start_server then
+                      ok, msg = _G.mcp_start_server()
+                    else
+                      os.remove(socket)
+                      ok, msg = pcall(vim.fn.serverstart, socket)
+                      msg = ok and "MCP server assigned to this instance" or "Failed to start: " .. tostring(msg)
+                    end
+                    vim.notify(msg, ok and vim.log.levels.INFO or vim.log.levels.WARN)
+                  end
+                end
+              '';
+            }
+          ];
 
           # assistant = {
           #   copilot = {
