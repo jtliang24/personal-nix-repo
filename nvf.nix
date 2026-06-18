@@ -102,7 +102,7 @@ in
                       local conn_ok, chan = pcall(vim.fn.sockconnect, "pipe", socket, { winsize = false })
                       if conn_ok then
                         vim.fn.chanclose(chan)
-                        ok, msg = false, "MCP Server taken"
+                        ok, msg = false, "MCP Server already in use"
                       else
                         os.remove(socket)
                         ok, msg = pcall(vim.fn.serverstart, socket)
