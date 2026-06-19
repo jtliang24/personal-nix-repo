@@ -69,8 +69,6 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **antigravity-cli**    | 1.0.10                        | Official CLI for Antigravity.                                             | Linux, Darwin  |
 | **antigravity-ide**    | 2.0.4                        | Agentic development platform, evolving the IDE into the agent-first era.  | Linux, Darwin  |
 | **ArtixGameLauncher**  | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems. | `x86_64-linux` |
-| **gemini-cli**         | 0.45.2                       | [DEPRECATED] AI agent bringing Gemini directly into your terminal.        | All            |
-| **gemini-cli-bin**     | 0.45.2                       | [DEPRECATED] Binary version of Gemini CLI (faster installation).          | Linux, Darwin  |
 | **gh-aw**              | 0.79.8                       | GitHub CLI extension for Actions Workflow management.                     | All            |
 | **github-copilot-cli** | 1.0.63                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` (lightweight version).          | All            |
