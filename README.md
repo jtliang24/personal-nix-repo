@@ -66,7 +66,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 
 | Package                | Version                      | Description                                                               | Platforms      |
 | :--------------------- | :--------------------------- | :------------------------------------------------------------------------ | :------------- |
-| **antigravity-cli**    | 1.0.8                        | Official CLI for Antigravity.                                             | Linux, Darwin  |
+| **antigravity-cli**    | 1.0.10                        | Official CLI for Antigravity.                                             | Linux, Darwin  |
 | **antigravity-ide**    | 2.0.4                        | Agentic development platform, evolving the IDE into the agent-first era.  | Linux, Darwin  |
 | **ArtixGameLauncher**  | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems. | `x86_64-linux` |
 | **gemini-cli**         | 0.45.2                       | [DEPRECATED] AI agent bringing Gemini directly into your terminal.        | All            |
@@ -75,7 +75,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **github-copilot-cli** | 1.0.63                       | Github Copilot coding agent directly in your terminal.                    | All            |
 | **neovimConfigured**   | -                            | Personal Neovim configuration using `nvf` (lightweight version).          | All            |
 | **neovimConfigured-full** | -                         | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
-| **warp-terminal**      | 0.2026.06.10.09.27.stable_01 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
+| **warp-terminal**      | 0.2026.06.17.09.49.stable_01 | Rust-based terminal reimagined for the 21st century.                      | Linux, Darwin  |
 | **wavebox**            | 149.2.96-2                   | The Wavebox productivity browser.                                         | `x86_64-linux` |
 
 > [!IMPORTANT]
