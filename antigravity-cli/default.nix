@@ -29,7 +29,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "antigravity-cli";
-  version = "1.0.10";
+  version = "null";
 
   strictDeps = true;
   __structuredAttrs = true;
