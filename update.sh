@@ -31,7 +31,7 @@ simple_update_pkgs=(
   "github-copilot-cli"
   "gh-aw"
   "warp-terminal"
-  "antigravity-cli"
+  # "antigravity-cli"
 )
 
 for pkg in "${simple_update_pkgs[@]}"; do
