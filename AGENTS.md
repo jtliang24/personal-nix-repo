@@ -4,7 +4,7 @@ This document provides context and guidelines for AI agents working on this repo
 
 ## Repository Structure
 
-- **Root-level `.nix` files**: Individual package definitions (e.g., `github-copilot-cli.nix`, `wavebox.nix`).
+- **Root-level `.nix` files**: Individual package definitions (e.g., `gh-aw.nix`, `wavebox.nix`).
 - **`warp-terminal/` directory**: Complex package with separate `default.nix`, `update.sh`, and `versions.json`.
 - **`flake.nix`**: Main entry point defining package set with platform-specific conditionals.
 - **`overlay.nix`**: Nixpkgs overlay for integrating packages into other configurations.
@@ -27,7 +27,7 @@ if builtins.match "^.+linux$" system != null then { ... } else { }
 ## Package Conventions
 
 ### Standard Package Structure
-Follow the pattern in `github-copilot-cli.nix`:
+Follow the pattern in `gh-aw.nix`:
 1. **Inputs at top**: List all required dependencies from nixpkgs.
 2. **Version management**: Explicit `version` attribute in derivation.
 3. **Update script**: Include `passthru.updateScript = nix-update-script { };`.
