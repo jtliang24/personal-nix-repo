@@ -58,7 +58,7 @@
       {
         packages = {
           antigravity-cli = pkgs.callPackage ./antigravity-cli { };
-          github-copilot-cli = pkgs.callPackage ./github-copilot-cli.nix { };
+          github-copilot-cli = pkgs.callPackage ./github-copilot-cli { };
           warp-terminal = pkgs.callPackage ./warp-terminal { };
           gh-aw = pkgs.callPackage ./gh-aw.nix { };
           neovimConfigured = nvf_light.packages.${system}.neovimConfigured;

@@ -5,7 +5,7 @@ let
   system = pkgs.stdenv.hostPlatform.system;
 in
 {
-  github-copilot-cli = pkgs.callPackage ./github-copilot-cli.nix { };
+  github-copilot-cli = pkgs.callPackage ./github-copilot-cli { };
   warp-terminal = pkgs.callPackage ./warp-terminal { };
   gh-aw = pkgs.callPackage ./gh-aw.nix { };
 }

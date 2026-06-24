@@ -70,11 +70,11 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **antigravity-ide**       | 2.1.1                        | Agentic development platform, evolving the IDE into the agent-first era.                                    | Linux, Darwin  |
 | **ArtixGameLauncher**     | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems.                                   | `x86_64-linux` |
 | **gh-aw**                 | 0.80.9                       | GitHub CLI extension for Actions Workflow management.                                                       | All            |
-| **github-copilot-cli**    | 1.0.63                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
+| **github-copilot-cli**    | 1.0.64                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
 | **neovimConfigured**      | -                            | Personal Neovim configuration using `nvf` (lightweight version).                                            | All            |
 | **neovimConfigured-full** | -                            | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
 | **warp-terminal**         | 0.2026.06.17.09.49.stable_02 | Rust-based terminal reimagined for the 21st century.                                                        | Linux, Darwin  |
-| **wavebox**               | 149.2.96-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
+| **wavebox**               | 149.2.103-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
 
 > [!IMPORTANT]
 > `antigravity-cli`, `antigravity-ide`, `ArtixGameLauncher`, `wavebox`,

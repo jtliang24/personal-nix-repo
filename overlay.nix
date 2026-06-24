@@ -4,7 +4,7 @@ let
 in
 {
   antigravity-cli = prev.callPackage ./antigravity-cli { };
-  github-copilot-cli = prev.callPackage ./github-copilot-cli.nix { };
+  github-copilot-cli = prev.callPackage ./github-copilot-cli { };
   warp-terminal = prev.callPackage ./warp-terminal { };
   gh-aw = prev.callPackage ./gh-aw.nix { };
   antigravity-ide = prev.callPackage ./antigravity-ide/package.nix { };
