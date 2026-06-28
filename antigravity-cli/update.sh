@@ -13,10 +13,19 @@ fi
 
 # Fetch latest release JSON from GitHub API
 echo "Fetching latest release from GitHub API..."
-release_json=$(curl -s "https://api.github.com/repos/google-antigravity/antigravity-cli/releases/latest")
+headers=()
+if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+  headers+=(-H "Authorization: Bearer $GITHUB_TOKEN")
+fi
+release_json=$(curl -s "${headers[@]}" "https://api.github.com/repos/google-antigravity/antigravity-cli/releases/latest")
 
 # Extract the version (strip 'v' prefix if present)
 version=$(echo "$release_json" | jq -r '.tag_name' | sed 's/^v//')
+if [[ "$version" == "null" || -z "$version" ]]; then
+  echo "Error: Failed to fetch version from GitHub API." >&2
+  echo "Response was: $release_json" >&2
+  exit 1
+fi
 echo "Latest version: $version"
 
 # Update version in default.nix
