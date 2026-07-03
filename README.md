@@ -66,14 +66,14 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 
 | Package                   | Version                      | Description                                                                                                 | Platforms      |
 | :------------------------ | :--------------------------- | :---------------------------------------------------------------------------------------------------------- | :------------- |
-| **antigravity-cli**       | 1.0.15                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
+| **antigravity-cli**       | 1.0.16                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
 | **antigravity-ide**       | 2.1.1                        | Agentic development platform, evolving the IDE into the agent-first era.                                    | Linux, Darwin  |
 | **ArtixGameLauncher**     | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems.                                   | `x86_64-linux` |
 | **gh-aw**                 | 0.81.6                       | GitHub CLI extension for Actions Workflow management.                                                       | All            |
 | **github-copilot-cli**    | 1.0.68                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
 | **neovimConfigured**      | -                            | Personal Neovim configuration using `nvf` (lightweight version).                                            | All            |
 | **neovimConfigured-full** | -                            | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
-| **warp-terminal**         | 0.2026.06.24.09.19.stable_03 | Rust-based terminal reimagined for the 21st century.                                                        | Linux, Darwin  |
+| **warp-terminal**         | 0.2026.07.01.09.21.stable_01 | Rust-based terminal reimagined for the 21st century.                                                        | Linux, Darwin  |
 | **wavebox**               | 149.2.103-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
 
 > [!IMPORTANT]
