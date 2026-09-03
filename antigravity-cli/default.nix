@@ -10,26 +10,26 @@ let
   system_dict = {
     x86_64-linux = {
       name = "linux_x64";
-      hash = "sha256:cff1fb7ed735da72c35658645a4f916cf74f020d4cd30ab95ebe8c2a49a4d569";
+      hash = "sha256:45ab4a99884de17af76565a4ff8d9762d6e960067bd008fde9b050ec8fc9e421";
     };
     aarch64-linux = {
       name = "linux_arm64";
-      hash = "sha256:e601bde6dcb9caebf8a83de235a0e10a21192c7f9ca9ed459a120714e7d42399";
+      hash = "sha256:063063128d62f7fa8ff8a01f9629744cb48ec1edcb2c57112d89a79fe48479f7";
     };
     x86_64-darwin = {
       name = "mac_x64";
-      hash = "sha256:cd05d272ab2e4b97c2129a3e9c3fb6a76cebebb938a46930c7aa265df841cdb5";
+      hash = "sha256:e5c21bd67723c5a32e6c557e1406a219c769309e7c77746e2ed801c9bf496f66";
     };
     aarch64-darwin = {
       name = "mac_arm64";
-      hash = "sha256:189af288ed9527f567ab3a53b35a6da2fc0c3812c6245f266c75a2a3604bdec3";
+      hash = "sha256:8dab3e113726a3dfed69cbbf6757b4e491ae3b53aab0fdf17a56914d45281eff";
     };
   };
   inherit (stdenv.hostPlatform) system;
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "antigravity-cli";
-  version = "1.1.24";
+  version = "1.1.25";
 
   strictDeps = true;
   __structuredAttrs = true;
