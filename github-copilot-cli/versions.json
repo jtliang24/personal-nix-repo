@@ -9,10 +9,6 @@
       "suffix": "linux-arm64",
       "hash": "sha256-NkIkBUiYKRySBVmWrgkUQ1n9GPGZ84m49IgJsQXDhg0="
     },
-    "x86_64-darwin": {
-      "suffix": "darwin-x64",
-      "hash": "sha256-/uGHaTurp1qhP3Vy/A0dyVPaqX2R8Mse8ARdilNoY5I="
-    },
     "x86_64-linux": {
       "suffix": "linux-x64",
       "hash": "sha256-iI+Pu0V1wzWvukqIY8ZH7wT4HlEkx8eUvcrukMX6RQM="
