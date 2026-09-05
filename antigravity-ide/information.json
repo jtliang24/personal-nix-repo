@@ -10,10 +10,6 @@
       "url": "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/2.5.5-4923483625488384/linux-arm/Antigravity%20IDE.tar.gz",
       "sha256": "88c167108980c33a223a8d7f0aa6aaf4dec61f0cc3950235a2698e9ffc38a49e"
     },
-    "x86_64-darwin": {
-      "url": "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/2.5.5-4923483625488384/darwin-x64/Antigravity%20IDE.zip",
-      "sha256": "2d48bda871aab6a07d11f058ba887d869afbf0feacf734acb2c13c0df5aa27a5"
-    },
     "aarch64-darwin": {
       "url": "https://edgedl.me.gvt1.com/edgedl/release2/j0qc3/antigravity/stable/2.5.5-4923483625488384/darwin-arm/Antigravity%20IDE.zip",
       "sha256": "33338ced839cb00fcc779ab96e4cdc79e06c894bc21cdb02249715286700c648"
