@@ -13,5 +13,5 @@ in
   ArtixGameLauncher = prev.callPackage ./Artix_Game_Launcher.nix { };
   wavebox = prev.callPackage ./wavebox.nix { };
 }
-// prev.lib.optionalAttrs (prev.stdenv.isLinux) {
+// prev.lib.optionalAttrs (prev.stdenv.hostPlatform.isLinux) {
 }
