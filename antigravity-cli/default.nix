@@ -16,10 +16,6 @@ let
       name = "linux_arm64";
       hash = "sha256:97fc9fe5a6067406cd02cbe4ae6e362c9623a24d33bec486911246c17ceb6a94";
     };
-    x86_64-darwin = {
-      name = "mac_x64";
-      hash = "sha256:fe5f102bf65be5d478c68fc2f9c3f5b3c5cb2cc788105310b35698fd1af10192";
-    };
     aarch64-darwin = {
       name = "mac_arm64";
       hash = "sha256:e901e5c8fd20ab4c21c01df306030079286d08e6d372cdb535d5ccc7a3f565f4";
@@ -74,7 +70,6 @@ stdenv.mkDerivation (finalAttrs: {
     platforms = [
       "x86_64-linux"
       "aarch64-linux"
-      "x86_64-darwin"
       "aarch64-darwin"
     ];
     mainProgram = "agy";

@@ -32,7 +32,7 @@ echo "Latest version: $version"
 sed -i -E 's/version = "[^"]*"/version = "'"$version"'"/' default.nix
 
 # Define mapping between system_dict keys/names and release asset names
-systems=("linux_x64" "linux_arm64" "mac_x64" "mac_arm64")
+systems=("linux_x64" "linux_arm64" "mac_arm64")
 
 for sys_name in "${systems[@]}"; do
   # Find asset with name matching "agy_cli_${sys_name}.tar.gz"
