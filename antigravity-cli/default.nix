@@ -46,9 +46,9 @@ stdenv.mkDerivation (finalAttrs: {
   # The default unpackPhase will unpack it into the current directory.
   # We copy 'antigravity' to $out/bin/agy and create a symlink named 'antigravity' to it.
   # If running on macOS, we don't need any patching, but on Linux we need autoPatchelfHook.
-  nativeBuildInputs = lib.optionals stdenv.isLinux [ autoPatchelfHook ];
+  nativeBuildInputs = lib.optionals stdenv.hostPlatform.isLinux [ autoPatchelfHook ];
 
-  buildInputs = lib.optionals stdenv.isLinux [
+  buildInputs = lib.optionals stdenv.hostPlatform.isLinux [
     zlib
     stdenv.cc.cc.lib
   ];
