@@ -1,11 +1,11 @@
 {
   lib,
   fetchFromGitHub,
-  buildGoModule,
+  buildGoLatestModule,
   versionCheckHook,
   nix-update-script,
 }:
-buildGoModule (finalAttrs: {
+buildGoLatestModule (finalAttrs: {
   pname = "gh-aw";
   version = "0.88.7";
   src = fetchFromGitHub {
@@ -15,7 +15,7 @@ buildGoModule (finalAttrs: {
     sha256 = "sha256-j4HjghuM1wHmT7QhVaGdcBHYp/vRTdhcYR3jgSkhnRo=";
   };
 
-  vendorHash = "sha256-EtEZe3T+6iNlhM88jkLfzBQo71ExCgA9d4QGZBt5SB0=";
+  vendorHash = "sha256-YydstLwmlQNoE22DAV9zZyWbeXfo0cJmSssRLVkBB/k=";
 
   subPackages = [ "cmd/gh-aw" ];
   doInstallCheck = true;
@@ -30,7 +30,7 @@ buildGoModule (finalAttrs: {
   ];
 
   passthru.updateScript = nix-update-script {
-    extraArgs = [ "--use-github-releases" "--version" "stable" ];
+    extraArgs = [ "--flake" "--use-github-releases" "--version" "stable" ];
   };
 
   meta = {
