@@ -3,10 +3,10 @@
 #shellcheck shell=bash
 set -eu -o pipefail
 
-if [[ "$(dirname "$0")" != /nix/store/* ]]; then
-  cd "$(dirname "$0")"
+if [[ "$0" == /nix/store/* ]]; then
+  [ -d warp-terminal ] && cd warp-terminal
 else
-  cd warp-terminal
+  cd "$(dirname "$0")"
 fi
 
 

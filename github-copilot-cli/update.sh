@@ -3,10 +3,10 @@
 #shellcheck shell=bash
 set -eu -o pipefail
 
-if [[ "$(dirname "$0")" != /nix/store/* ]]; then
-  cd "$(dirname "$0")"
+if [[ "$0" == /nix/store/* ]]; then
+  [ -d github-copilot-cli ] && cd github-copilot-cli
 else
-  cd github-copilot-cli
+  cd "$(dirname "$0")"
 fi
 
 err() {

@@ -4,10 +4,10 @@
 set -eu -o pipefail
 
 # Navigate to the directory containing this script
-if [[ "$(dirname "$0")" != /nix/store/* ]]; then
-  cd "$(dirname "$0")"
+if [[ "$0" == /nix/store/* ]]; then
+  [ -d antigravity-cli ] && cd antigravity-cli
 else
-  cd antigravity-cli
+  cd "$(dirname "$0")"
 fi
 
 
