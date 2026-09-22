@@ -30,7 +30,7 @@ if builtins.match "^.+linux$" system != null then { ... } else { }
 Follow the pattern in `gh-aw.nix`:
 1. **Inputs at top**: List all required dependencies from nixpkgs.
 2. **Version management**: Explicit `version` attribute in derivation.
-3. **Update script**: Include `passthru.updateScript = nix-update-script { };`.
+3. **Update script**: Include `passthru.updateScript = nix-update-script { extraArgs = [ "--flake" ]; };` (always include `"--flake"` in `extraArgs` so `nix-update` updates the flake package directly).
 4. **Meta attributes**: Include `description`, `homepage`, `license`, `platforms`, and `maintainers`.
 5. **Unfree licenses**: Mark as `licenses.unfree` for proprietary software.
 6. **Source provenance**: Use `sourceProvenance = with lib.sourceTypes; [ fromSource ]` or `[ binaryBytecode ]` as appropriate.
