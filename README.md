@@ -66,10 +66,10 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 
 | Package                   | Version                      | Description                                                                                                 | Platforms      |
 | :------------------------ | :--------------------------- | :---------------------------------------------------------------------------------------------------------- | :------------- |
-| **antigravity-cli**       | 1.2.9                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
+| **antigravity-cli**       | 1.2.10                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
 | **antigravity-ide**       | 2.5.5                        | Agentic development platform, evolving the IDE into the agent-first era.                                    | Linux, Darwin  |
 | **ArtixGameLauncher**     | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems.                                   | `x86_64-linux` |
-| **gh-aw**                 | 0.89.17                       | GitHub CLI extension for Actions Workflow management.                                                       | All            |
+| **gh-aw**                 | 0.89.21                       | GitHub CLI extension for Actions Workflow management.                                                       | All            |
 | **github-copilot-cli**    | 1.0.88                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
 | **neovimConfigured**      | -                            | Personal Neovim configuration using `nvf` (lightweight version).                                            | All            |
 | **neovimConfigured-full** | -                            | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
