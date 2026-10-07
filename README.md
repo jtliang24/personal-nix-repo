@@ -66,15 +66,15 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 
 | Package                   | Version                      | Description                                                                                                 | Platforms      |
 | :------------------------ | :--------------------------- | :---------------------------------------------------------------------------------------------------------- | :------------- |
-| **antigravity-cli**       | 1.3.0                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
+| **antigravity-cli**       | 1.3.1                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
 | **antigravity-ide**       | 2.5.5                        | Agentic development platform, evolving the IDE into the agent-first era.                                    | Linux, Darwin  |
 | **ArtixGameLauncher**     | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems.                                   | `x86_64-linux` |
 | **gh-aw**                 | 0.89.21                       | GitHub CLI extension for Actions Workflow management.                                                       | All            |
-| **github-copilot-cli**    | 1.0.92                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
+| **github-copilot-cli**    | 1.0.93                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
 | **neovimConfigured**      | -                            | Personal Neovim configuration using `nvf` (lightweight version).                                            | All            |
 | **neovimConfigured-full** | -                            | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
 | **warp-terminal**         | 0.2026.09.30.08.29.stable_01 | Rust-based terminal reimagined for the 21st century.                                                        | Linux, Darwin  |
-| **wavebox**               | 154.3.5-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
+| **wavebox**               | 155.3.12-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
 
 > [!IMPORTANT]
 > `antigravity-cli`, `antigravity-ide`, `ArtixGameLauncher`, `wavebox`,
