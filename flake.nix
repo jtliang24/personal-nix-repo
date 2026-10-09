@@ -19,62 +19,65 @@
         full = true;
       };
     in
-    flake-utils.lib.eachSystem [
-      "x86_64-linux"
-      "aarch64-linux"
-      "aarch64-darwin"
-    ] (
-      system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
-        x86-linux-pkgs =
-          if system == "x86_64-linux" then
-            let
-              x86_64-linuxpkgs = import nixpkgs {
-                system = "x86_64-linux";
-                config = {
-                  allowUnfree = true;
+    flake-utils.lib.eachSystem
+      [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ]
+      (
+        system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
+          x86-linux-pkgs =
+            if system == "x86_64-linux" then
+              let
+                x86_64-linuxpkgs = import nixpkgs {
+                  system = "x86_64-linux";
+                  config = {
+                    allowUnfree = true;
+                  };
                 };
-              };
-            in
-            {
-              ArtixGameLauncher = x86_64-linuxpkgs.callPackage ./Artix_Game_Launcher.nix { };
-              wavebox = x86_64-linuxpkgs.callPackage ./wavebox.nix { };
-            }
-          else
-            { };
-        linux-pkgs =
-          if builtins.match "^.+linux$" system != null then
-            let
-              linuxpkgs = import nixpkgs {
-                inherit system;
-              };
-            in
-            {
-              #xdg-browser-exec = linuxpkgs.callPackage ./xdg-browser-exec.nix { };
-            }
-          else
-            { };
-      in
-      {
-        packages = {
-          antigravity-cli = pkgs.callPackage ./antigravity-cli { };
-          github-copilot-cli = pkgs.callPackage ./github-copilot-cli { };
-          warp-terminal = pkgs.callPackage ./warp-terminal { };
-          gh-aw = pkgs.callPackage ./gh-aw.nix { };
-          neovimConfigured = nvf_light.packages.${system}.neovimConfigured;
-          neovimConfigured-full = nvf_full.packages.${system}.neovimConfigured;
-          antigravity-ide = pkgs.callPackage ./antigravity-ide/package.nix { };
-        }
-        // x86-linux-pkgs
-        // linux-pkgs;
+              in
+              {
+                ArtixGameLauncher = x86_64-linuxpkgs.callPackage ./Artix_Game_Launcher.nix { };
+                wavebox = x86_64-linuxpkgs.callPackage ./wavebox.nix { };
+                orchard-music = x86_64-linuxpkgs.callPackage ./orchard.nix { };
+              }
+            else
+              { };
+          linux-pkgs =
+            if builtins.match "^.+linux$" system != null then
+              let
+                linuxpkgs = import nixpkgs {
+                  inherit system;
+                };
+              in
+              {
+                #xdg-browser-exec = linuxpkgs.callPackage ./xdg-browser-exec.nix { };
+              }
+            else
+              { };
+        in
+        {
+          packages = {
+            antigravity-cli = pkgs.callPackage ./antigravity-cli { };
+            github-copilot-cli = pkgs.callPackage ./github-copilot-cli { };
+            warp-terminal = pkgs.callPackage ./warp-terminal { };
+            gh-aw = pkgs.callPackage ./gh-aw.nix { };
+            neovimConfigured = nvf_light.packages.${system}.neovimConfigured;
+            neovimConfigured-full = nvf_full.packages.${system}.neovimConfigured;
+            antigravity-ide = pkgs.callPackage ./antigravity-ide/package.nix { };
+          }
+          // x86-linux-pkgs
+          // linux-pkgs;
 
-        devShells.default = import ./shell.nix { inherit pkgs; };
-      }
-    )
+          devShells.default = import ./shell.nix { inherit pkgs; };
+        }
+      )
     // {
       overlays.default = import ./overlay.nix;
     };
