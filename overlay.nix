@@ -12,6 +12,7 @@ in
 // prev.lib.optionalAttrs (system == "x86_64-linux") {
   ArtixGameLauncher = prev.callPackage ./Artix_Game_Launcher.nix { };
   wavebox = prev.callPackage ./wavebox.nix { };
+  orchard-music = prev.callPackage ./orchard.nix { };
 }
 // prev.lib.optionalAttrs (prev.stdenv.hostPlatform.isLinux) {
 }
