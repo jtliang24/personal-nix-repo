@@ -21,11 +21,15 @@ appimageTools.wrapType2 {
   profile = ''
     unset QT_PLUGIN_PATH
     unset QML2_IMPORT_PATH
+    export QT_QPA_PLATFORM=xcb
   '';
 
   extraInstallCommands = ''
     install -m 444 -D ${appimageContents}/usr/share/applications/orchard.desktop $out/share/applications/orchard.desktop
     install -m 444 -D ${appimageContents}/usr/share/icons/hicolor/512x512/apps/orchard.png $out/share/icons/hicolor/512x512/apps/orchard.png
+
+    substituteInPlace $out/share/applications/orchard.desktop \
+      --replace-fail 'Exec=orchard' 'Exec=orchard-music'
 
     # The package is named orchard-music to avoid collision with nixpkgs orchard,
     # but the binary should still be named 'orchard'.
