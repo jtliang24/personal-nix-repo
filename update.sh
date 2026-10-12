@@ -15,6 +15,11 @@ if [[ "$(uname -s)" == "Linux" ]]; then
   wavebox_version=$(curl -s "https://download.wavebox.app/stable/linux/latest.json" | jq --raw-output '.["urls"]["deb"] | match("https://download.wavebox.app/stable/linux/deb/amd64/wavebox_(.+)_amd64.deb").captures[0]["string"]')
   nix-update wavebox --flake --version "$wavebox_version"
   update_readme "wavebox" "$wavebox_version"
+
+  # Updating orchard-music
+  orchard_version=$(curl -sL "https://depot.sfg545.dev/releases/canary.json" | jq -r .payload | base64 -d | jq -r .version)
+  nix-update orchard-music --flake --version "$orchard_version"
+  update_readme "orchard-music" "$orchard_version"
 fi
 
 # # Updating Warp-terminal
