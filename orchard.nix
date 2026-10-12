@@ -5,10 +5,10 @@
 }:
 let
   pname = "orchard-music";
-  version = "1.0.0-canary.3";
+  version = "1.0.0-canary.9";
   src = fetchurl {
     url = "https://depot.sfg545.dev/downloads/canary/${version}/Orchard-Linux-x86_64.AppImage";
-    hash = "sha256-KlJi/zmVeAPsKKH9nhQPNOHBtE7KndQETxGI8ixOGQM=";
+    hash = "sha256-7gHtc/yz6UEXPvqaGV4eMMs6cPnrVBhSVKlC37lbjwo=";
   };
   appimageContents = appimageTools.extract {
     inherit pname version src;
