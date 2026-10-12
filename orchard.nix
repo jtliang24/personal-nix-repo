@@ -2,6 +2,7 @@
   lib,
   fetchurl,
   appimageTools,
+  nix-update-script,
 }:
 let
   pname = "orchard-music";
@@ -30,6 +31,10 @@ appimageTools.wrapType2 {
     # but the binary should still be named 'orchard'.
     ln -s $out/bin/${pname} $out/bin/orchard
   '';
+
+  passthru.updateScript = nix-update-script {
+    extraArgs = [ "--flake" ];
+  };
 
   meta = {
     description = "A Youtube Music client with smart crossfade, synced lyrics, offline playback, and more";
