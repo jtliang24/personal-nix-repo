@@ -10,6 +10,12 @@ let
   src = fetchurl {
     url = "https://depot.sfg545.dev/downloads/canary/${version}/Orchard-Linux-x86_64.AppImage";
     hash = "sha256-7gHtc/yz6UEXPvqaGV4eMMs6cPnrVBhSVKlC37lbjwo=";
+    # The depot server returns HTTP 403 to requests without a browser
+    # User-Agent, so fetchurl must send one (update.sh does the same).
+    curlOptsList = [
+      "--user-agent"
+      "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0"
+    ];
   };
   appimageContents = appimageTools.extract {
     inherit pname version src;
