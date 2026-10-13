@@ -27,12 +27,23 @@ if [[ "$(uname -s)" == "Linux" ]]; then
   # Updating orchard-music
   orchard_payload=$(curl -sL -A "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0" "https://depot.sfg545.dev/releases/canary.json" | jq -r '.payload // empty' 2>/dev/null || true)
   orchard_version=$(echo "$orchard_payload" | base64 -d 2>/dev/null | jq -r '.version // empty' 2>/dev/null || true)
+  current_version=$(nix eval --raw .#orchard-music.version 2>/dev/null || true)
   if [[ -n "$orchard_version" && "$orchard_version" != "null" ]]; then
-    if nix-update orchard-music --flake --version "$orchard_version"; then
-      update_readme "orchard-music" "$orchard_version"
+    if [[ "$orchard_version" != "$current_version" ]]; then
+      appimage_url="https://depot.sfg545.dev/downloads/canary/${orchard_version}/Orchard-Linux-x86_64.AppImage"
+      echo "Fetching Orchard AppImage for version $orchard_version..."
+      if curl -sLf -A "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0" "$appimage_url" -o /tmp/Orchard-Linux-x86_64.AppImage; then
+        orchard_hash=$(nix-hash --type sha256 --flat --sri /tmp/Orchard-Linux-x86_64.AppImage)
+        nix-store --add-fixed sha256 /tmp/Orchard-Linux-x86_64.AppImage
+        rm -f /tmp/Orchard-Linux-x86_64.AppImage
+        sed -i -E "s/version = \".*\";/version = \"$orchard_version\";/" orchard.nix
+        sed -i -E "s|hash = \".*\";|hash = \"$orchard_hash\";|" orchard.nix
+        update_readme "orchard-music" "$orchard_version"
+      else
+        echo "Failed to download Orchard AppImage for $orchard_version, skipping update."
+      fi
     else
-      echo "Failed to update orchard-music, reverting changes..."
-      git checkout -- orchard.nix
+      echo "orchard-music is up to date ($current_version)."
     fi
   else
     echo "Warning: Could not fetch orchard-music version, skipping update."
