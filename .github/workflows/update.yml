@@ -59,6 +59,19 @@ jobs:
         if: steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated'
         run: git checkout nightly-updates
 
+      - name: Pre-fetch Orchard AppImage
+        run: |
+          APPIMAGE_NAME="Orchard-Linux-x86_64.AppImage"
+          APPIMAGE_SRC=$(nix eval --raw .#orchard-music.src.outPath 2>/dev/null || true)
+          if [ -n "$APPIMAGE_SRC" ] && [ ! -e "$APPIMAGE_SRC" ]; then
+            echo "Pre-fetching $APPIMAGE_NAME..."
+            VERSION=$(nix eval --raw .#orchard-music.version)
+            URL="https://depot.sfg545.dev/downloads/canary/${VERSION}/${APPIMAGE_NAME}"
+            curl -sL -A "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0" "$URL" -o "/tmp/${APPIMAGE_NAME}"
+            nix-store --add-fixed sha256 "/tmp/${APPIMAGE_NAME}"
+            rm -f "/tmp/${APPIMAGE_NAME}"
+          fi
+
       - name: Build packages
         id: build
         run: |
