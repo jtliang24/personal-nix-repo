@@ -12,14 +12,31 @@ update_readme() {
 
 if [[ "$(uname -s)" == "Linux" ]]; then
   # Updating wavebox
-  wavebox_version=$(curl -s "https://download.wavebox.app/stable/linux/latest.json" | jq --raw-output '.["urls"]["deb"] | match("https://download.wavebox.app/stable/linux/deb/amd64/wavebox_(.+)_amd64.deb").captures[0]["string"]')
-  nix-update wavebox --flake --version "$wavebox_version"
-  update_readme "wavebox" "$wavebox_version"
+  wavebox_version=$(curl -s "https://download.wavebox.app/stable/linux/latest.json" | jq --raw-output '.["urls"]["deb"] | match("https://download.wavebox.app/stable/linux/deb/amd64/wavebox_(.+)_amd64.deb").captures[0]["string"]' 2>/dev/null || true)
+  if [[ -n "$wavebox_version" && "$wavebox_version" != "null" ]]; then
+    if nix-update wavebox --flake --version "$wavebox_version"; then
+      update_readme "wavebox" "$wavebox_version"
+    else
+      echo "Failed to update wavebox, reverting changes..."
+      git checkout -- wavebox.nix
+    fi
+  else
+    echo "Warning: Could not fetch wavebox version, skipping update."
+  fi
 
   # Updating orchard-music
-  orchard_version=$(curl -sL "https://depot.sfg545.dev/releases/canary.json" | jq -r .payload | base64 -d | jq -r .version)
-  nix-update orchard-music --flake --version "$orchard_version"
-  update_readme "orchard-music" "$orchard_version"
+  orchard_payload=$(curl -sL -A "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0" "https://depot.sfg545.dev/releases/canary.json" | jq -r '.payload // empty' 2>/dev/null || true)
+  orchard_version=$(echo "$orchard_payload" | base64 -d 2>/dev/null | jq -r '.version // empty' 2>/dev/null || true)
+  if [[ -n "$orchard_version" && "$orchard_version" != "null" ]]; then
+    if nix-update orchard-music --flake --version "$orchard_version"; then
+      update_readme "orchard-music" "$orchard_version"
+    else
+      echo "Failed to update orchard-music, reverting changes..."
+      git checkout -- orchard.nix
+    fi
+  else
+    echo "Warning: Could not fetch orchard-music version, skipping update."
+  fi
 fi
 
 # # Updating Warp-terminal
