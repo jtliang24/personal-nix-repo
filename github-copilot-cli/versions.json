@@ -1,17 +1,17 @@
 {
-  "version": "1.0.97",
+  "version": "1.0.98",
   "platforms": {
     "aarch64-darwin": {
       "suffix": "darwin-arm64",
-      "hash": "sha256-L0+mh4MwOqik6VkspBYi6v/uyMz2Nk9F3DYQ0yEX81k="
+      "hash": "sha256-JsYWXLRbzhs3o6jWu81ITi2TjPUT1ZcMvfnvDai5KnA="
     },
     "aarch64-linux": {
       "suffix": "linux-arm64",
-      "hash": "sha256-UbAAslyWt1dUDbsCtHCdqHna50R7cKxFuDP3AGxegGE="
+      "hash": "sha256-jAlbr0kiWueOUWMy1Qa4rQil2mD6pBu5OSXb1s4pkKc="
     },
     "x86_64-linux": {
       "suffix": "linux-x64",
-      "hash": "sha256-c0i3U+n4y9Ayzs02x4AQ7nybh0RScUwDWvKeSrcwLns="
+      "hash": "sha256-pPX/6cooiGypsfiQFpmjpFZQJl27RzzBdXcsv8e4io8="
     }
   }
 }
