@@ -10,22 +10,22 @@ let
   system_dict = {
     x86_64-linux = {
       name = "linux_x64";
-      hash = "sha256:007a5a44dbaf1caea464c3d9848c63b2f69945b01a8bf8852c56c477a64374cf";
+      hash = "sha256:fd96967583c1eed94733c039638fa59b71ddbd823c75ebc8dd0e677463565aad";
     };
     aarch64-linux = {
       name = "linux_arm64";
-      hash = "sha256:065505ab4686ec7113b7ccd87fce87795a8fd4b7776f771da4d53940206e34cc";
+      hash = "sha256:cf953adcc69f87d00d71f97c3f35dc723a8669a350accf9a199df781f0523f56";
     };
     aarch64-darwin = {
       name = "mac_arm64";
-      hash = "sha256:60b46713d0e7217b796560ffc1c3c569f4e0b3357076ee6b60d464832d6d4105";
+      hash = "sha256:92b4bfb5b51e7b44ff3dcdb1a3179cb2c31b798a79185e19df3a51ae9ff121c7";
     };
   };
   inherit (stdenv.hostPlatform) system;
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "antigravity-cli";
-  version = "1.3.5";
+  version = "1.4.0";
 
   strictDeps = true;
   __structuredAttrs = true;
