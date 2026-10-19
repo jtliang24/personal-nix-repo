@@ -75,7 +75,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **neovimConfigured-full** | -                            | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
 | **orchard-music**         | 1.0.0-canary.10               | YouTube Music client with smart crossfade, synced lyrics, offline playback, and more.                       | `x86_64-linux` |
 | **warp-terminal**         | 0.2026.10.14.08.27.stable_01 | Rust-based terminal reimagined for the 21st century.                                                        | Linux, Darwin  |
-| **wavebox**               | 155.3.17-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
+| **wavebox**               | 155.3.18-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
 
 > [!IMPORTANT]
 > `antigravity-cli`, `antigravity-ide`, `ArtixGameLauncher`, `wavebox`,
