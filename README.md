@@ -66,15 +66,15 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 
 | Package                   | Version                      | Description                                                                                                 | Platforms      |
 | :------------------------ | :--------------------------- | :---------------------------------------------------------------------------------------------------------- | :------------- |
-| **antigravity-cli**       | 1.4.4                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
+| **antigravity-cli**       | 1.4.5                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
 | **antigravity-ide**       | 2.5.5                        | Agentic development platform, evolving the IDE into the agent-first era.                                    | Linux, Darwin  |
 | **ArtixGameLauncher**     | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems.                                   | `x86_64-linux` |
-| **gh-aw**                 | 0.92.0                       | GitHub CLI extension for Actions Workflow management.                                                       | All            |
-| **github-copilot-cli**    | 1.0.101                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
+| **gh-aw**                 | 0.93.0                       | GitHub CLI extension for Actions Workflow management.                                                       | All            |
+| **github-copilot-cli**    | 1.0.102                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
 | **neovimConfigured**      | -                            | Personal Neovim configuration using `nvf` (lightweight version).                                            | All            |
 | **neovimConfigured-full** | -                            | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
 | **orchard-music**         | 1.0.0-canary.10               | YouTube Music client with smart crossfade, synced lyrics, offline playback, and more.                       | `x86_64-linux` |
-| **warp-terminal**         | 0.2026.10.14.08.27.stable_02 | Rust-based terminal reimagined for the 21st century.                                                        | Linux, Darwin  |
+| **warp-terminal**         | 0.2026.10.14.08.27.stable_03 | Rust-based terminal reimagined for the 21st century.                                                        | Linux, Darwin  |
 | **wavebox**               | 156.3.20-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
 
 > [!IMPORTANT]
