@@ -7,15 +7,15 @@
 }:
 buildGoLatestModule (finalAttrs: {
   pname = "gh-aw";
-  version = "0.93.5";
+  version = "1.0.1";
   src = fetchFromGitHub {
     owner = "github";
     repo = "gh-aw";
     tag = "v${finalAttrs.version}";
-    sha256 = "sha256-77ILj6i2hY8/z/jja89SE+jj0Nk5YNfuejgLjSiTkQY=";
+    sha256 = "sha256-/vDh6BRcswm5U0l72RO1nzEVsvyDd0Q5s1v0SrQTtpk=";
   };
 
-  vendorHash = "sha256-xD6wEGGejUFXqkPWUYRdK3j6WiJVEXxuDWBPe5SNk/I=";
+  vendorHash = "sha256-2vQSd+Esu0qEembWIiH6/3mzEdmiNwAbkZSfk5cwAUA=";
 
   subPackages = [ "cmd/gh-aw" ];
   doInstallCheck = true;
