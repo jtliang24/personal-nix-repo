@@ -65,6 +65,7 @@ simple_update_pkgs=(
   "gh-aw"
   "warp-terminal"
   "antigravity-cli"
+  "codex"
 )
 
 for pkg in "${simple_update_pkgs[@]}"; do
