@@ -8,6 +8,7 @@ in
   warp-terminal = prev.callPackage ./warp-terminal { };
   gh-aw = prev.callPackage ./gh-aw.nix { };
   antigravity-ide = prev.callPackage ./antigravity-ide/package.nix { };
+  codex = prev.callPackage ./codex { };
 }
 // prev.lib.optionalAttrs (system == "x86_64-linux") {
   ArtixGameLauncher = prev.callPackage ./Artix_Game_Launcher.nix { };

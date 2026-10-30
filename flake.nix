@@ -71,6 +71,7 @@
             neovimConfigured = nvf_light.packages.${system}.neovimConfigured;
             neovimConfigured-full = nvf_full.packages.${system}.neovimConfigured;
             antigravity-ide = pkgs.callPackage ./antigravity-ide/package.nix { };
+            codex = pkgs.callPackage ./codex { };
           }
           // x86-linux-pkgs
           // linux-pkgs;

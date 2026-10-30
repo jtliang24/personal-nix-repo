@@ -8,6 +8,8 @@ in
   github-copilot-cli = pkgs.callPackage ./github-copilot-cli { };
   warp-terminal = pkgs.callPackage ./warp-terminal { };
   gh-aw = pkgs.callPackage ./gh-aw.nix { };
+  antigravity-cli = pkgs.callPackage ./antigravity-cli { };
+  codex = pkgs.callPackage ./codex { };
 }
 // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
   ArtixGameLauncher = pkgs.callPackage ./Artix_Game_Launcher.nix { };
