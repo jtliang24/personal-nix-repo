@@ -14,7 +14,7 @@ This document provides context and guidelines for AI agents working on this repo
 
 Packages are conditionally exposed based on platform:
 
-- **All platforms**: `antigravity-cli`, `gh-aw`, `github-copilot-cli`, `warp-terminal`, `neovimConfigured`.
+- **All platforms**: `antigravity-cli`, `antigravity-ide`, `codex`, `gh-aw`, `github-copilot-cli`, `warp-terminal`, `neovimConfigured`.
 - **x86_64-linux only**: `ArtixGameLauncher`, `wavebox`, `orchard-music` (defined in `x86-linux-pkgs`).
 - **Linux only**: None currently active (e.g. `xdg-browser-exec` was defined in `linux-pkgs` but is currently removed).
 
