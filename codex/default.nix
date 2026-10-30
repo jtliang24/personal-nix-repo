@@ -1,261 +1,70 @@
 {
   lib,
   stdenv,
-  callPackage,
-  rustPlatform,
-  fetchFromGitHub,
+  fetchurl,
+  autoPatchelfHook,
   installShellFiles,
-  alsa-lib,
-  bubblewrap,
-  clang,
-  cmake,
-  gitMinimal,
-  gst_all_1,
-  libcap,
-  libclang,
-  libopus,
-  librusty_v8 ? callPackage ./librusty_v8.nix {
-    inherit (callPackage ./fetchers.nix { }) fetchLibrustyV8;
-  },
-  librusty_v8_src_binding ? callPackage ./librusty_v8_src_binding.nix {
-    inherit (callPackage ./fetchers.nix { }) fetchLibrustyV8SrcBinding;
-  },
-  linkFarm,
-  lld,
-  pkg-config,
-  openssl,
-  ps,
-  replaceVars,
-  ripgrep,
   versionCheckHook,
-  writeText,
-  installShellCompletions ? stdenv.buildPlatform.canExecute stdenv.hostPlatform,
+  zlib,
 }:
+
 let
-  supportsVoice =
-    stdenv.hostPlatform.isDarwin || (stdenv.hostPlatform.isLinux && stdenv.hostPlatform.isGnu);
-  voiceRuntimeRoots = [
-    (lib.getLib gst_all_1.gstreamer)
-    (lib.getLib gst_all_1.gst-plugins-base)
-    (lib.getLib gst_all_1.gst-plugins-good)
-  ];
-  # Voice loads a fixed package-relative runtime, ignoring GStreamer discovery.
-  voiceRuntime =
-    let
-      pluginDirectory = if stdenv.hostPlatform.isDarwin then "plugins" else "lib/gstreamer-1.0";
-      pluginSuffix = stdenv.hostPlatform.extensions.sharedLibrary;
-      plugin = package: name: {
-        path = "${lib.getLib package}/lib/gstreamer-1.0/libgst${name}${pluginSuffix}";
-        name = "${pluginDirectory}/libgst${name}${pluginSuffix}";
-      };
-      coreSuffix = if stdenv.hostPlatform.isDarwin then "0.dylib" else "so.0";
-    in
-    linkFarm "codex-voice-runtime" [
-      {
-        path = "${lib.getLib gst_all_1.gstreamer}/lib/libgstreamer-1.0.${coreSuffix}";
-        name = "lib/libgstreamer-1.0.${coreSuffix}";
-      }
-      (plugin gst_all_1.gstreamer "coreelements")
-      (plugin gst_all_1.gst-plugins-base "app")
-      (plugin gst_all_1.gst-plugins-base "audioconvert")
-      (plugin gst_all_1.gst-plugins-base "audioresample")
-      (plugin gst_all_1.gst-plugins-base "opus")
-      (plugin gst_all_1.gst-plugins-good "rtp")
-      (plugin gst_all_1.gst-plugins-good "rtpmanager")
-    ];
+  system_dict = {
+    x86_64-linux = {
+      target = "x86_64-unknown-linux-musl";
+      hash = "sha256:1d44b28bc4ac9937d7d3532264baa68a507ce364956a0d4ebb856f331cdee254";
+    };
+    aarch64-linux = {
+      target = "aarch64-unknown-linux-musl";
+      hash = "sha256:7821b77dda2e6283fb1f63f3165177a271da8833e857cf673c6ca1c9db3bfcc6";
+    };
+    aarch64-darwin = {
+      target = "aarch64-apple-darwin";
+      hash = "sha256:55a440cb579f970abe7c79ab181e54b0ea4c419be99f333bbd868eebac9c21f0";
+    };
+  };
+  inherit (stdenv.hostPlatform) system;
 in
-rustPlatform.buildRustPackage (finalAttrs: {
+stdenv.mkDerivation (finalAttrs: {
   pname = "codex";
   version = "0.166.0";
 
-  src = fetchFromGitHub {
-    owner = "openai";
-    repo = "codex";
-    rev = finalAttrs.buildCommit;
-    hash = "sha256-4zxnVT9PxIj0+ULQ4LSA46GmvfyNTueZ+BsQ2SZwk1I=";
-  };
-
-  # Matching client/helper stamps; build_id() requires a full commit SHA.
-  buildCommit = "6ff1e1ca3b30fc8b914720681fcf5fe62e95f856";
-
-  sourceRoot = "${finalAttrs.src.name}/codex-rs";
-
-  cargoHash = "sha256-3CHn33C1SSX+W0juZik3r8CVoYGoyNlk5mDICwVEcbY=";
-  # Disable bundled Opus so OPUS_LIB_DIR selects nixpkgs' libopus.
-  cargoDeps =
-    (rustPlatform.fetchCargoVendor {
-      inherit (finalAttrs)
-        pname
-        version
-        src
-        sourceRoot
-        ;
-      hash = finalAttrs.cargoHash;
-    }).overrideAttrs
-      (previousAttrs: {
-        buildCommand = previousAttrs.buildCommand + ''
-          chmod +w "$out/source-registry-0/opusic-sys-0.7.5/Cargo.toml"
-          substituteInPlace "$out/source-registry-0/opusic-sys-0.7.5/Cargo.toml" \
-            --replace-fail 'default = ["bundled"]' 'default = []'
-        '';
-      });
-
+  strictDeps = true;
   __structuredAttrs = true;
 
-  # Match upstream's release build for the codex binary, plus its
-  # codex-code-mode-host runtime companion for out-of-process V8 execution.
-  cargoBuildFlags = [
-    "--package"
-    "codex-cli"
-    "--package"
-    "codex-code-mode-host"
-  ]
-  ++ lib.optionals supportsVoice [
-    "--package"
-    "codex-voice-host"
-  ];
-  cargoCheckFlags = [
-    "--package"
-    "codex-cli"
-    "--package"
-    "codex-code-mode-host"
-  ]
-  ++ lib.optionals supportsVoice [
-    "--package"
-    "codex-voice-host"
-  ];
-
-  patches = [
-    # Allow declared store links through daemon package validation.
-    (replaceVars ./nix-package-layout.patch {
-      ps = lib.getExe ps;
-      packageLinkRoots = lib.concatStringsSep ":" (
-        [ (toString (lib.getBin ripgrep)) ]
-        ++ lib.optionals stdenv.hostPlatform.isLinux [ (toString (lib.getBin bubblewrap)) ]
-        ++ lib.optionals supportsVoice (map toString voiceRuntimeRoots)
-      );
-    })
-  ]
-  ++ lib.optionals supportsVoice [
-    # Likewise for the voice loader, independently of daemon mode.
-    (replaceVars ./nix-voice-runtime.patch {
-      voiceRuntimeRoots = lib.concatStringsSep ":" (map toString voiceRuntimeRoots);
-    })
-  ]
-  ++ [
-    # https://github.com/openai/codex/issues/48195
-    ./no-daemon_auto_start.patch
-  ];
-
-  postPatch = ''
-    substituteInPlace Cargo.toml \
-      --replace-fail 'lto = "thin"' "" \
-      --replace-fail 'codegen-units = 4' ""
-
-    sed -i '1i#![recursion_limit = "256"]' chatgpt/src/lib.rs
-  '';
-
-  nativeBuildInputs = [
-    clang
-    cmake
-    gitMinimal
-    installShellFiles
-    pkg-config
-  ];
-
-  buildInputs = [
-    libclang
-    openssl
-  ]
-  ++ lib.optionals supportsVoice [
-    gst_all_1.gstreamer
-    gst_all_1.gst-plugins-base
-    gst_all_1.gst-plugins-good
-    libopus
-  ]
-  ++ lib.optionals (supportsVoice && stdenv.hostPlatform.isLinux) [
-    alsa-lib
-  ]
-  ++ lib.optionals stdenv.hostPlatform.isLinux [
-    libcap
-  ];
-
-  # NOTE: set LIBCLANG_PATH so bindgen can locate libclang, and adjust
-  # warning-as-error flags to avoid known false positives (GCC's
-  # stringop-overflow in BoringSSL's a_bitstr.cc) while keeping Clang's
-  # character-conversion warning-as-error disabled.
-  env = {
-    CODEX_BUILD_COMMIT = finalAttrs.buildCommit;
-    LIBCLANG_PATH = "${lib.getLib libclang}/lib";
-    NIX_CFLAGS_COMPILE = toString (
-      lib.optionals stdenv.cc.isGNU [
-        "-Wno-error=stringop-overflow"
-      ]
-      ++ lib.optionals stdenv.cc.isClang [
-        "-Wno-error=character-conversion"
-      ]
-    );
-    RUSTY_V8_ARCHIVE = librusty_v8;
-    RUSTY_V8_SRC_BINDING_PATH = librusty_v8_src_binding;
-    STABLE_GIT_COMMIT = finalAttrs.buildCommit;
-  }
-  // lib.optionalAttrs supportsVoice {
-    OPUS_LIB_DIR = "${lib.getLib libopus}/lib";
-  }
-  // lib.optionalAttrs stdenv.hostPlatform.isDarwin {
-    # Link with lld on Darwin. nixpkgs' classic open-source ld64 fails to insert
-    # ARM64 branch thunks for this binary, producing `b(l) ARM64 branch out of range`.
-    NIX_CFLAGS_LINK = "-fuse-ld=${lib.getExe' lld "ld64.lld"}";
+  src = fetchurl {
+    inherit
+      (system_dict.${stdenv.hostPlatform.system}
+        or (throw "Unsupported system: ${stdenv.hostPlatform.system}")
+      )
+      hash
+      ;
+    url = "https://github.com/openai/codex/releases/download/rust-v${finalAttrs.version}/codex-package-${system_dict.${system}.target}.tar.gz";
   };
 
-  # NOTE: part of the test suite requires access to networking, local shells,
-  # apple system configuration, etc. since this is a very fast moving target
-  # (for now), with releases happening every other day, constantly figuring out
-  # which tests need to be skipped, or finding workarounds, was too burdensome,
-  # and in practice not adding any real value. this decision may be reversed in
-  # the future once this software stabilizes.
-  doCheck = false;
+  sourceRoot = ".";
 
-  # codex-voice-host is moved out of bin/ before fixup; strip it too, or its
-  # debug info keeps gcc and glibc.dev in the runtime closure.
-  stripDebugList = [
-    "bin"
-    "codex-resources"
+  nativeBuildInputs = [
+    installShellFiles
+  ] ++ lib.optionals stdenv.hostPlatform.isLinux [
+    autoPatchelfHook
   ];
 
-  # Metadata enables voice package discovery even without a daemon.
-  # Patch ps and package rg/bwrap directly: a wrapper fails the daemon's
-  # staged-vs-running executable content check.
-  postInstall = ''
-    install -Dm444 \
-      ${
-        writeText "codex-package.json" (
-          builtins.toJSON {
-            layoutVersion = 1;
-            version = finalAttrs.version;
-            target = stdenv.hostPlatform.rust.rustcTarget;
-            variant = "codex";
-            entrypoint = "bin/codex";
-            resourcesDir = "codex-resources";
-          }
-        )
-      } \
-      $out/codex-package.json
+  buildInputs = lib.optionals stdenv.hostPlatform.isLinux [
+    stdenv.cc.cc.lib
+    zlib
+  ];
 
-    # Daemon validation requires packaged rg/bwrap despite their PATH fallback.
-    install -d $out/codex-path
-    ln -s ${lib.getExe ripgrep} $out/codex-path/rg
-  ''
-  + lib.optionalString stdenv.hostPlatform.isLinux ''
-    install -d $out/codex-resources
-    ln -s ${lib.getExe bubblewrap} $out/codex-resources/bwrap
-  ''
-  + lib.optionalString supportsVoice ''
-    install -d $out/codex-resources/voice/bin
-    mv $out/bin/codex-voice-host $out/codex-resources/voice/bin/
-    cp -a ${voiceRuntime}/. $out/codex-resources/voice/
-  ''
-  + lib.optionalString installShellCompletions ''
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out
+    cp -r bin codex-package.json codex-path codex-resources $out/
+
+    runHook postInstall
+  '';
+
+  postInstall = lib.optionalString (stdenv.buildPlatform.canExecute stdenv.hostPlatform) ''
     installShellCompletion --cmd codex \
       --bash <($out/bin/codex completion bash) \
       --fish <($out/bin/codex completion fish) \
@@ -267,24 +76,19 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   passthru.updateScript = ./update.sh;
 
-  passthru.tests = {
-    app-server-daemon = callPackage ./test-app-server-daemon.nix { codex = finalAttrs.finalPackage; };
-  }
-  // lib.optionalAttrs supportsVoice {
-    voice-runtime = callPackage ./test-voice-runtime.nix { codex = finalAttrs.finalPackage; };
-  };
-
-  meta = {
+  meta = with lib; {
     description = "Lightweight coding agent that runs in your terminal";
     homepage = "https://github.com/openai/codex";
-    changelog = "https://raw.githubusercontent.com/openai/codex/refs/tags/rust-v${finalAttrs.version}/CHANGELOG.md";
-    license = lib.licenses.asl20;
-    mainProgram = "codex";
-    maintainers = with lib.maintainers; [
-      delafthi
-      jeafleohj
-      malo
+    license = licenses.asl20;
+    platforms = [
+      "x86_64-linux"
+      "aarch64-linux"
+      "aarch64-darwin"
     ];
-    platforms = lib.platforms.unix;
+    mainProgram = "codex";
+    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
+    maintainers = with maintainers; [
+      jtliang24
+    ];
   };
 })
