@@ -1,31 +1,48 @@
 #!/usr/bin/env bash
+
 set -eu -o pipefail
 
+# Navigate to the directory containing this script
 if [[ "$0" == /nix/store/* ]]; then
-  repo_root="$PWD"
-  script_dir="$PWD/codex"
+  [ -d codex ] && cd codex
 else
-  script_dir=$(dirname "$(readlink --canonicalize-existing "${BASH_SOURCE[0]}")")
-  repo_root=$(cd "$script_dir/.." && pwd)
+  cd "$(dirname "$0")"
 fi
 
-echo "Updating codex build commit..."
-bash "$script_dir/update-build-commit.sh"
-
-echo "Fetching latest version tag..."
+# Fetch latest release JSON from GitHub API
+echo "Fetching latest release from GitHub API..."
 headers=()
 if [[ -n "${GITHUB_TOKEN:-}" ]]; then
   headers+=(-H "Authorization: Bearer $GITHUB_TOKEN")
 fi
-release=$(curl "${headers[@]}" --silent --fail --location \
-  "https://api.github.com/repos/openai/codex/releases/latest")
-tag=$(jq --exit-status --raw-output '.tag_name' <<<"$release")
-version="${tag#rust-v}"
+release_json=$(curl -s "${headers[@]}" "https://api.github.com/repos/openai/codex/releases/latest")
 
-echo "Updating codex to version $version..."
-(cd "$repo_root" && nix-update codex --flake --version "$version")
+# Extract the version (strip 'rust-v' or 'v' prefix if present)
+version=$(echo "$release_json" | jq -r '.tag_name' | sed -E 's/^(rust-)?v//')
+if [[ "$version" == "null" || -z "$version" ]]; then
+  echo "Error: Failed to fetch version from GitHub API." >&2
+  echo "Response was: $release_json" >&2
+  exit 1
+fi
+echo "Latest version: $version"
 
-echo "Updating librusty_v8..."
-bash "$script_dir/update-librusty.sh"
+# Update version in default.nix
+sed -i -E 's/version = "[^"]*"/version = "'"$version"'"/' default.nix
 
-echo "Codex update complete!"
+# Define mapping between system_dict targets and release asset names
+targets=("x86_64-unknown-linux-musl" "aarch64-unknown-linux-musl" "aarch64-apple-darwin")
+
+for target in "${targets[@]}"; do
+  asset_name="codex-package-${target}.tar.gz"
+  hash=$(echo "$release_json" | jq -r --arg name "$asset_name" '.assets[] | select(.name == $name) | .digest')
+
+  if [[ -z "$hash" || "$hash" == "null" ]]; then
+    echo "Error: Could not find digest for asset: $asset_name" >&2
+    exit 1
+  fi
+
+  echo "Updating hash for $target to $hash"
+  sed -i -E '/target = "'"$target"'";/{n; s|hash = "[^"]*"|hash = "'"$hash"'"|}' default.nix
+done
+
+echo "Update complete!"
