@@ -66,7 +66,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 
 | Package                   | Version                      | Description                                                                                                 | Platforms      |
 | :------------------------ | :--------------------------- | :---------------------------------------------------------------------------------------------------------- | :------------- |
-| **antigravity-cli**       | 1.4.11                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
+| **antigravity-cli**       | 1.4.12                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
 | **antigravity-ide**       | 2.6.0                        | Agentic development platform, evolving the IDE into the agent-first era.                                    | Linux, Darwin  |
 | **ArtixGameLauncher**     | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems.                                   | `x86_64-linux` |
 | **codex**                 | 0.166.0                      | Lightweight coding agent that runs in your terminal.                                                        | Linux, Darwin  |
