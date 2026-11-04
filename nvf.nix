@@ -270,6 +270,7 @@ in
             html.enable = true;
             css.enable = true;
             json.enable = true;
+            tex.enable = true;
           };
 
           visuals = {
