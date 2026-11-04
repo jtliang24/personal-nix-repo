@@ -66,7 +66,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 
 | Package                   | Version                      | Description                                                                                                 | Platforms      |
 | :------------------------ | :--------------------------- | :---------------------------------------------------------------------------------------------------------- | :------------- |
-| **antigravity-cli**       | 1.4.12                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
+| **antigravity-cli**       | 1.5.0                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
 | **antigravity-ide**       | 2.6.0                        | Agentic development platform, evolving the IDE into the agent-first era.                                    | Linux, Darwin  |
 | **ArtixGameLauncher**     | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems.                                   | `x86_64-linux` |
 | **codex**                 | 0.166.0                      | Lightweight coding agent that runs in your terminal.                                                        | Linux, Darwin  |
@@ -76,7 +76,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **neovimConfigured-full** | -                            | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
 | **orchard-music**         | 1.0.0-canary.10               | YouTube Music client with smart crossfade, synced lyrics, offline playback, and more.                       | `x86_64-linux` |
 | **warp-terminal**         | 0.2026.10.21.08.25.stable_02 | Rust-based terminal reimagined for the 21st century.                                                        | Linux, Darwin  |
-| **wavebox**               | 156.3.22-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
+| **wavebox**               | 157.3.25-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
 
 > [!IMPORTANT]
 > `antigravity-cli`, `antigravity-ide`, `ArtixGameLauncher`, `wavebox`,
