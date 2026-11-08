@@ -74,7 +74,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **github-copilot-cli**    | 1.0.107                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
 | **neovimConfigured**      | -                            | Personal Neovim configuration using `nvf` (lightweight version).                                            | All            |
 | **neovimConfigured-full** | -                            | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
-| **orchard-music**         | 2.0.1-canary.1               | YouTube Music client with smart crossfade, synced lyrics, offline playback, and more.                       | `x86_64-linux` |
+| **orchard-music**         | 2.0.2-canary.1               | YouTube Music client with smart crossfade, synced lyrics, offline playback, and more.                       | `x86_64-linux` |
 | **warp-terminal**         | 0.2026.11.04.08.17.stable_01 | Rust-based terminal reimagined for the 21st century.                                                        | Linux, Darwin  |
 | **wavebox**               | 157.3.25-2                   | The Wavebox productivity browser.                                                                           | `x86_64-linux` |
 
