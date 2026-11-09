@@ -71,7 +71,7 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 | **ArtixGameLauncher**     | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems.                                   | `x86_64-linux` |
 | **codex**                 | 0.167.0                      | Lightweight coding agent that runs in your terminal.                                                        | Linux, Darwin  |
 | **gh-aw**                 | 1.0.1                       | GitHub CLI extension for Actions Workflow management.                                                       | All            |
-| **github-copilot-cli**    | 1.0.107                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
+| **github-copilot-cli**    | 1.0.108                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
 | **neovimConfigured**      | -                            | Personal Neovim configuration using `nvf` (lightweight version).                                            | All            |
 | **neovimConfigured-full** | -                            | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
 | **orchard-music**         | 2.0.2-canary.1               | YouTube Music client with smart crossfade, synced lyrics, offline playback, and more.                       | `x86_64-linux` |
