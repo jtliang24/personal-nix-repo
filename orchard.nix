@@ -30,6 +30,9 @@ appimageTools.wrapType2 {
     export QT_QPA_PLATFORM=xcb
   '';
 
+  # The bundled libgcrypt needs libgpg-error, which the AppImage omits.
+  extraPkgs = pkgs: [ pkgs.libgpg-error ];
+
   extraInstallCommands = ''
     install -m 444 -D ${appimageContents}/usr/share/applications/orchard.desktop $out/share/applications/orchard.desktop
     install -m 444 -D ${appimageContents}/usr/share/icons/hicolor/512x512/apps/orchard.png $out/share/icons/hicolor/512x512/apps/orchard.png
