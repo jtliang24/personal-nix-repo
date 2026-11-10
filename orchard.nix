@@ -6,10 +6,10 @@
 }:
 let
   pname = "orchard-music";
-  version = "2.0.2-canary.1";
+  version = "2.0.3-canary.1";
   src = fetchurl {
     url = "https://depot.sfg545.dev/downloads/canary/${version}/Orchard-Linux-x86_64.AppImage";
-    hash = "sha256-VSstHrWSo42JZu5x8egXGm4RSiVVWem55tO67e6lboA=";
+    hash = "sha256-zOig0+NQRdvehDt/67n+mTxans5q/BsusLHqEk15ZsE=";
     # The depot server returns HTTP 403 to requests without a browser
     # User-Agent, so fetchurl must send one (update.sh does the same).
     curlOptsList = [
