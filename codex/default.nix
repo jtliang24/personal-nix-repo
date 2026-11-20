@@ -12,22 +12,22 @@ let
   system_dict = {
     x86_64-linux = {
       target = "x86_64-unknown-linux-musl";
-      hash = "sha256:3b8ed091149cc63a59046b9f094bcfa21cdb4dda15ede441ce369bcee4a71ba0";
+      hash = "sha256:8391d67757496bfd14893eca6cbf0c96994bf2627566ff1f018f70600c9ef6b3";
     };
     aarch64-linux = {
       target = "aarch64-unknown-linux-musl";
-      hash = "sha256:c8d0b4ab2a97c595b70b10412d36d0d5464dcef1e1d3246b073d48017cdf5a4f";
+      hash = "sha256:d8c43bee6cf11b01eb18b95f4d7961092bc40228180808859e70dabb7784c1c9";
     };
     aarch64-darwin = {
       target = "aarch64-apple-darwin";
-      hash = "sha256:8a232260df7a12c5e83e0b4b7659e1c8d9259b41942517bc0068d8ab55c36461";
+      hash = "sha256:58c88032ec446e72922d911d8f03773102da20c16a6059cf21f6744bce57f210";
     };
   };
   inherit (stdenv.hostPlatform) system;
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "codex";
-  version = "0.169.0";
+  version = "0.171.0";
 
   strictDeps = true;
   __structuredAttrs = true;
