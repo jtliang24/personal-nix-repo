@@ -66,12 +66,12 @@ nix run github:jtliang24/personal-nix-repo#antigravity-cli
 
 | Package                   | Version                      | Description                                                                                                 | Platforms      |
 | :------------------------ | :--------------------------- | :---------------------------------------------------------------------------------------------------------- | :------------- |
-| **antigravity-cli**       | 1.5.15                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
-| **antigravity-ide**       | 2.8.0                        | Agentic development platform, evolving the IDE into the agent-first era.                                    | Linux, Darwin  |
+| **antigravity-cli**       | 1.5.17                        | Official CLI for Antigravity.                                                                               | Linux, Darwin  |
+| **antigravity-ide**       | 2.9.0                        | Agentic development platform, evolving the IDE into the agent-first era.                                    | Linux, Darwin  |
 | **ArtixGameLauncher**     | 2.20                         | Artix Games Launcher (appimage launcher), packaged for non-NixOS systems.                                   | `x86_64-linux` |
 | **codex**                 | 0.172.0                      | Lightweight coding agent that runs in your terminal.                                                        | Linux, Darwin  |
 | **gh-aw**                 | 1.2.2                       | GitHub CLI extension for Actions Workflow management.                                                       | All            |
-| **github-copilot-cli**    | 1.0.114                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
+| **github-copilot-cli**    | 1.0.116                       | Github Copilot coding agent directly in your terminal.                                                      | All            |
 | **neovimConfigured**      | -                            | Personal Neovim configuration using `nvf` (lightweight version).                                            | All            |
 | **neovimConfigured-full** | -                            | Personal Neovim configuration using `nvf` (full version with LSPs, CodeCompanion, and Markdown extensions). | All            |
 | **orchard-music**         | 2.0.12-canary.1               | YouTube Music client with smart crossfade, synced lyrics, offline playback, and more.                       | `x86_64-linux` |
